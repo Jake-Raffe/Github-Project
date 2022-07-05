@@ -31,12 +31,11 @@ Seq[Any](format.raw/*2.1*/("""
   <div class="jumbotron my-auto">
 
     <div class="container mb-5">
-      <h1 class="display-3 row">Welcome to Play</h1>
-      <a href=main.scala.html>Main</a>
+      <h1 class="display-3 row">Welcome to GitHub</h1>
     </div>
 
     <p class="lead">
-      A demo project based off the <a href="https://github.com/miranda-hawkes/induction-tutorials/blob/master/Building-A-RESTful-API-With-Scala-Play/README.md"> Building a RESTful API with Scala and Play </a> tutorial.
+
     </p>
 
     <p class="lead mb-5">This project is deployed via Heroku.</p>
@@ -105,7 +104,7 @@ Seq[Any](format.raw/*2.1*/("""
   </div>
 
 </div>
-""")))}),format.raw/*84.2*/("""
+""")))}),format.raw/*83.2*/("""
 """))
       }
     }
@@ -122,11 +121,11 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-06-22T11:32:56.875441
-                  SOURCE: /Users/jacob.raffe/Documents/scala-practice/play-framework/play-template/app/views/index.scala.html
-                  HASH: deac363cc0ae56a8b8cf7cd503905af93b5db371
-                  MATRIX: 722->1|818->4|845->6|880->33|919->35|947->37|3131->2191
-                  LINES: 21->1|26->2|27->3|27->3|27->3|29->5|108->84
+                  DATE: 2022-07-05T11:32:57.756827
+                  SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/index.scala.html
+                  HASH: 623c9fe7a07651e44778c8ed7cc720269bc70c89
+                  MATRIX: 722->1|818->4|845->6|880->33|919->35|947->37|2876->1936
+                  LINES: 21->1|26->2|27->3|27->3|27->3|29->5|107->83
                   -- GENERATED --
               */
           

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
-// @SOURCE:/Users/jacob.raffe/Documents/scala-practice/play-framework/play-template/conf/routes
-// @DATE:Wed Jun 22 09:58:37 BST 2022
+// @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
+// @DATE:Tue Jul 05 11:32:57 BST 2022
 
 
 package router {

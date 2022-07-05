@@ -5,3 +5,4 @@ GET     /                           controllers.HomeController.index()
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
 GET     /:username                  controllers.HomeController.getUser(username: String)
+GET     /:username/repositories     controllers.HomeController.getUserRepositories(username: String)

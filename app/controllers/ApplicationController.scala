@@ -2,13 +2,12 @@ package controllers
 
 import cats.data.EitherT
 import models.APIError.BadAPIResponse
-import models.{APIError, DataModel, UpdateField}
+import models.{APIError}
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
-import repositories.DataRepository
 import play.api.mvc._
-import services.{ApplicationService, GithubService}
+import services.{GithubService, ApplicationService}
 
 import java.awt.print.Book
 import java.security.Provider.Service
@@ -19,17 +18,17 @@ import scala.concurrent.{ExecutionContext, Future}
 @Singleton
 class ApplicationController @Inject()(val controllerComponents: ControllerComponents,
 //                                      val dataRepository: DataRepository,
-                                      val applicationService: ApplicationService,
                                       val githubService: GithubService,
+                                      val applicationService: ApplicationService,
                                       implicit val ec: ExecutionContext
                                      ) extends BaseController {
 
-  def index(): Action[AnyContent] = Action.async { implicit request =>
-    applicationService.index().map{
-      case Right(book: Seq[JsValue]) => Ok(Json.toJson(book))
-      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-    }
-  }
+//  def index(): Action[AnyContent] = Action.async { implicit request =>
+//    applicationService.index().map{
+//      case Right(book: Seq[JsValue]) => Ok(Json.toJson(book))
+//      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//    }
+//  }
 
   def create(): Action[JsValue] = Action.async(parse.json) { implicit request =>
     applicationService.create(request).map {
@@ -38,49 +37,49 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     }
   }
 
-  def readId(id: String): Action[AnyContent] = Action.async { implicit request =>
-    applicationService.read("ID", id).map {
-      case Right(value) => value
-      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-    }
-  }
-  def readName(name: String): Action[AnyContent] = Action.async { implicit request =>
-    applicationService.read("name", name).map {
-      case Right(value) => value
-      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-    }
-  }
-
-  def update(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    request.body.validate[DataModel] match {
-      case JsSuccess(data, _) =>
-        applicationService.update(id, data).map {
-          case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-          case Right(value) => value
-        }
-      case JsError(_) => Future(BadRequest)
-    }
-  }
-  def edit(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
-    request.body.validate[UpdateField] match {
-      case JsSuccess(data, _) =>
-        applicationService.edit(id, data).map {
-          case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-          case Right(value) => value
-        }
-      case JsError(_) => Future(BadRequest)
-    }
-  }
-
-  def delete(id: String): Action[AnyContent] = Action.async { implicit request =>
-    applicationService.delete(id).map {
-      case Right(right) => right
-      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-    }
-  }
+//  def readId(id: String): Action[AnyContent] = Action.async { implicit request =>
+//    githubService.read("ID", id).map {
+//      case Right(value) => value
+//      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//    }
+//  }
+//  def readName(name: String): Action[AnyContent] = Action.async { implicit request =>
+//    githubService.read("name", name).map {
+//      case Right(value) => value
+//      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//    }
+//  }
+//
+//  def update(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+//    request.body.validate[DataModel] match {
+//      case JsSuccess(data, _) =>
+//        githubService.update(id, data).map {
+//          case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//          case Right(value) => value
+//        }
+//      case JsError(_) => Future(BadRequest)
+//    }
+//  }
+//  def edit(id: String): Action[JsValue] = Action.async(parse.json) { implicit request =>
+//    request.body.validate[UpdateField] match {
+//      case JsSuccess(data, _) =>
+//        githubService.edit(id, data).map {
+//          case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//          case Right(value) => value
+//        }
+//      case JsError(_) => Future(BadRequest)
+//    }
+//  }
+//
+//  def delete(id: String): Action[AnyContent] = Action.async { implicit request =>
+//    githubService.delete(id).map {
+//      case Right(right) => right
+//      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//    }
+//  }
 
   def getUser(username: String): Action[AnyContent] = Action.async { implicit request =>
-    githubService.getUser(username = username).value.map {
+    githubService.getUser(username).map {
       case Right(user) => Ok(Json.toJson(user))
       case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
     }

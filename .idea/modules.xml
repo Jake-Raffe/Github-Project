@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/play-framework_practice.iml" filepath="$PROJECT_DIR$/.idea/modules/play-framework_practice.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/play-framework_practice-build.iml" filepath="$PROJECT_DIR$/.idea/modules/play-framework_practice-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/github-project.iml" filepath="$PROJECT_DIR$/.idea/modules/github-project.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/github-project-build.iml" filepath="$PROJECT_DIR$/.idea/modules/github-project-build.iml" />
     </modules>
   </component>
 </project>

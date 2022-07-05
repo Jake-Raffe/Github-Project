@@ -1,25 +1,23 @@
-@()
-
-@main("Play Scala API demo") {
-
-<div class="container h-100 d-flex justify-content-center">
-
-    <div class="jumbotron my-auto">
-
-        <div class="container mb-5">
-            <h1 class="display-3 row">Welcome to GitHub</h1>
-        </div>
-
-        <p class="lead">
-
-        </p>
-
-        <p class="lead mb-5">This project is deployed via Heroku.</p>
-
-        <a href="userRepos.scala.html">Repositories</a>
 
 
-    </div>
+@(title: String)(content: Html)
 
-</div>
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    @* Here's where we render the page title `String`. *@
+    <title>@title</title>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.versioned("stylesheets/main.css")">
+    <link rel="shortcut icon" type="image/png" href="@routes.Assets.versioned("images/favicon.png")">
+
+</head>
+<body>
+@* And here's where we render the `Html` object containing
+* the page content. *@
+@content
+
+<script src="@routes.Assets.versioned("javascripts/main.js")" type="text/javascript"></script>
+
+<a href="userRepos.scala.html">Repositories</a>
+</body>
+</html>

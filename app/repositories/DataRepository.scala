@@ -1,0 +1,105 @@
+package repositories
+
+import akka.actor.Status.Success
+import com.google.inject.ImplementedBy
+import com.mongodb.client.result.InsertOneResult
+import models.APIError.BadAPIResponse
+import models.{APIError, User}
+import org.mongodb.scala.bson.conversions.Bson
+import org.mongodb.scala.model.Updates.set
+import org.mongodb.scala.model.Filters.{empty, equal}
+import org.mongodb.scala.model._
+import org.mongodb.scala.result
+import play.api.libs.json.{JsValue, Json}
+import uk.gov.hmrc.mongo.MongoComponent
+import uk.gov.hmrc.mongo.play.json.PlayMongoRepository
+
+import javax.inject.{Inject, Singleton}
+import scala.concurrent.duration.SECONDS
+import scala.concurrent.{ExecutionContext, Future}
+
+@ImplementedBy(classOf[DataRepository])
+trait DataRepositoryTrait {
+//  def index(): Future[Either[APIError, Seq[JsValue]]]
+  def create(user: User): Future[Either[APIError, User]]
+//  def read(findBy: String, identifier: String): Future[User]
+//  def update(login: String, user: User): Future[Either[APIError, User]]
+//  def edit(login: String, fieldName: String, edit: String): Future[Option[User]]
+//  def delete(login: String): Future[Long]
+}
+
+@Singleton
+class DataRepository @Inject()(mongoComponent: MongoComponent)(implicit ec: ExecutionContext) extends PlayMongoRepository[User](
+  collectionName = "dataModels",
+  mongoComponent = mongoComponent,
+  domainFormat = User.formats,
+  indexes = Seq(IndexModel(
+    Indexes.ascending("login")))
+  ) with DataRepositoryTrait {
+
+  val emptyData = new User("empty", "", None, 0, 0)
+  val errorData = new User("error", "", None, 0, 0)
+
+//  def index(): Future[Either[APIError, Seq[JsValue]]] = {
+//    collection.find().toFuture().map{
+//      case books: Seq[User] => Right(books.map(book => Json.toJson(book)))
+//      case _ => Left(APIError.BadAPIResponse(400, "Unknown error"))
+//    }
+//  }
+
+  def create(user: User): Future[Either[APIError, User]] =
+    collection.insertOne(user).toFutureOption().map {
+      case Some(result: InsertOneResult) if result.wasAcknowledged() => Right(user)
+      case _ => Left(APIError.BadAPIResponse(400, "Bad Request"))
+    }
+
+//  private def byID(id: String): Bson = {
+//    Filters.and(
+//      Filters.equal("_id", id)
+//    )
+//  }
+//
+//  private def byName(name: String): Bson =
+//    Filters.and(
+//      Filters.equal("name", name)
+//    )
+//
+//  def read(findBy: String, identifier: String): Future[User] = {
+//    if (findBy.equals("ID"))
+//      collection.find(byID(identifier)).headOption() flatMap {
+//        case Some(data) => Future(data)
+//        case _ => Future(emptyData)
+//      }
+//    else if (findBy.equals("name"))
+//      collection.find(byName(identifier)).headOption() flatMap {
+//        case Some(data) => Future(data)
+//        case _ => Future(emptyData)
+//      }
+//    else Future(errorData)
+//  }
+//
+//  def update(id: String, user: User): Future[Either[APIError, User]] = {
+//    collection.replaceOne(
+//      filter = byID(id),
+//      replacement = user,
+//      options = new ReplaceOptions().upsert(false)
+//    ).toFutureOption().map{
+//      case Some(value) if value.wasAcknowledged() => Right(user)
+//      case _ => Left(APIError.BadAPIResponse(400, s"Unable to update book of ID: $id"))
+//    }
+//  }
+//
+//  def edit(id: String, fieldName: String, edit: String): Future[Option[User]] = {
+//    collection.findOneAndUpdate(
+//      equal("_id", id),
+//      set(fieldName, edit),
+//      options = FindOneAndUpdateOptions().returnDocument(ReturnDocument.AFTER)
+//      ).toFutureOption()
+//  }
+//
+//  def delete(id: String): Future[Long] =
+//    collection.deleteOne(filter = byID(id)).toFuture().map(_.getDeletedCount)
+//
+//  def deleteAll(): Future[Unit] = collection.deleteMany(empty()).toFuture().map(_ => ()) //Hint: needed for tests
+
+}
