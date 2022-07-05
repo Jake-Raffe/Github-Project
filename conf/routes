@@ -6,3 +6,5 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /:username                  controllers.HomeController.getUser(username: String)
 GET     /:username/repositories     controllers.HomeController.getUserRepositories(username: String)
+
+POST    /github/user                controllers.ApplicationController.create()

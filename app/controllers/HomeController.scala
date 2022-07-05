@@ -9,19 +9,21 @@ import scala.concurrent.Future
 
 
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents, applicationController: ApplicationController, githubService: GithubService) extends BaseController {
+class HomeController @Inject()(val controllerComponents: ControllerComponents, githubService: GithubService) extends BaseController {
 
 
   def index(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     Future.successful(Ok(views.html.index()))
   }
 
-//  def getUser(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+  def getUser(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    Future.successful(Ok(views.html.index()))
 //    val userDetails = applicationController.getUser(username)
 //    Future.successful(Ok(views.html.user(username)(userDetails)))
-//  }
+  }
 
-//  def getUserRepositories(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+  def getUserRepositories(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    Future.successful(Ok(views.html.index()))
 //    Future.successful(Ok(views.html.userRepos(username)))
-//  }
+  }
 }

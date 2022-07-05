@@ -2,12 +2,13 @@ package controllers
 
 import cats.data.EitherT
 import models.APIError.BadAPIResponse
-import models.{APIError}
+import models.APIError
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
 import play.api.mvc._
-import services.{GithubService, ApplicationService}
+import repositories.DataRepository
+import services.{ApplicationService, GithubService}
 
 import java.awt.print.Book
 import java.security.Provider.Service

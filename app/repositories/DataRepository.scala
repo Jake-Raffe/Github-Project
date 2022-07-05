@@ -30,7 +30,7 @@ trait DataRepositoryTrait {
 
 @Singleton
 class DataRepository @Inject()(mongoComponent: MongoComponent)(implicit ec: ExecutionContext) extends PlayMongoRepository[User](
-  collectionName = "dataModels",
+  collectionName = "users",
   mongoComponent = mongoComponent,
   domainFormat = User.formats,
   indexes = Seq(IndexModel(
