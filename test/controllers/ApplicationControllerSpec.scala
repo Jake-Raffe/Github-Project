@@ -76,6 +76,7 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
 
   // Create good
   "ApplicationController .create()" should {
+    beforeEach()
     "create a book in the database" in {
       val request: FakeRequest[JsValue] = buildPost("/github/users").withBody[JsValue](Json.toJson(mockUser))
       val createdResult: Future[Result] = integrationTestApplicationController.create()(request)
@@ -217,6 +218,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
 //  }
 
 //  override def beforeEach(): Unit = {  }
-//  override def beforeEach(): Unit = repository.deleteAll()
+  override def beforeEach(): Unit = repository.deleteAll()
 //  override def afterEach(): Unit = repository.deleteAll()
 }
