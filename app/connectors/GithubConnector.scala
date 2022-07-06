@@ -14,7 +14,13 @@ class GithubConnector @Inject()(ws: WSClient) {
     request.map {
       result =>
         val gitUser = result.json
-        Right(User((gitUser \ "login").as[String], (gitUser \ "created_at").as[String], (gitUser \ "location").asOpt[String], (gitUser \ "followers").as[Int], (gitUser \ "following").as[Int]))
+        Right(User(
+          (gitUser \ "login").as[String],
+          (gitUser \ "created_at").as[String],
+          (gitUser \ "location").asOpt[String],
+          (gitUser \ "followers").as[Int],
+          (gitUser \ "following").as[Int]
+        ))
     }
       .recover {
         case _ =>
@@ -33,7 +39,7 @@ class GithubConnector @Inject()(ws: WSClient) {
               case JsSuccess(value, _) =>
                 Right(value.repoList)
               case JsError(errors) =>
-                Left(APIError.BadAPIResponse(400, "Could not find book"))
+                Left(APIError.BadAPIResponse(400, "Could not return user repositories"))
             }}
         }
     }

@@ -1,4 +1,14 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/services/ApplicationService.scala:63:4: '}' expected but eof found.[0m
-[0m[[0m[31merror[0m] [0m[0m//}[0m
-[0m[[0m[31merror[0m] [0m[0m   ^[0m
-[0m[[0m[31merror[0m] [0m[0mone error found[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/controllers/ApplicationController.scala:28:25: non-variable type argument models.User in type pattern Seq[models.User] (the underlying of Seq[models.User]) is unchecked since it is eliminated by erasure[0m
+[0m[[0m[33mwarn[0m] [0m[0m      case Right(users: Seq[User]) => Ok(Json.toJson(users))[0m
+[0m[[0m[33mwarn[0m] [0m[0m                        ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/controllers/HomeController.scala:22:41: match may not be exhaustive.[0m
+[0m[[0m[33mwarn[0m] [0m[0mIt would fail on the following input: Left(_)[0m
+[0m[[0m[33mwarn[0m] [0m[0m    githubService.getUser(username).map {[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                        ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/services/ApplicationService.scala:37:12: patterns after a variable pattern cannot match (SLS 8.1.1)[0m
+[0m[[0m[33mwarn[0m] [0m[0m      case user => Right(Ok(Json.toJson(user)))[0m
+[0m[[0m[33mwarn[0m] [0m[0m           ^[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/services/ApplicationService.scala:38:21: unreachable code due to variable pattern 'user' on line 37[0m
+[0m[[0m[33mwarn[0m] [0m[0m      case _ => Left(BadAPIResponse(400, "Unable to complete request"))[0m
+[0m[[0m[33mwarn[0m] [0m[0m                    ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mfour warnings found[0m

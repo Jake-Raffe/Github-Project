@@ -2,7 +2,7 @@ package controllers
 
 import cats.data.EitherT
 import models.APIError.BadAPIResponse
-import models.{APIError, UpdateField, User}
+import models.{APIError, User}
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json.{JsError, JsSuccess, JsValue, Json}
@@ -62,8 +62,8 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     }
   }
 
-  def getUser(username: String): Action[AnyContent] = Action.async { implicit request =>
-    githubService.getUser(username).map {
+  def addUser(username: String): Action[AnyContent] = Action.async { implicit request =>
+    githubService.getAndAddUser(username).map {
       case Right(user) => Ok(Json.toJson(user))
       case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
     }

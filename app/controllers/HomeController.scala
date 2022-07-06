@@ -4,12 +4,13 @@ import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, R
 import services.GithubService
 
 import javax.inject._
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
 
 @Singleton
-class HomeController @Inject()(val controllerComponents: ControllerComponents, githubService: GithubService) extends BaseController {
+class HomeController @Inject()(val controllerComponents: ControllerComponents, githubService: GithubService,
+                               implicit val ec: ExecutionContext) extends BaseController {
 
 
   def index(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
@@ -17,9 +18,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def getUser(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(views.html.index()))
-//    val userDetails = applicationController.getUser(username)
-//    Future.successful(Ok(views.html.user(username)(userDetails)))
+//    Future.successful(Ok(views.html.index()))
+    githubService.getUser(username).map {
+      case Right(user) => Ok(views.html.userPage(user))
+    }
   }
 
   def getUserRepositories(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>

@@ -5,7 +5,7 @@ import models.APIError.BadAPIResponse
 
 import javax.inject.Inject
 import javax.inject.Singleton
-import models.{APIError, UpdateField, User}
+import models.{APIError, User}
 import play.api.libs.json.Format.GenericFormat
 import play.api.libs.json.OFormat.oFormatFromReadsAndOWrites
 import play.api.libs.json._

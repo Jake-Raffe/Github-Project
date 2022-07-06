@@ -24,7 +24,6 @@ trait DataRepositoryTrait {
   def create(user: User): Future[Either[APIError, User]]
   def read(username: String): Future[User]
   def update(login: String, user: User): Future[Either[APIError, User]]
-//  def edit(login: String, fieldName: String, edit: String): Future[Option[User]]
   def delete(login: String): Future[Long]
 }
 
@@ -34,11 +33,24 @@ class DataRepository @Inject()(mongoComponent: MongoComponent)(implicit ec: Exec
   mongoComponent = mongoComponent,
   domainFormat = User.formats,
   indexes = Seq(IndexModel(
-    Indexes.ascending("login"), IndexOptions().unique(true)))
+    Indexes.ascending("login"),
+//    IndexOptions().unique(true)
+  ))
   ) with DataRepositoryTrait {
 
   val emptyData = new User("empty", "", None, 0, 0)
   val errorData = new User("error", "", None, 0, 0)
+
+  private def byID(id: String): Bson = {
+    Filters.and(
+      Filters.equal("_id", id)
+    )
+  }
+
+  private def byUsername(username: String): Bson =
+    Filters.and(
+      Filters.equal("login", username)
+    )
 
   def index(): Future[Either[APIError, Seq[JsValue]]] = {
     collection.find().toFuture().map{
@@ -53,17 +65,6 @@ class DataRepository @Inject()(mongoComponent: MongoComponent)(implicit ec: Exec
       case _ => Left(APIError.BadAPIResponse(400, "Bad Request"))
     }
 
-  private def byID(id: String): Bson = {
-    Filters.and(
-      Filters.equal("_id", id)
-    )
-  }
-
-  private def byUsername(username: String): Bson =
-    Filters.and(
-      Filters.equal("login", username)
-    )
-
   def read(username: String): Future[User] = {
     collection.find(byUsername(username)).headOption() flatMap {
       case Some(data) => Future(data)
@@ -77,7 +78,7 @@ class DataRepository @Inject()(mongoComponent: MongoComponent)(implicit ec: Exec
       replacement = user,
       options = new ReplaceOptions().upsert(false)
     ).toFutureOption().map{
-      case Some(value) if value.wasAcknowledged() => Right(user)
+      case Some(value) if value.getModifiedCount.equals(1L) => Right(user)
       case _ => Left(APIError.BadAPIResponse(400, s"Unable to update user of username: $username"))
     }
   }

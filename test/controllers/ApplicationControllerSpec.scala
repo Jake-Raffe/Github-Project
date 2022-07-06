@@ -41,38 +41,21 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     20
   )
 
-//  private val mockJsonBook: JsValue = Json.obj(
-//    "_id" -> "1",
-//    "name" -> "Mock Book",
-//    "description" -> "This is a data model book for testing",
-//    "numSales" -> 100
-//  )
-//
-//  private val updatedMockDataModel: DataModel = DataModel(
-//    mockUser._id,
-//    "update name",
-//    "update description",
-//    100
-//  )
-//  private val editedMockDataModel: DataModel = DataModel(
-//    mockUser._id,
-//    "Mock Book",
-//    "this is the edited description",
-//    100
-//  )
-//  private val updateField: UpdateField = UpdateField(
-//    mockUser._id,
-//    "description",
-//    "this is the edited description"
-//  )
+  private val updatedMockUser: User = User(
+    mockUser.login,
+    "2022-01-07T19:56:27Z",
+    Some("London"),
+    200,
+    200
+  )
 
-//  // Index good
-//  "ApplicationController .index()" should {
-//    val result = integrationTestApplicationController.index()(FakeRequest())
-//    "return status OK" in {
-//      status(result)(defaultAwaitTimeout) shouldBe Status.OK
-//    }
-//  }
+  // Index good
+  "ApplicationController .index()" should {
+    val result = integrationTestApplicationController.index()(FakeRequest())
+    "return status OK" in {
+      status(result)(defaultAwaitTimeout) shouldBe Status.OK
+    }
+  }
 
   // Create good
   "ApplicationController .create()" should {
@@ -92,130 +75,75 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     }
   }
 
-//  // ReadID good
-//  "ApplicationController .readId(id: String)" should {
-//
-//    "find a book in the database by id" in {
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      integrationTestApplicationController.create()(request)
-//
-//      val readRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/api/id/:id")
-//      val readResult: Future[Result] = integrationTestApplicationController.readId("1")(readRequest)
-//      status(readResult)(defaultAwaitTimeout) shouldBe Status.OK
-//      contentAsJson(readResult)(defaultAwaitTimeout).as[JsValue] shouldBe Json.toJson(mockUser)
-//    }
-//    "return a NotFound if a book of the ID is not found" in {
-//      val readRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/api/id/:id")
-//      val readWrongIDResult: Future[Result] = integrationTestApplicationController.readId("22")(readRequest)
-//      status(readWrongIDResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
-//      contentAsJson(readWrongIDResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 404, Reason: Unable to find book of ID: 22")
-//    }
-//  }
-//
-//  // ReadName good
-//  "ApplicationController .readName(name: String)" should {
-//    val readRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/api/name/:name")
-//
-//    "find a book in the database by name" in {
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      integrationTestApplicationController.create()(request)
-//
-//      val readResult: Future[Result] = integrationTestApplicationController.readName("Mock Book")(readRequest)
-//      status(readResult)(defaultAwaitTimeout) shouldBe Status.OK
-//      contentAsJson(readResult)(defaultAwaitTimeout).as[JsValue] shouldBe Json.toJson(mockUser)
-//    }
-//    "return a NotFound if a book of the name is not found" in {
-//      val readWrongIDResult: Future[Result] = integrationTestApplicationController.readName("Wrong name book")(readRequest)
-//      status(readWrongIDResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
-//      contentAsJson(readWrongIDResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 404, Reason: Unable to find book of name: Wrong name book")
-//    }
-//  }
-//
-//  // Update good
-//  "ApplicationController .update(id: String)" should {
-//
-//    "find a book in the database by it's ID and replace it with the new book" in {
-//      beforeEach()
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      val createdRequest = integrationTestApplicationController.create()(request)
-//      await(createdRequest)
-//      val updateRequest: FakeRequest[JsValue] = buildPut("/api/:id").withBody[JsValue](Json.toJson(updatedMockDataModel))
-//      val updateResult: Future[Result] = integrationTestApplicationController.update("1")(updateRequest)
-//
-//      status(updateResult)(defaultAwaitTimeout) shouldBe Status.ACCEPTED
-//      contentAsJson(updateResult)(defaultAwaitTimeout).as[JsValue] shouldBe Json.toJson(updatedMockDataModel)
-//    }
-//
-//    "return BadAPIResponse message if wrong ID" in {
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      integrationTestApplicationController.create()(request)
-//      val updateRequest: FakeRequest[JsValue] = buildPut("/api/:id").withBody[JsValue](Json.toJson(updatedMockDataModel))
-//      val updateWrongIDResult: Future[Result] = integrationTestApplicationController.update("125")(updateRequest)
-//      status(updateWrongIDResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
-//      contentAsJson(updateWrongIDResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 400, Reason: Unable to update book of ID: 125")
-//    }
-//
-//    "return BadRequest if incorrect Json body" in {
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      integrationTestApplicationController.create()(request)
-//      val emptyUpdateRequest: FakeRequest[JsValue] = buildPut("/api/:id").withBody[JsValue](Json.obj())
-//      val emptyUpdateResult: Future[Result] = integrationTestApplicationController.update("1")(emptyUpdateRequest)
-//      status(emptyUpdateResult)(defaultAwaitTimeout) shouldBe Status.BAD_REQUEST
-//    }
-//  }
-//
-//  // Edit good
-//  "ApplicationController .edit(id: String)" should {
-//
-//    "find a book in the database by it's ID and replace a field with an edit before returning the updated book" in {
-//      beforeEach()
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      val createdRequest = integrationTestApplicationController.create()(request)
-////      await(createdRequest)
-//      val editRequest: FakeRequest[JsValue] = buildPut("/api/edit/:id").withBody[JsValue](Json.toJson(updateField))
-//      val editResult: Future[Result] = integrationTestApplicationController.edit("1")(editRequest)
-//
-//      await(editResult)
-//      status(editResult)(defaultAwaitTimeout) shouldBe Status.ACCEPTED
-//      contentAsJson(editResult)(defaultAwaitTimeout).as[JsValue] shouldBe Json.toJson(editedMockDataModel)
-//    }
-//
-//    "return BadAPIResponse message if wrong ID" in {
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      integrationTestApplicationController.create()(request)
-//      val updateRequest: FakeRequest[JsValue] = buildPut("/api/edit/:id").withBody[JsValue](Json.toJson(updateField))
-//      val updateWrongIDResult: Future[Result] = integrationTestApplicationController.edit("125")(updateRequest)
-//      status(updateWrongIDResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
-//      contentAsJson(updateWrongIDResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 400, Reason: Unable to edit book of ID: 125")
-//    }
-//
-//    "return BadRequest if incorrect Json body" in {
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      integrationTestApplicationController.create()(request)
-//      val emptyEditRequest: FakeRequest[JsValue] = buildPut("/api/edit/:id").withBody[JsValue](Json.obj())
-//      val emptyEditResult: Future[Result] = integrationTestApplicationController.edit("1")(emptyEditRequest)
-//      status(emptyEditResult)(defaultAwaitTimeout) shouldBe Status.BAD_REQUEST
-//    }
-//  }
-//
-//  // Delete good
-//  "ApplicationController .delete(id: String)" should {
-//    "find a book in the database by id and delete it" in {
-//      beforeEach()
-//      val request: FakeRequest[JsValue] = buildPost("/api").withBody[JsValue](Json.toJson(mockUser))
-//      val createdResult = integrationTestApplicationController.create()(request)
-//      await(createdResult)
-//      val deleteRequest: FakeRequest[AnyContentAsEmpty.type] = buildDelete("/api/:id")
-//      val deleteResult: Future[Result] = integrationTestApplicationController.delete("1")(deleteRequest)
-//      status(deleteResult)(defaultAwaitTimeout) shouldBe Status.ACCEPTED
-//    }
-//    "return a BadAPIResponse if the ID does not exist" in {
-//      val deleteWrongIdRequest: FakeRequest[AnyContentAsEmpty.type] = buildDelete("/api/:id")
-//      val deleteWrongIdResult: Future[Result] = integrationTestApplicationController.delete("5")(deleteWrongIdRequest)
-//      status(deleteWrongIdResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
-//      contentAsJson(deleteWrongIdResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 400, Reason: Unable to delete book of ID: 5")
-//    }
-//  }
+  // Read good
+  "ApplicationController .read(username: String)" should {
+
+    "find a user in the database by their login" in {
+      val request: FakeRequest[JsValue] = buildPost("/github").withBody[JsValue](Json.toJson(mockUser))
+      integrationTestApplicationController.create()(request)
+
+      val readRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/:username")
+      val readResult: Future[Result] = integrationTestApplicationController.read("jake-raffe")(readRequest)
+      status(readResult)(defaultAwaitTimeout) shouldBe Status.OK
+      contentAsJson(readResult)(defaultAwaitTimeout).as[JsValue] shouldBe Json.toJson(mockUser)
+    }
+    "return a NotFound if a user of the username is not found" in {
+      val readRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/:username")
+      val readWrongResult: Future[Result] = integrationTestApplicationController.read("wrong-login")(readRequest)
+      status(readWrongResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
+      contentAsJson(readWrongResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 404, Reason: Unable to find user of username: wrong-login")
+    }
+  }
+
+  // Update good
+  "ApplicationController .update(username: String)" should {
+
+    "find a user in the database by their login and replace them with an updated user" in {
+      beforeEach()
+      val request: FakeRequest[JsValue] = buildPost("/github").withBody[JsValue](Json.toJson(mockUser))
+      val createdRequest = integrationTestApplicationController.create()(request)
+      await(createdRequest)
+      val updateRequest: FakeRequest[JsValue] = buildPut("/github/:username").withBody[JsValue](Json.toJson(updatedMockUser))
+      val updateResult: Future[Result] = integrationTestApplicationController.update("jake-raffe")(updateRequest)
+
+      status(updateResult)(defaultAwaitTimeout) shouldBe Status.ACCEPTED
+      contentAsJson(updateResult)(defaultAwaitTimeout).as[JsValue] shouldBe Json.toJson(updatedMockUser)
+    }
+
+    "return BadAPIResponse message if wrong login" in {
+      val updateRequest: FakeRequest[JsValue] = buildPut("/github/:username").withBody[JsValue](Json.toJson(updatedMockUser))
+      val updateWrongIDResult: Future[Result] = integrationTestApplicationController.update("125")(updateRequest)
+      status(updateWrongIDResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
+      contentAsJson(updateWrongIDResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 400, Reason: Unable to update user of username: 125")
+    }
+
+    "return BadRequest if incorrect Json body" in {
+      val request: FakeRequest[JsValue] = buildPost("/github").withBody[JsValue](Json.toJson(mockUser))
+      integrationTestApplicationController.create()(request)
+      val emptyUpdateRequest: FakeRequest[JsValue] = buildPut("/github/:username").withBody[JsValue](Json.obj())
+      val emptyUpdateResult: Future[Result] = integrationTestApplicationController.update("jake-raffe")(emptyUpdateRequest)
+      status(emptyUpdateResult)(defaultAwaitTimeout) shouldBe Status.BAD_REQUEST
+    }
+  }
+
+  // Delete good
+  "ApplicationController .delete(username: String)" should {
+    "find a user in the database by their login and delete it" in {
+      beforeEach()
+      val request: FakeRequest[JsValue] = buildPost("/github").withBody[JsValue](Json.toJson(mockUser))
+      val createdResult = integrationTestApplicationController.create()(request)
+      await(createdResult)
+      val deleteRequest: FakeRequest[AnyContentAsEmpty.type] = buildDelete("/github/:username")
+      val deleteResult: Future[Result] = integrationTestApplicationController.delete("jake-raffe")(deleteRequest)
+      status(deleteResult)(defaultAwaitTimeout) shouldBe Status.ACCEPTED
+    }
+    "return a BadAPIResponse if the username does not exist" in {
+      val deleteWrongIdRequest: FakeRequest[AnyContentAsEmpty.type] = buildDelete("/github/:username")
+      val deleteWrongIdResult: Future[Result] = integrationTestApplicationController.delete("5")(deleteWrongIdRequest)
+      status(deleteWrongIdResult)(defaultAwaitTimeout) shouldBe Status.INTERNAL_SERVER_ERROR
+      contentAsJson(deleteWrongIdResult)(defaultAwaitTimeout) shouldBe Json.toJson("Bad response from upstream; Status: 400, Reason: Unable to delete user of username: 5")
+    }
+  }
 
 //  override def beforeEach(): Unit = {  }
   override def beforeEach(): Unit = repository.deleteAll()

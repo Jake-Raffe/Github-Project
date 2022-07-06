@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Tue Jul 05 11:32:57 BST 2022
+// @DATE:Wed Jul 06 14:17:03 BST 2022
 
 import play.api.mvc.Call
 
@@ -10,6 +10,51 @@ import _root_.controllers.Assets.Asset
 // @LINE:2
 package controllers {
 
+  // @LINE:7
+  class ReverseApplicationController(_prefix: => String) {
+    def _defaultPrefix: String = {
+      if (_prefix.endsWith("/")) "" else "/"
+    }
+
+  
+    // @LINE:8
+    def read(username:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
+    }
+  
+    // @LINE:9
+    def create(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "github/user")
+    }
+  
+    // @LINE:11
+    def delete(username:String): Call = {
+      
+      Call("DELETE", _prefix + { _defaultPrefix } + "github/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
+    }
+  
+    // @LINE:10
+    def update(username:String): Call = {
+      
+      Call("PUT", _prefix + { _defaultPrefix } + "github/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
+    }
+  
+    // @LINE:13
+    def addUser(username:String): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "github/add/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
+    }
+  
+    // @LINE:7
+    def index(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github")
+    }
+  
+  }
+
   // @LINE:2
   class ReverseHomeController(_prefix: => String) {
     def _defaultPrefix: String = {
@@ -17,16 +62,16 @@ package controllers {
     }
 
   
-    // @LINE:7
+    // @LINE:16
     def getUser(username:String): Call = {
       
-      Call("GET", _prefix + { _defaultPrefix } + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
+      Call("GET", _prefix + { _defaultPrefix } + "github/users/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
     }
   
-    // @LINE:8
+    // @LINE:17
     def getUserRepositories(username:String): Call = {
       
-      Call("GET", _prefix + { _defaultPrefix } + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repositories")
+      Call("GET", _prefix + { _defaultPrefix } + "github/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repositories")
     }
   
     // @LINE:2
