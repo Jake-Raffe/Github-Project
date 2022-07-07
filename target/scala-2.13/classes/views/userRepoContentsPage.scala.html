@@ -16,7 +16,11 @@
             <element>
                 <p>@file.name</p>
                 <p>@file.contentType</p>
+                @*
                 <p>@file.size</p>
+                *@
+
+                <a href=@controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")>Open</a>
             </element>
             <p>-----------------------</p>
         }

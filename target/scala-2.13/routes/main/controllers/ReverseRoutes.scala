@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 07 14:06:32 BST 2022
+// @DATE:Thu Jul 07 16:43:16 BST 2022
 
 import play.api.mvc.Call
 
@@ -62,22 +62,28 @@ package controllers {
     }
 
   
-    // @LINE:18
-    def getUserRepositoryContents(username:String, repoName:String): Call = {
-      
-      Call("GET", _prefix + { _defaultPrefix } + "github/users/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)))
-    }
-  
     // @LINE:16
     def getUser(username:String): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "github/users/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)))
     }
   
+    // @LINE:18
+    def getUserRepositoryContents(username:String, repoName:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents")
+    }
+  
     // @LINE:17
     def getUserRepositories(username:String): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "github/users/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repos")
+    }
+  
+    // @LINE:19
+    def getUserRepositoryContentsPath(username:String, repoName:String, path:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("path", path)))
     }
   
     // @LINE:2

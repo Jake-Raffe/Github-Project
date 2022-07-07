@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 07 14:06:32 BST 2022
+// @DATE:Thu Jul 07 16:43:16 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -88,16 +88,6 @@ package controllers.javascript {
     }
 
   
-    // @LINE:18
-    def getUserRepositoryContents: JavaScriptReverseRoute = JavaScriptReverseRoute(
-      "controllers.HomeController.getUserRepositoryContents",
-      """
-        function(username0,repoName1) {
-          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/users/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1))})
-        }
-      """
-    )
-  
     // @LINE:16
     def getUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getUser",
@@ -108,12 +98,32 @@ package controllers.javascript {
       """
     )
   
+    // @LINE:18
+    def getUserRepositoryContents: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.HomeController.getUserRepositoryContents",
+      """
+        function(username0,repoName1) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1)) + "/contents"})
+        }
+      """
+    )
+  
     // @LINE:17
     def getUserRepositories: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getUserRepositories",
       """
         function(username0) {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/users/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/repos"})
+        }
+      """
+    )
+  
+    // @LINE:19
+    def getUserRepositoryContentsPath: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.HomeController.getUserRepositoryContentsPath",
+      """
+        function(username0,repoName1,path2) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1)) + "/contents" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("path", path2))})
         }
       """
     )

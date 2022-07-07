@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 07 14:06:32 BST 2022
+// @DATE:Thu Jul 07 16:43:16 BST 2022
 
 package router
 
@@ -53,7 +53,8 @@ class Routes(
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/add/""" + "$" + """username<[^/]+>""", """controllers.ApplicationController.addUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>""", """controllers.HomeController.getUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>/repos""", """controllers.HomeController.getUserRepositories(username:String)"""),
-    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>/repos/""" + "$" + """repoName<[^/]+>""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>""", """controllers.HomeController.getUserRepositoryContentsPath(username:String, repoName:String, path:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -243,7 +244,7 @@ class Routes(
 
   // @LINE:18
   private[this] lazy val controllers_HomeController_getUserRepositoryContents10_route = Route("GET",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/users/"), DynamicPart("username", """[^/]+""",true), StaticPart("/repos/"), DynamicPart("repoName", """[^/]+""",true)))
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents")))
   )
   private[this] lazy val controllers_HomeController_getUserRepositoryContents10_invoker = createInvoker(
     HomeController_2.getUserRepositoryContents(fakeValue[String], fakeValue[String]),
@@ -253,7 +254,25 @@ class Routes(
       "getUserRepositoryContents",
       Seq(classOf[String], classOf[String]),
       "GET",
-      this.prefix + """github/users/""" + "$" + """username<[^/]+>/repos/""" + "$" + """repoName<[^/]+>""",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:19
+  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath11_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true)))
+  )
+  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath11_invoker = createInvoker(
+    HomeController_2.getUserRepositoryContentsPath(fakeValue[String], fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "getUserRepositoryContentsPath",
+      Seq(classOf[String], classOf[String], classOf[String]),
+      "GET",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>""",
       """""",
       Seq()
     )
@@ -326,6 +345,12 @@ class Routes(
     case controllers_HomeController_getUserRepositoryContents10_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None)) { (username, repoName) =>
         controllers_HomeController_getUserRepositoryContents10_invoker.call(HomeController_2.getUserRepositoryContents(username, repoName))
+      }
+  
+    // @LINE:19
+    case controllers_HomeController_getUserRepositoryContentsPath11_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
+        controllers_HomeController_getUserRepositoryContentsPath11_invoker.call(HomeController_2.getUserRepositoryContentsPath(username, repoName, path))
       }
   }
 }

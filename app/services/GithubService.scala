@@ -29,4 +29,7 @@ class GithubService @Inject()(connector: GithubConnector, dataRepository: DataRe
   def getRepoContents(username: String, repoName: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
     connector.getRepoContent[Content](s"https://api.github.com/repos/${username}/${repoName}/contents")
 
+  def getRepoContentsPath(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
+    connector.getRepoContentDeeper[Content](s"https://api.github.com/repos/${username}/${repoName}/contents$path")
+
 }

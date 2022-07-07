@@ -16,10 +16,10 @@ import play.api.mvc._
 import play.api.data._
 /*2.2*/import models.User
 
-object notFound extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template1[String,play.twirl.api.HtmlFormat.Appendable] {
+object notFound extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template2[String,String,play.twirl.api.HtmlFormat.Appendable] {
 
   /**/
-  def apply/*3.2*/(subject: String):play.twirl.api.HtmlFormat.Appendable = {
+  def apply/*3.2*/(subject: String)(error: String):play.twirl.api.HtmlFormat.Appendable = {
     _display_ {
       {
 
@@ -35,6 +35,9 @@ Seq[Any](format.raw/*4.1*/("""
 
     <p>Unable to find """),_display_(/*13.24*/subject),format.raw/*13.31*/(""", i.e. something went wrong...</p>
     <p>Fix it then refresh the page, or go back. Cheers</p>
+    <hr>
+    <br>
+    <p>"""),_display_(/*17.9*/error),format.raw/*17.14*/("""</p>
 
 </body>
 </html>"""))
@@ -42,9 +45,9 @@ Seq[Any](format.raw/*4.1*/("""
     }
   }
 
-  def render(subject:String): play.twirl.api.HtmlFormat.Appendable = apply(subject)
+  def render(subject:String,error:String): play.twirl.api.HtmlFormat.Appendable = apply(subject)(error)
 
-  def f:((String) => play.twirl.api.HtmlFormat.Appendable) = (subject) => apply(subject)
+  def f:((String) => (String) => play.twirl.api.HtmlFormat.Appendable) = (subject) => (error) => apply(subject)(error)
 
   def ref: this.type = this
 
@@ -53,11 +56,11 @@ Seq[Any](format.raw/*4.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-07T14:53:16.190494
+                  DATE: 2022-07-07T15:24:20.508428
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/notFound.scala.html
-                  HASH: 49e0aed7f045f626c58d9c3f0be63545e028fdd5
-                  MATRIX: 432->2|758->22|869->40|896->41|1032->150|1060->157
-                  LINES: 17->2|22->3|27->4|28->5|36->13|36->13
+                  HASH: ad836160a1f078943bc31eb65fcdc9ff7fef8b03
+                  MATRIX: 432->2|765->22|891->55|918->56|1054->165|1082->172|1229->293|1255->298
+                  LINES: 17->2|22->3|27->4|28->5|36->13|36->13|40->17|40->17
                   -- GENERATED --
               */
           

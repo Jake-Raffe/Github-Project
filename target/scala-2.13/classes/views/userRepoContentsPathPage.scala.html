@@ -1,26 +1,26 @@
 @import models.{User,Content}
-@(username: String)(repoName: String)(contents: List[Content])
+@(username: String)(repoName: String)(path: String)(contents: List[Content])
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>@username's @repoName</title>
+    <title>@username's @repoName@path</title>
 
 </head>
 <body>
 
-    <h1>@repoName contents:</h1>
+    <h1>@repoName@path contents:</h1>
 
     <section>
         @contents.map { file =>
             <element>
                 <p>@file.name</p>
-                @*
                 <p>@file.contentType</p>
+                @*
                 <p>@file.size</p>
                 *@
 
-                <a href=@controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")>Open</a>
+                <a href=@controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"$path/${file.name}")>Open</a>
             </element>
             <p>-----------------------</p>
         }
