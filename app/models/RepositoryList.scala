@@ -1,11 +1,9 @@
 package models
 
-import akka.http.javadsl.model.headers.Location
 import play.api.libs.json.{Json, OFormat}
 
-import java.time.LocalDate
 
-case class Repository(id: String, name: String)
+case class Repository(name: String)
 case class RepositoryList(repoList: List[Repository])
 
 object RepositoryList {

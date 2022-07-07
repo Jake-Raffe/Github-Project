@@ -5,7 +5,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    @* Here's where we render the page title `String`. *@
     <title>@user.login</title>
 
 </head>
@@ -15,7 +14,9 @@
     <p>@user.created_at</p>
     <p>@user.followers</p>
     <p>@user.following</p>
-
+<a href=@controllers.routes.HomeController.getUserRepositories(user.login)>Repositories</a>
+@*
 <a href="userRepos.scala.html">Repositories</a>
+    *@
 </body>
 </html>

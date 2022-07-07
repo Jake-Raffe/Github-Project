@@ -1,6 +1,5 @@
 package connectors
 
-import cats.data.EitherT
 import models.{APIError, GitUser, Repository, RepositoryList, User}
 import play.api.libs.json.{JsError, JsSuccess, OFormat}
 import play.api.libs.ws.{WSClient, WSResponse}
@@ -28,21 +27,24 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
   }
 
-  def getRepoList[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): EitherT[Future, APIError, List[Repository]] = {
-    val request = ws.url(url)
-    val response = request.get()
-    EitherT {
-      response
-        .map {
-          result => {
-            result.json.validate[RepositoryList] match {
-              case JsSuccess(value, _) =>
-                Right(value.repoList)
-              case JsError(errors) =>
-                Left(APIError.BadAPIResponse(400, "Could not return user repositories"))
-            }}
+  def getRepoList[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, List[Repository]]] = {
+    val request = ws.url(url).get()
+    request.map {
+      result =>
+        val repoList = result.json
+        repoList.validate[List[Repository]] match {
+          case JsSuccess(repos, _) => Right(repos.map(repo => Repository(repo.name)))
+          case JsError(errors) => Left(APIError.BadAPIResponse(400, "Could not validate repo"))
         }
     }
+//        Right(List(Repository(
+//          (repoList \ "name").as[String]
+//        )))
+//    }
+//      .recover {
+//        case _ =>
+//          Left(APIError.BadAPIResponse(400, "Could not return user repositories"))
+//    }
   }
 
 //  def getAllUsers = {}

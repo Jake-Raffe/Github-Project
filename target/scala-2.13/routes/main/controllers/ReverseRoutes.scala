@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Wed Jul 06 14:17:03 BST 2022
+// @DATE:Thu Jul 07 11:11:04 BST 2022
 
 import play.api.mvc.Call
 
@@ -71,7 +71,7 @@ package controllers {
     // @LINE:17
     def getUserRepositories(username:String): Call = {
       
-      Call("GET", _prefix + { _defaultPrefix } + "github/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repositories")
+      Call("GET", _prefix + { _defaultPrefix } + "github/users/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repos")
     }
   
     // @LINE:2

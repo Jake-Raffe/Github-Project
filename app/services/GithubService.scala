@@ -2,7 +2,7 @@ package services
 
 import cats.data.EitherT
 import connectors.GithubConnector
-import models.{APIError, Repository, RepositoryList, User}
+import models.{APIError, Repository, User}
 import play.api.libs.json.Json
 import play.api.mvc.Request
 import repositories.DataRepository
@@ -24,8 +24,8 @@ class GithubService @Inject()(connector: GithubConnector, dataRepository: DataRe
 
   }
 
-  def getUserRepo(urlOverride: Option[String] = None, username: String)(implicit ec: ExecutionContext): EitherT[Future, APIError, List[Repository]] =
-    connector.getRepoList[RepositoryList](urlOverride.getOrElse(s"https://api.github.com/users/${username}/repos"))
+  def getUserRepo(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Repository]]] =
+    connector.getRepoList[Repository](s"https://api.github.com/users/${username}/repos")
 
 //  def getAllUsers(urlOverride: Option[String] = None)(implicit ec: ExecutionContext): EitherT[Future, APIError, Seq[User]] =
 //    connector.getAllUsers[Seq[User]](urlOverride.getOrElse("https://api.github.com/users"))

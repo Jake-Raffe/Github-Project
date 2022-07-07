@@ -1,0 +1,25 @@
+@import models.{User,Repository}
+@(username: String)(repoList: Repository)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@username repository: @repoList.name</title>
+
+</head>
+<body>
+
+    <h1>These are @username's repositories</h1>
+
+    <section>
+       @* @repoList.name
+        @repoList.map { repo =>
+            <element>
+                <p>repo.name</p>
+            </element>
+            <p>-----------------------</p>
+        } *@
+    </section>
+
+</body>
+</html>

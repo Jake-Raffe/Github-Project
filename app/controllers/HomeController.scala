@@ -25,7 +25,10 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def getUserRepositories(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(views.html.index()))
+    githubService.getUserRepo(username).map {
+      case Right(repo) => Ok(views.html.userReposPage(username)(repo))
+    }
+//    Future.successful(Ok(views.html.index()))
 //    Future.successful(Ok(views.html.userRepos(username)))
   }
 }

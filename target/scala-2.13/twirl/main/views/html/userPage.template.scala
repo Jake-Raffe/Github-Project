@@ -28,19 +28,18 @@ Seq[Any](format.raw/*4.1*/("""
 """),format.raw/*5.1*/("""<!DOCTYPE html>
 <html lang="en">
 <head>
-    """),format.raw/*8.58*/("""
-    """),format.raw/*9.5*/("""<title>"""),_display_(/*9.13*/user/*9.17*/.login),format.raw/*9.23*/("""</title>
+    <title>"""),_display_(/*8.13*/user/*8.17*/.login),format.raw/*8.23*/("""</title>
 
 </head>
 <body>
 
-    <p>"""),_display_(/*14.9*/user/*14.13*/.login),format.raw/*14.19*/("""</p>
-    <p>"""),_display_(/*15.9*/user/*15.13*/.created_at),format.raw/*15.24*/("""</p>
-    <p>"""),_display_(/*16.9*/user/*16.13*/.followers),format.raw/*16.23*/("""</p>
-    <p>"""),_display_(/*17.9*/user/*17.13*/.following),format.raw/*17.23*/("""</p>
-
-<a href="userRepos.scala.html">Repositories</a>
-</body>
+    <p>"""),_display_(/*13.9*/user/*13.13*/.login),format.raw/*13.19*/("""</p>
+    <p>"""),_display_(/*14.9*/user/*14.13*/.created_at),format.raw/*14.24*/("""</p>
+    <p>"""),_display_(/*15.9*/user/*15.13*/.followers),format.raw/*15.23*/("""</p>
+    <p>"""),_display_(/*16.9*/user/*16.13*/.following),format.raw/*16.23*/("""</p>
+<a href="""),_display_(/*17.10*/controllers/*17.21*/.routes.HomeController.getUserRepositories(user.login)),format.raw/*17.75*/(""">Repositories</a>
+"""),format.raw/*20.7*/("""
+"""),format.raw/*21.1*/("""</body>
 </html>"""))
       }
     }
@@ -57,11 +56,11 @@ Seq[Any](format.raw/*4.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-06T14:17:04.403822
+                  DATE: 2022-07-07T11:24:50.650575
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userPage.scala.html
-                  HASH: 4a215d48c9e96f3d545c788f5d7d70a25f05d6a4
-                  MATRIX: 432->2|756->22|862->35|889->36|960->133|991->138|1025->146|1037->150|1063->156|1123->190|1136->194|1163->200|1202->213|1215->217|1247->228|1286->241|1299->245|1330->255|1369->268|1382->272|1413->282
-                  LINES: 17->2|22->3|27->4|28->5|31->8|32->9|32->9|32->9|32->9|37->14|37->14|37->14|38->15|38->15|38->15|39->16|39->16|39->16|40->17|40->17|40->17
+                  HASH: b20d4781592f835fccb4bf2ea1e0a3f635fdf14a
+                  MATRIX: 432->2|756->22|862->35|889->36|967->88|979->92|1005->98|1065->132|1078->136|1105->142|1144->155|1157->159|1189->170|1228->183|1241->187|1272->197|1311->210|1324->214|1355->224|1396->238|1416->249|1491->303|1536->378|1564->379
+                  LINES: 17->2|22->3|27->4|28->5|31->8|31->8|31->8|36->13|36->13|36->13|37->14|37->14|37->14|38->15|38->15|38->15|39->16|39->16|39->16|40->17|40->17|40->17|41->20|42->21
                   -- GENERATED --
               */
           

@@ -69,10 +69,10 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     }
   }
 
-  def getUserRepo(username: String): Action[AnyContent] = Action.async { implicit request =>
-    githubService.getUserRepo(username = username).value.map {
-      case Right(repoList) => Ok(Json.toJson(repoList))
-      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-    }
-  }
+//  def getUserRepo(username: String): Action[AnyContent] = Action.async { implicit request =>
+//    githubService.getUserRepo(username = username).value.map {
+//      case Right(repoList) => Ok(Json.toJson(repoList))
+//      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
+//    }
+//  }
 }

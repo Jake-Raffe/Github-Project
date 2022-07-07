@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Wed Jul 06 14:17:03 BST 2022
+// @DATE:Thu Jul 07 11:11:04 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -103,7 +103,7 @@ package controllers.javascript {
       "controllers.HomeController.getUserRepositories",
       """
         function(username0) {
-          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/repositories"})
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/users/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/repos"})
         }
       """
     )
