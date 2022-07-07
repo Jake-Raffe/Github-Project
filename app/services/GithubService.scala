@@ -2,7 +2,7 @@ package services
 
 import cats.data.EitherT
 import connectors.GithubConnector
-import models.{APIError, Repository, User}
+import models.{APIError, Content, Repository, User}
 import play.api.libs.json.Json
 import play.api.mvc.Request
 import repositories.DataRepository
@@ -21,14 +21,12 @@ class GithubService @Inject()(connector: GithubConnector, dataRepository: DataRe
       case Right(gotUser) => dataRepository.create(gotUser)
       case Left(getUserError) => Future(Left(APIError.BadAPIResponse(400, "Could not find book")))
     }
-
   }
 
   def getUserRepo(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Repository]]] =
     connector.getRepoList[Repository](s"https://api.github.com/users/${username}/repos")
 
-//  def getAllUsers(urlOverride: Option[String] = None)(implicit ec: ExecutionContext): EitherT[Future, APIError, Seq[User]] =
-//    connector.getAllUsers[Seq[User]](urlOverride.getOrElse("https://api.github.com/users"))
-//
+  def getRepoContents(username: String, repoName: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
+    connector.getRepoContent[Content](s"https://api.github.com/repos/${username}/${repoName}/contents")
 
 }

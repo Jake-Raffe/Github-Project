@@ -15,3 +15,4 @@ POST    /github/add/:username       controllers.ApplicationController.addUser(us
 
 GET     /github/users/:username     controllers.HomeController.getUser(username: String)
 GET     /github/users/:username/repos     controllers.HomeController.getUserRepositories(username: String)
+GET     /github/users/:username/repos/:repoName     controllers.HomeController.getUserRepositoryContents(username: String, repoName: String)

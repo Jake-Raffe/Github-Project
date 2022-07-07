@@ -18,17 +18,23 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def getUser(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//    Future.successful(Ok(views.html.index()))
     githubService.getUser(username).map {
       case Right(user) => Ok(views.html.userPage(user))
+      case Left(_) => Ok(views.html.notFound(username))
     }
   }
 
   def getUserRepositories(username: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     githubService.getUserRepo(username).map {
       case Right(repo) => Ok(views.html.userReposPage(username)(repo))
+      case Left(_) => Ok(views.html.notFound(s"$username's repo"))
     }
-//    Future.successful(Ok(views.html.index()))
-//    Future.successful(Ok(views.html.userRepos(username)))
+  }
+
+  def getUserRepositoryContents(username: String, repoName: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    githubService.getRepoContents(username, repoName).map {
+      case Right(contents) => Ok(views.html.userRepoContentsPage(username)(repoName)(contents))
+      case Left(_) => Ok(views.html.notFound(s"$username/$repoName contents"))
+    }
   }
 }

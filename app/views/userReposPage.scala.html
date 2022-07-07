@@ -15,10 +15,12 @@
         @repoList.map { repo =>
             <element>
                 <p>@repo.name</p>
+                <a href=@controllers.routes.HomeController.getUserRepositoryContents(username, repo.name)>Contents</a>
             </element>
             <p>-----------------------</p>
         }
     </section>
+
 
 </body>
 </html>

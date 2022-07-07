@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 07 11:11:04 BST 2022
+// @DATE:Thu Jul 07 14:06:32 BST 2022
 
 package router
 
@@ -53,6 +53,7 @@ class Routes(
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/add/""" + "$" + """username<[^/]+>""", """controllers.ApplicationController.addUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>""", """controllers.HomeController.getUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>/repos""", """controllers.HomeController.getUserRepositories(username:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>/repos/""" + "$" + """repoName<[^/]+>""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -240,6 +241,24 @@ class Routes(
     )
   )
 
+  // @LINE:18
+  private[this] lazy val controllers_HomeController_getUserRepositoryContents10_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/users/"), DynamicPart("username", """[^/]+""",true), StaticPart("/repos/"), DynamicPart("repoName", """[^/]+""",true)))
+  )
+  private[this] lazy val controllers_HomeController_getUserRepositoryContents10_invoker = createInvoker(
+    HomeController_2.getUserRepositoryContents(fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "getUserRepositoryContents",
+      Seq(classOf[String], classOf[String]),
+      "GET",
+      this.prefix + """github/users/""" + "$" + """username<[^/]+>/repos/""" + "$" + """repoName<[^/]+>""",
+      """""",
+      Seq()
+    )
+  )
+
 
   def routes: PartialFunction[RequestHeader, Handler] = {
   
@@ -301,6 +320,12 @@ class Routes(
     case controllers_HomeController_getUserRepositories9_route(params@_) =>
       call(params.fromPath[String]("username", None)) { (username) =>
         controllers_HomeController_getUserRepositories9_invoker.call(HomeController_2.getUserRepositories(username))
+      }
+  
+    // @LINE:18
+    case controllers_HomeController_getUserRepositoryContents10_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None)) { (username, repoName) =>
+        controllers_HomeController_getUserRepositoryContents10_invoker.call(HomeController_2.getUserRepositoryContents(username, repoName))
       }
   }
 }

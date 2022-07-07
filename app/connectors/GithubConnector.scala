@@ -1,6 +1,6 @@
 package connectors
 
-import models.{APIError, GitUser, Repository, RepositoryList, User}
+import models.{APIError, Content, GitUser, Repository, RepositoryList, User}
 import play.api.libs.json.{JsError, JsSuccess, OFormat}
 import play.api.libs.ws.{WSClient, WSResponse}
 
@@ -37,14 +37,18 @@ class GithubConnector @Inject()(ws: WSClient) {
           case JsError(errors) => Left(APIError.BadAPIResponse(400, "Could not validate repo"))
         }
     }
-//        Right(List(Repository(
-//          (repoList \ "name").as[String]
-//        )))
-//    }
-//      .recover {
-//        case _ =>
-//          Left(APIError.BadAPIResponse(400, "Could not return user repositories"))
-//    }
+  }
+
+  def getRepoContent[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, List[Content]]] = {
+    val request = ws.url(url).get()
+    request.map {
+      result =>
+        val repoContents = result.json
+        repoContents.validate[List[Content]] match {
+          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.contentType, content.size)))
+          case JsError(errors) => Left(APIError.BadAPIResponse(400, "Could not validate repo"))
+        }
+    }
   }
 
 //  def getAllUsers = {}

@@ -1,0 +1,26 @@
+@import models.{User,Content}
+@(username: String)(repoName: String)(contents: List[Content])
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@username's @repoName</title>
+
+</head>
+<body>
+
+    <h1>@repoName contents:</h1>
+
+    <section>
+        @contents.map { file =>
+            <element>
+                <p>@file.name</p>
+                <p>@file.contentType</p>
+                <p>@file.size</p>
+            </element>
+            <p>-----------------------</p>
+        }
+    </section>
+
+</body>
+</html>
