@@ -1,7 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPathPage.scala.html:18:52: illegal start of simple expression[0m
-[0m[[0m[31merror[0m] [0m[0m                <p>@if(file.`type`.contains("dir")) then "Folder" else if(file.`type`.contains("file")) "File" else "Other"</p>[0m
-[0m[[0m[31merror[0m] [0m[0m                                                   ^[0m
-[0m[[0m[31merror[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPathPage.scala.html:27:9: ')' expected but '}' found.[0m
-[0m[[0m[31merror[0m] [0m[0m    </section>[0m
-[0m[[0m[31merror[0m] [0m[0m        ^[0m
-[0m[[0m[31merror[0m] [0m[0mtwo errors found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPage.scala.html:27:59: value getFileContents is not a member of controllers.ReverseHomeController[0m
+[0m[[0m[31merror[0m] [0m[0m                        controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")[0m
+[0m[[0m[31merror[0m] [0m[0m                                                          ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

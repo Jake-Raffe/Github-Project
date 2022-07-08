@@ -1,9 +1,10 @@
 package connectors
 
-import models.{APIError, Content, GitUser, Repository, RepositoryList, User}
-import play.api.libs.json.{JsError, JsSuccess, OFormat}
+import models.{APIError, Content, FileContent, GitUser, Repository, RepositoryList, User}
+import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, OFormat}
 import play.api.libs.ws.{WSClient, WSResponse}
 
+import java.util.Base64
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 
@@ -61,6 +62,20 @@ class GithubConnector @Inject()(ws: WSClient) {
           case JsError(errors) => Left(APIError.BadAPIResponse(400, "Unable to validate content in repository, this is the deeper level one"))
         }
     }
+  }
+
+  def getFileContents[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, FileContent]] = {
+    val request = ws.url(url).get()
+    request.map {
+      result =>
+        val fileDetails = result.json
+        val output = (fileDetails \ "content").as[String]
+        Right(FileContent(output))
+    }
+      .recover {
+        case _ =>
+          Left(APIError.BadAPIResponse(400, "Unable to return file contents"))
+      }
   }
 
 //  def getAllUsers = {}

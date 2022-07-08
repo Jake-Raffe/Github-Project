@@ -14,13 +14,20 @@
     <section>
         @contents.map { file =>
             <element>
-                <p>@file.name</p>
-                <p>@file.contentType</p>
+                <h4>@file.name</h4>
+                <p>@{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}</p>
                 @*
                 <p>@file.size</p>
                 *@
 
-                <a href=@controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")>Open</a>
+                <a href=@{
+                   if (file.`type`.contains("dir"))
+                        controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")
+                   else if (file.`type`.contains("file"))
+                        controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")
+                }>
+                    @{ if (file.`type`.contains("dir")) "Open folder" else if(file.`type`.contains("file")) "Open file" else "Open"}
+                </a>
             </element>
             <p>-----------------------</p>
         }

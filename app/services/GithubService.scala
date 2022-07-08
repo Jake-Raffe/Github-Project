@@ -2,11 +2,13 @@ package services
 
 import cats.data.EitherT
 import connectors.GithubConnector
-import models.{APIError, Content, Repository, User}
-import play.api.libs.json.Json
+import models.{APIError, Content, FileContent, Repository, User}
+import play.api.libs.json.{JsLookupResult, Json}
 import play.api.mvc.Request
 import repositories.DataRepository
 
+import java.nio.charset.StandardCharsets
+import java.util.Base64
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Left
@@ -31,5 +33,14 @@ class GithubService @Inject()(connector: GithubConnector, dataRepository: DataRe
 
   def getRepoContentsPath(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
     connector.getRepoContentDeeper[Content](s"https://api.github.com/repos/${username}/${repoName}/contents$path")
+
+  def getFileContents(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, String]] = {
+    connector.getFileContents[FileContent](s"https://api.github.com/repos/${username}/${repoName}/contents$path").map{
+      case Right(encoded) => {
+        val decoded = Base64.getDecoder().decode(encoded.bytecode)
+        Right(new String(decoded, StandardCharsets.UTF_8))
+      }
+    }
+  }
 
 }

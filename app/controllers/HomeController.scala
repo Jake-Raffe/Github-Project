@@ -44,4 +44,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
       case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
+
+  def getFileContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    githubService.getFileContents(username, repoName, path).map {
+      case Right(fileContent) => Ok(views.html.fileContentPage(username)(repoName)(path)(fileContent))
+      case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
+    }
+  }
 }
