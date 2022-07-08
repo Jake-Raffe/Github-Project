@@ -14,9 +14,9 @@
     <section>
         @contents.map { file =>
             <element>
-                <p>@file.name</p>
+                <h4>@file.name</h4>
+                <p>@{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}</p>
                 @*
-                <p>@file.contentType</p>
                 <p>@file.size</p>
                 *@
 

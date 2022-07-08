@@ -45,7 +45,7 @@ class GithubConnector @Inject()(ws: WSClient) {
       result =>
         val repoContents = result.json
         repoContents.validate[List[Content]] match {
-          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name)))
+          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`)))
           case JsError(errors) => Left(APIError.BadAPIResponse(400, "Unable to validate content in repository"))
         }
     }
@@ -57,7 +57,7 @@ class GithubConnector @Inject()(ws: WSClient) {
       result =>
         val repoContents = result.json
         repoContents.validate[List[Content]] match {
-          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name)))
+          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`)))
           case JsError(errors) => Left(APIError.BadAPIResponse(400, "Unable to validate content in repository, this is the deeper level one"))
         }
     }
