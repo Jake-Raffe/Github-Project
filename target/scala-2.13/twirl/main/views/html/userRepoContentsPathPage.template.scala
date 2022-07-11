@@ -42,13 +42,22 @@ Seq[Any](format.raw/*3.1*/("""
                 <p>"""),_display_(/*18.21*/{ if (file.`type`.contains("dir")) "Type: Folder" else if(file.`type`.contains("file")) "Type: File" else "Type: Other"}),format.raw/*18.141*/("""</p>
                 """),format.raw/*21.19*/("""
 
-                """),format.raw/*23.17*/("""<a href="""),_display_(/*23.26*/controllers/*23.37*/.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"$path/${file.name}")),format.raw/*23.132*/(""">
-                    """),_display_(/*24.22*/{ if (file.`type`.contains("dir")) "Open folder" else if(file.`type`.contains("file")) "Open file" else "Open"}),format.raw/*24.133*/("""
-                """),format.raw/*25.17*/("""</a>
+                """),format.raw/*23.17*/("""<a href="""),_display_(/*23.26*/{
+                   if (file.`type`.contains("dir"))
+                        controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"$path/${file.name}")
+                    else if (file.`type`.contains("file"))
+                        controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")
+                }),format.raw/*28.18*/(""">
+                    """),_display_(/*29.22*/{ if
+                        (file.`type`.contains("dir")) "Open folder"
+                    else if(file.`type`.contains("file")) "Open file"
+                    else "Open"}),format.raw/*32.33*/("""
+                """),format.raw/*33.17*/("""</a>
+
             </element>
             <p>-----------------------</p>
-        """)))}),format.raw/*28.10*/("""
-    """),format.raw/*29.5*/("""</section>
+        """)))}),format.raw/*37.10*/("""
+    """),format.raw/*38.5*/("""</section>
 
 </body>
 </html>
@@ -68,11 +77,11 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-08T13:21:23.588587
+                  DATE: 2022-07-11T09:22:49.214444
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPathPage.scala.html
-                  HASH: 1453e0030876e877119ddb44f9233574c8bbb68f
-                  MATRIX: 432->1|812->31|981->107|1008->108|1086->160|1114->168|1144->172|1172->181|1196->185|1258->220|1287->229|1312->233|1341->234|1407->273|1424->281|1437->285|1485->295|1526->308|1584->339|1597->343|1623->348|1676->374|1818->494|1867->570|1913->588|1949->597|1969->608|2086->703|2136->726|2269->837|2314->854|2425->934|2457->939
-                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|31->7|31->7|36->12|36->12|36->12|36->12|39->15|39->15|39->15|39->15|40->16|41->17|41->17|41->17|42->18|42->18|43->21|45->23|45->23|45->23|45->23|46->24|46->24|47->25|50->28|51->29
+                  HASH: bd54dde2b60f5832d50b92711613e666384bd7ea
+                  MATRIX: 432->1|812->31|981->107|1008->108|1086->160|1114->168|1144->172|1172->181|1196->185|1258->220|1287->229|1312->233|1341->234|1407->273|1424->281|1437->285|1485->295|1526->308|1584->339|1597->343|1623->348|1676->374|1818->494|1867->570|1913->588|1949->597|2343->970|2393->993|2589->1168|2634->1185|2746->1266|2778->1271
+                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|31->7|31->7|36->12|36->12|36->12|36->12|39->15|39->15|39->15|39->15|40->16|41->17|41->17|41->17|42->18|42->18|43->21|45->23|45->23|50->28|51->29|54->32|55->33|59->37|60->38
                   -- GENERATED --
               */
           

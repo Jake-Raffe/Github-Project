@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 07 16:43:16 BST 2022
+// @DATE:Mon Jul 11 09:11:29 BST 2022
 
 import play.api.mvc.Call
 
@@ -62,6 +62,12 @@ package controllers {
     }
 
   
+    // @LINE:20
+    def getFileContents(username:String, repoName:String, path:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("path", path)) + "/open")
+    }
+  
     // @LINE:16
     def getUser(username:String): Call = {
       
@@ -85,8 +91,6 @@ package controllers {
       
       Call("GET", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("path", path)))
     }
-
-    def getFileContents(username:String, repoName:String, path:String)
   
     // @LINE:2
     def index(): Call = {

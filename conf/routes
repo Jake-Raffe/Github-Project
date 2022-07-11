@@ -17,3 +17,4 @@ GET     /github/users/:username     controllers.HomeController.getUser(username:
 GET     /github/users/:username/repos     controllers.HomeController.getUserRepositories(username: String)
 GET     /github/repos/:username/:repoName/contents     controllers.HomeController.getUserRepositoryContents(username: String, repoName: String)
 GET     /github/repos/:username/:repoName/contents:path     controllers.HomeController.getUserRepositoryContentsPath(username: String, repoName: String, path: String)
+GET     /github/repos/:username/:repoName/contents:path/open     controllers.HomeController.getFileContents(username: String, repoName: String, path: String)

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 07 16:43:16 BST 2022
+// @DATE:Mon Jul 11 09:11:29 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -87,6 +87,16 @@ package controllers.javascript {
       if (_prefix.endsWith("/")) "" else "/"
     }
 
+  
+    // @LINE:20
+    def getFileContents: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.HomeController.getFileContents",
+      """
+        function(username0,repoName1,path2) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1)) + "/contents" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("path", path2)) + "/open"})
+        }
+      """
+    )
   
     // @LINE:16
     def getUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
