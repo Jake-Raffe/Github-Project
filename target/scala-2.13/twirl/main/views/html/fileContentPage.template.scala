@@ -34,13 +34,17 @@ Seq[Any](format.raw/*5.1*/("""
 
 </head>
 <body>
-
-    <h1>"""),_display_(/*14.10*/repoName),_display_(/*14.19*/path),format.raw/*14.23*/(""" """),format.raw/*14.24*/("""content:</h1>
+    <h3>Github</h3>
+    <a href="""),_display_(/*14.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*14.67*/(""">Back to """),_display_(/*14.77*/username),format.raw/*14.85*/("""</a>
+    <a href="""),_display_(/*15.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*15.79*/(""">Back to Repositories</a>
+    <a href="""),_display_(/*16.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName)}),format.raw/*16.95*/(""">Back to """),_display_(/*16.105*/repoName),format.raw/*16.113*/("""</a>
+    <hr>
+    <h1>"""),_display_(/*18.10*/repoName),_display_(/*18.19*/path),format.raw/*18.23*/(""" """),format.raw/*18.24*/("""contents:</h1>
 
     <section>
         <p>-----------------------</p>
-            """),_display_(/*18.14*/fileContent),format.raw/*18.25*/("""
-        """),format.raw/*19.9*/("""<p>-----------------------</p>
+        <pre>"""),_display_(/*22.15*/Html(fileContent)),format.raw/*22.32*/("""</pre>
+        <p>-----------------------</p>
     </section>
 
 
@@ -62,11 +66,11 @@ Seq[Any](format.raw/*5.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-11T15:16:58.532192
+                  DATE: 2022-07-12T15:37:52.221493
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/fileContentPage.scala.html
-                  HASH: d0759a66536adf1673656ac997c27f7a40e478e5
-                  MATRIX: 432->1|484->47|515->72|891->114|1056->186|1083->187|1161->239|1189->248|1213->252|1275->287|1304->296|1329->300|1358->301|1466->382|1498->393|1534->402
-                  LINES: 17->1|18->2|19->3|24->4|29->5|30->6|33->9|33->9|33->9|38->14|38->14|38->14|38->14|42->18|42->18|43->19
+                  HASH: 03660d3a53af2b1bbd0eacd17647e522d31dc51b
+                  MATRIX: 432->1|484->47|515->72|891->114|1056->186|1083->187|1161->239|1189->248|1213->252|1298->310|1372->363|1409->373|1438->381|1483->399|1569->464|1635->503|1737->584|1775->594|1805->602|1855->625|1884->634|1909->638|1938->639|2048->722|2086->739
+                  LINES: 17->1|18->2|19->3|24->4|29->5|30->6|33->9|33->9|33->9|38->14|38->14|38->14|38->14|39->15|39->15|40->16|40->16|40->16|40->16|42->18|42->18|42->18|42->18|46->22|46->22
                   -- GENERATED --
               */
           

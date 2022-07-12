@@ -4,14 +4,19 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>@username's @repoName</title>
+    <title>@repoName</title>
 
 </head>
 <body>
 
+    <h3>Github</h3>
+    <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
+    <hr>
     <h1>@repoName contents:</h1>
 
     <section>
+        <p>-----------------------</p>
         @contents.map { file =>
             <element>
                 <h4>@file.name</h4>

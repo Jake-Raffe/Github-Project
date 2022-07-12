@@ -8,14 +8,16 @@
 
 </head>
 <body>
-
-    <h1>These are @username's repositories</h1>
-
+    <h3>Github</h3>
+    <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
+    <hr>
+    <h1>@username's repositories:</h1>
     <section>
+        <p>-----------------------</p>
         @repoList.map { repo =>
             <element>
                 <h3>@repo.name</h3>
-                <a href=@controllers.routes.HomeController.getUserRepositoryContents(username, repo.name)>Contents</a>
+                <a href=@controllers.routes.HomeController.getUserRepositoryContents(username, repo.name)>Open contents</a>
             </element>
             <p>-----------------------</p>
         }

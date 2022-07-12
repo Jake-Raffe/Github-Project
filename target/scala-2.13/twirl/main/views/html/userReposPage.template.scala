@@ -32,18 +32,20 @@ Seq[Any](format.raw/*3.1*/("""
 
 </head>
 <body>
-
-    <h1>These are """),_display_(/*12.20*/username),format.raw/*12.28*/("""'s repositories</h1>
-
+    <h3>Github</h3>
+    <a href="""),_display_(/*12.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*12.67*/(""">Back to """),_display_(/*12.77*/username),format.raw/*12.85*/("""</a>
+    <hr>
+    <h1>"""),_display_(/*14.10*/username),format.raw/*14.18*/("""'s repositories:</h1>
     <section>
-        """),_display_(/*15.10*/repoList/*15.18*/.map/*15.22*/ { repo =>_display_(Seq[Any](format.raw/*15.32*/("""
-            """),format.raw/*16.13*/("""<element>
-                <h3>"""),_display_(/*17.22*/repo/*17.26*/.name),format.raw/*17.31*/("""</h3>
-                <a href="""),_display_(/*18.26*/controllers/*18.37*/.routes.HomeController.getUserRepositoryContents(username, repo.name)),format.raw/*18.106*/(""">Contents</a>
+        <p>-----------------------</p>
+        """),_display_(/*17.10*/repoList/*17.18*/.map/*17.22*/ { repo =>_display_(Seq[Any](format.raw/*17.32*/("""
+            """),format.raw/*18.13*/("""<element>
+                <h3>"""),_display_(/*19.22*/repo/*19.26*/.name),format.raw/*19.31*/("""</h3>
+                <a href="""),_display_(/*20.26*/controllers/*20.37*/.routes.HomeController.getUserRepositoryContents(username, repo.name)),format.raw/*20.106*/(""">Open contents</a>
             </element>
             <p>-----------------------</p>
-        """)))}),format.raw/*21.10*/("""
-    """),format.raw/*22.5*/("""</section>
+        """)))}),format.raw/*23.10*/("""
+    """),format.raw/*24.5*/("""</section>
 
 
 </body>
@@ -64,11 +66,11 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-08T11:45:24.575271
+                  DATE: 2022-07-12T15:37:25.274853
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userReposPage.scala.html
-                  HASH: bebb9cc83fa9a9f2caa50fa539b4da9290e3c53c
-                  MATRIX: 432->1|793->34|933->81|960->82|1038->134|1066->142|1094->143|1178->200|1207->208|1279->253|1296->261|1309->265|1357->275|1398->288|1456->319|1469->323|1495->328|1553->359|1573->370|1664->439|1784->528|1816->533
-                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|36->12|36->12|39->15|39->15|39->15|39->15|40->16|41->17|41->17|41->17|42->18|42->18|42->18|45->21|46->22
+                  HASH: 651f158e322d16b67ec78b977150e5d2dd0e98df
+                  MATRIX: 432->1|793->34|933->81|960->82|1038->134|1066->142|1094->143|1191->213|1265->266|1302->276|1331->284|1381->307|1410->315|1521->399|1538->407|1551->411|1599->421|1640->434|1698->465|1711->469|1737->474|1795->505|1815->516|1906->585|2031->679|2063->684
+                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|36->12|36->12|36->12|36->12|38->14|38->14|41->17|41->17|41->17|41->17|42->18|43->19|43->19|43->19|44->20|44->20|44->20|47->23|48->24
                   -- GENERATED --
               */
           

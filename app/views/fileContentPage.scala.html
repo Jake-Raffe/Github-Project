@@ -10,12 +10,16 @@
 
 </head>
 <body>
-
-    <h1>@repoName@path content:</h1>
+    <h3>Github</h3>
+    <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName)}>Back to @repoName</a>
+    <hr>
+    <h1>@repoName@path contents:</h1>
 
     <section>
         <p>-----------------------</p>
-            @fileContent
+        <pre>@Html(fileContent)</pre>
         <p>-----------------------</p>
     </section>
 

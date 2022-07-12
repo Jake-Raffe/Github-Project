@@ -6,15 +6,17 @@
 <html lang="en">
 <head>
     <title>@user.login</title>
-
 </head>
+
 <body>
+    <h3>Github</h3>
+    <hr>
     <h1>@user.login</h1>
     <p>Username: @user.login</p>
     <p>Date created: @user.created_at</p>
     <p>Followers: @user.followers</p>
     <p>Following: @user.following</p>
-<a href=@controllers.routes.HomeController.getUserRepositories(user.login)>Repositories</a>
+    <a href=@controllers.routes.HomeController.getUserRepositories(user.login)>View repositories</a>
 
 </body>
 </html>

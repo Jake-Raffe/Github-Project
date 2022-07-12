@@ -28,32 +28,37 @@ Seq[Any](format.raw/*3.1*/("""
 """),format.raw/*4.1*/("""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>"""),_display_(/*7.13*/username),format.raw/*7.21*/("""'s """),_display_(/*7.25*/repoName),format.raw/*7.33*/("""</title>
+    <title>"""),_display_(/*7.13*/repoName),format.raw/*7.21*/("""</title>
 
 </head>
 <body>
 
-    <h1>"""),_display_(/*12.10*/repoName),format.raw/*12.18*/(""" """),format.raw/*12.19*/("""contents:</h1>
+    <h3>Github</h3>
+    <a href="""),_display_(/*13.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*13.67*/(""">Back to """),_display_(/*13.77*/username),format.raw/*13.85*/("""</a>
+    <a href="""),_display_(/*14.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*14.79*/(""">Back to Repositories</a>
+    <hr>
+    <h1>"""),_display_(/*16.10*/repoName),format.raw/*16.18*/(""" """),format.raw/*16.19*/("""contents:</h1>
 
     <section>
-        """),_display_(/*15.10*/contents/*15.18*/.map/*15.22*/ { file =>_display_(Seq[Any](format.raw/*15.32*/("""
-            """),format.raw/*16.13*/("""<element>
-                <h4>"""),_display_(/*17.22*/file/*17.26*/.name),format.raw/*17.31*/("""</h4>
-                <p>"""),_display_(/*18.21*/{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}),format.raw/*18.123*/("""</p>
-                """),format.raw/*21.19*/("""
+        <p>-----------------------</p>
+        """),_display_(/*20.10*/contents/*20.18*/.map/*20.22*/ { file =>_display_(Seq[Any](format.raw/*20.32*/("""
+            """),format.raw/*21.13*/("""<element>
+                <h4>"""),_display_(/*22.22*/file/*22.26*/.name),format.raw/*22.31*/("""</h4>
+                <p>"""),_display_(/*23.21*/{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}),format.raw/*23.123*/("""</p>
+                """),format.raw/*26.19*/("""
 
-                """),format.raw/*23.17*/("""<a href="""),_display_(/*23.26*/{
+                """),format.raw/*28.17*/("""<a href="""),_display_(/*28.26*/{
                    if (file.`type`.contains("dir"))
                         controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")
                    else if (file.`type`.contains("file"))
                         controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")
-                }),format.raw/*28.18*/(""">
-                    """),_display_(/*29.22*/{ if (file.`type`.contains("dir")) "Open folder" else if(file.`type`.contains("file")) "Open file" else "Open"}),format.raw/*29.133*/("""
-                """),format.raw/*30.17*/("""</a>
+                }),format.raw/*33.18*/(""">
+                    """),_display_(/*34.22*/{ if (file.`type`.contains("dir")) "Open folder" else if(file.`type`.contains("file")) "Open file" else "Open"}),format.raw/*34.133*/("""
+                """),format.raw/*35.17*/("""</a>
             </element>
             <p>-----------------------</p>
-        """)))}),format.raw/*33.10*/("""
-    """),format.raw/*34.5*/("""</section>
+        """)))}),format.raw/*38.10*/("""
+    """),format.raw/*39.5*/("""</section>
 
 </body>
 </html>
@@ -73,11 +78,11 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-08T13:21:23.570516
+                  DATE: 2022-07-12T15:37:25.247895
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPage.scala.html
-                  HASH: 5063f87124c60d1652aa2a07ae8e9fea0385629e
-                  MATRIX: 432->1|801->31|956->93|983->94|1061->146|1089->154|1119->158|1147->166|1209->201|1238->209|1267->210|1333->249|1350->257|1363->261|1411->271|1452->284|1510->315|1523->319|1549->324|1602->350|1726->452|1775->528|1821->546|1857->555|2245->922|2295->945|2428->1056|2473->1073|2584->1153|2616->1158
-                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|31->7|36->12|36->12|36->12|39->15|39->15|39->15|39->15|40->16|41->17|41->17|41->17|42->18|42->18|43->21|45->23|45->23|50->28|51->29|51->29|52->30|55->33|56->34
+                  HASH: 59828ef10d22b02de29b4114e59b7154769cb482
+                  MATRIX: 432->1|801->31|956->93|983->94|1061->146|1089->154|1175->213|1249->266|1286->276|1315->284|1360->302|1446->367|1517->411|1546->419|1575->420|1680->498|1697->506|1710->510|1758->520|1799->533|1857->564|1870->568|1896->573|1949->599|2073->701|2122->777|2168->795|2204->804|2592->1171|2642->1194|2775->1305|2820->1322|2931->1402|2963->1407
+                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|37->13|37->13|37->13|37->13|38->14|38->14|40->16|40->16|40->16|44->20|44->20|44->20|44->20|45->21|46->22|46->22|46->22|47->23|47->23|48->26|50->28|50->28|55->33|56->34|56->34|57->35|60->38|61->39
                   -- GENERATED --
               */
           
