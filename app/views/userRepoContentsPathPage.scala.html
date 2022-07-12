@@ -24,7 +24,7 @@
                    if (file.`type`.contains("dir"))
                         controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"$path/${file.name}")
                     else if (file.`type`.contains("file"))
-                        controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")
+                        controllers.routes.HomeController.getFileContents(username, repoName, s"$path/${file.name}")
                 }>
                     @{ if
                         (file.`type`.contains("dir")) "Open folder"

@@ -1,4 +1,6 @@
 @import models.{User,Repository, FileContent}
+@import java.util.Base64
+@import java.nio.charset.StandardCharsets
 @(username: String)(repoName: String)(path: String)(fileContent: String)
 
 <!DOCTYPE html>

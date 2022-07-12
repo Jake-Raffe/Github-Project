@@ -1,14 +1,18 @@
-package connectors
+package controllers.connectors
 
 import models.{APIError, Content, FileContent, GitUser, Repository, RepositoryList, User}
-import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, OFormat}
+import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, JsValue, OFormat}
 import play.api.libs.ws.{WSClient, WSResponse}
+import play.mvc.BodyParser.Raw
 
 import java.util.Base64
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.util.Try
 
 class GithubConnector @Inject()(ws: WSClient) {
+  import GithubConnector._
+
   def getUser[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, User]] = {
     val request = ws.url(url).get()
     request.map {
@@ -64,19 +68,22 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
   }
 
-  def getFileContents[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, FileContent]] = {
+  def getFileContents[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, String]] = {
     val request = ws.url(url).get()
     request.map {
-      result =>
-        val fileDetails = result.json
-        val output = (fileDetails \ "content").as[String]
-        Right(FileContent(output))
+      result => Right(parseFileContents(result.json))
     }
       .recover {
         case _ =>
-          Left(APIError.BadAPIResponse(400, "Unable to return file contents"))
+          Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))
       }
   }
+}
 
-//  def getAllUsers = {}
+
+object GithubConnector {
+  def parseFileContents(response: JsValue): String = {
+    val output = (response \ "content").as[String]
+    output
+  }
 }

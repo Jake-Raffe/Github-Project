@@ -15,30 +15,32 @@ import play.api.templates.PlayMagic._
 import play.api.mvc._
 import play.api.data._
 /*1.2*/import models.{User,Repository, FileContent}
+/*2.2*/import java.util.Base64
+/*3.2*/import java.nio.charset.StandardCharsets
 
 object fileContentPage extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template4[String,String,String,String,play.twirl.api.HtmlFormat.Appendable] {
 
   /**/
-  def apply/*2.2*/(username: String)(repoName: String)(path: String)(fileContent: String):play.twirl.api.HtmlFormat.Appendable = {
+  def apply/*4.2*/(username: String)(repoName: String)(path: String)(fileContent: String):play.twirl.api.HtmlFormat.Appendable = {
     _display_ {
       {
 
 
-Seq[Any](format.raw/*3.1*/("""
-"""),format.raw/*4.1*/("""<!DOCTYPE html>
+Seq[Any](format.raw/*5.1*/("""
+"""),format.raw/*6.1*/("""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>"""),_display_(/*7.13*/repoName),_display_(/*7.22*/path),format.raw/*7.26*/("""</title>
+    <title>"""),_display_(/*9.13*/repoName),_display_(/*9.22*/path),format.raw/*9.26*/("""</title>
 
 </head>
 <body>
 
-    <h1>"""),_display_(/*12.10*/repoName),_display_(/*12.19*/path),format.raw/*12.23*/(""" """),format.raw/*12.24*/("""content:</h1>
+    <h1>"""),_display_(/*14.10*/repoName),_display_(/*14.19*/path),format.raw/*14.23*/(""" """),format.raw/*14.24*/("""content:</h1>
 
     <section>
         <p>-----------------------</p>
-            """),_display_(/*16.14*/fileContent),format.raw/*16.25*/("""
-        """),format.raw/*17.9*/("""<p>-----------------------</p>
+            """),_display_(/*18.14*/fileContent),format.raw/*18.25*/("""
+        """),format.raw/*19.9*/("""<p>-----------------------</p>
     </section>
 
 
@@ -60,11 +62,11 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-08T13:30:43.107614
+                  DATE: 2022-07-11T15:16:58.532192
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/fileContentPage.scala.html
-                  HASH: 79963e87a547d8c623e1dc6b17070b0ce85e31ae
-                  MATRIX: 432->1|812->47|977->119|1004->120|1082->172|1110->181|1134->185|1196->220|1225->229|1250->233|1279->234|1387->315|1419->326|1455->335
-                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|36->12|36->12|36->12|36->12|40->16|40->16|41->17
+                  HASH: d0759a66536adf1673656ac997c27f7a40e478e5
+                  MATRIX: 432->1|484->47|515->72|891->114|1056->186|1083->187|1161->239|1189->248|1213->252|1275->287|1304->296|1329->300|1358->301|1466->382|1498->393|1534->402
+                  LINES: 17->1|18->2|19->3|24->4|29->5|30->6|33->9|33->9|33->9|38->14|38->14|38->14|38->14|42->18|42->18|43->19
                   -- GENERATED --
               */
           

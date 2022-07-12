@@ -46,7 +46,7 @@ Seq[Any](format.raw/*3.1*/("""
                    if (file.`type`.contains("dir"))
                         controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"$path/${file.name}")
                     else if (file.`type`.contains("file"))
-                        controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")
+                        controllers.routes.HomeController.getFileContents(username, repoName, s"$path/${file.name}")
                 }),format.raw/*28.18*/(""">
                     """),_display_(/*29.22*/{ if
                         (file.`type`.contains("dir")) "Open folder"
@@ -77,10 +77,10 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-11T09:22:49.214444
+                  DATE: 2022-07-11T10:41:57.534775
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPathPage.scala.html
-                  HASH: bd54dde2b60f5832d50b92711613e666384bd7ea
-                  MATRIX: 432->1|812->31|981->107|1008->108|1086->160|1114->168|1144->172|1172->181|1196->185|1258->220|1287->229|1312->233|1341->234|1407->273|1424->281|1437->285|1485->295|1526->308|1584->339|1597->343|1623->348|1676->374|1818->494|1867->570|1913->588|1949->597|2343->970|2393->993|2589->1168|2634->1185|2746->1266|2778->1271
+                  HASH: b3cf398a6033d81bd7280ca4767a2dd22952eebe
+                  MATRIX: 432->1|812->31|981->107|1008->108|1086->160|1114->168|1144->172|1172->181|1196->185|1258->220|1287->229|1312->233|1341->234|1407->273|1424->281|1437->285|1485->295|1526->308|1584->339|1597->343|1623->348|1676->374|1818->494|1867->570|1913->588|1949->597|2348->975|2398->998|2594->1173|2639->1190|2751->1271|2783->1276
                   LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|31->7|31->7|36->12|36->12|36->12|36->12|39->15|39->15|39->15|39->15|40->16|41->17|41->17|41->17|42->18|42->18|43->21|45->23|45->23|50->28|51->29|54->32|55->33|59->37|60->38
                   -- GENERATED --
               */
