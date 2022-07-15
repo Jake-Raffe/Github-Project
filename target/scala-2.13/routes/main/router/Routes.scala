@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Mon Jul 11 09:11:29 BST 2022
+// @DATE:Fri Jul 15 10:49:51 BST 2022
 
 package router
 
@@ -50,7 +50,6 @@ class Routes(
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/user""", """controllers.ApplicationController.create()"""),
     ("""PUT""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/""" + "$" + """username<[^/]+>""", """controllers.ApplicationController.update(username:String)"""),
     ("""DELETE""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/""" + "$" + """username<[^/]+>""", """controllers.ApplicationController.delete(username:String)"""),
-    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/add/""" + "$" + """username<[^/]+>""", """controllers.ApplicationController.addUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>""", """controllers.HomeController.getUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>/repos""", """controllers.HomeController.getUserRepositories(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String)"""),
@@ -189,29 +188,11 @@ class Routes(
     )
   )
 
-  // @LINE:13
-  private[this] lazy val controllers_ApplicationController_addUser7_route = Route("POST",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/add/"), DynamicPart("username", """[^/]+""",true)))
-  )
-  private[this] lazy val controllers_ApplicationController_addUser7_invoker = createInvoker(
-    ApplicationController_0.addUser(fakeValue[String]),
-    play.api.routing.HandlerDef(this.getClass.getClassLoader,
-      "router",
-      "controllers.ApplicationController",
-      "addUser",
-      Seq(classOf[String]),
-      "POST",
-      this.prefix + """github/add/""" + "$" + """username<[^/]+>""",
-      """""",
-      Seq()
-    )
-  )
-
-  // @LINE:16
-  private[this] lazy val controllers_HomeController_getUser8_route = Route("GET",
+  // @LINE:14
+  private[this] lazy val controllers_HomeController_getUser7_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/users/"), DynamicPart("username", """[^/]+""",true)))
   )
-  private[this] lazy val controllers_HomeController_getUser8_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_getUser7_invoker = createInvoker(
     HomeController_2.getUser(fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -225,11 +206,11 @@ class Routes(
     )
   )
 
-  // @LINE:17
-  private[this] lazy val controllers_HomeController_getUserRepositories9_route = Route("GET",
+  // @LINE:15
+  private[this] lazy val controllers_HomeController_getUserRepositories8_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/users/"), DynamicPart("username", """[^/]+""",true), StaticPart("/repos")))
   )
-  private[this] lazy val controllers_HomeController_getUserRepositories9_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_getUserRepositories8_invoker = createInvoker(
     HomeController_2.getUserRepositories(fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -243,11 +224,11 @@ class Routes(
     )
   )
 
-  // @LINE:18
-  private[this] lazy val controllers_HomeController_getUserRepositoryContents10_route = Route("GET",
+  // @LINE:16
+  private[this] lazy val controllers_HomeController_getUserRepositoryContents9_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents")))
   )
-  private[this] lazy val controllers_HomeController_getUserRepositoryContents10_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_getUserRepositoryContents9_invoker = createInvoker(
     HomeController_2.getUserRepositoryContents(fakeValue[String], fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -261,11 +242,11 @@ class Routes(
     )
   )
 
-  // @LINE:19
-  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath11_route = Route("GET",
+  // @LINE:17
+  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath10_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true)))
   )
-  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath11_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath10_invoker = createInvoker(
     HomeController_2.getUserRepositoryContentsPath(fakeValue[String], fakeValue[String], fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -279,11 +260,11 @@ class Routes(
     )
   )
 
-  // @LINE:20
-  private[this] lazy val controllers_HomeController_getFileContents12_route = Route("GET",
+  // @LINE:18
+  private[this] lazy val controllers_HomeController_getFileContents11_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true), StaticPart("/open")))
   )
-  private[this] lazy val controllers_HomeController_getFileContents12_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_getFileContents11_invoker = createInvoker(
     HomeController_2.getFileContents(fakeValue[String], fakeValue[String], fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -342,40 +323,34 @@ class Routes(
         controllers_ApplicationController_delete6_invoker.call(ApplicationController_0.delete(username))
       }
   
-    // @LINE:13
-    case controllers_ApplicationController_addUser7_route(params@_) =>
+    // @LINE:14
+    case controllers_HomeController_getUser7_route(params@_) =>
       call(params.fromPath[String]("username", None)) { (username) =>
-        controllers_ApplicationController_addUser7_invoker.call(ApplicationController_0.addUser(username))
+        controllers_HomeController_getUser7_invoker.call(HomeController_2.getUser(username))
+      }
+  
+    // @LINE:15
+    case controllers_HomeController_getUserRepositories8_route(params@_) =>
+      call(params.fromPath[String]("username", None)) { (username) =>
+        controllers_HomeController_getUserRepositories8_invoker.call(HomeController_2.getUserRepositories(username))
       }
   
     // @LINE:16
-    case controllers_HomeController_getUser8_route(params@_) =>
-      call(params.fromPath[String]("username", None)) { (username) =>
-        controllers_HomeController_getUser8_invoker.call(HomeController_2.getUser(username))
+    case controllers_HomeController_getUserRepositoryContents9_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None)) { (username, repoName) =>
+        controllers_HomeController_getUserRepositoryContents9_invoker.call(HomeController_2.getUserRepositoryContents(username, repoName))
       }
   
     // @LINE:17
-    case controllers_HomeController_getUserRepositories9_route(params@_) =>
-      call(params.fromPath[String]("username", None)) { (username) =>
-        controllers_HomeController_getUserRepositories9_invoker.call(HomeController_2.getUserRepositories(username))
+    case controllers_HomeController_getUserRepositoryContentsPath10_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
+        controllers_HomeController_getUserRepositoryContentsPath10_invoker.call(HomeController_2.getUserRepositoryContentsPath(username, repoName, path))
       }
   
     // @LINE:18
-    case controllers_HomeController_getUserRepositoryContents10_route(params@_) =>
-      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None)) { (username, repoName) =>
-        controllers_HomeController_getUserRepositoryContents10_invoker.call(HomeController_2.getUserRepositoryContents(username, repoName))
-      }
-  
-    // @LINE:19
-    case controllers_HomeController_getUserRepositoryContentsPath11_route(params@_) =>
+    case controllers_HomeController_getFileContents11_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
-        controllers_HomeController_getUserRepositoryContentsPath11_invoker.call(HomeController_2.getUserRepositoryContentsPath(username, repoName, path))
-      }
-  
-    // @LINE:20
-    case controllers_HomeController_getFileContents12_route(params@_) =>
-      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
-        controllers_HomeController_getFileContents12_invoker.call(HomeController_2.getFileContents(username, repoName, path))
+        controllers_HomeController_getFileContents11_invoker.call(HomeController_2.getFileContents(username, repoName, path))
       }
   }
 }

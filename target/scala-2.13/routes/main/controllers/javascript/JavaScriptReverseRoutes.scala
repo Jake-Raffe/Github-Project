@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Mon Jul 11 09:11:29 BST 2022
+// @DATE:Fri Jul 15 10:49:51 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -58,16 +58,6 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:13
-    def addUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
-      "controllers.ApplicationController.addUser",
-      """
-        function(username0) {
-          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "github/add/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0))})
-        }
-      """
-    )
-  
     // @LINE:7
     def index: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.ApplicationController.index",
@@ -88,7 +78,7 @@ package controllers.javascript {
     }
 
   
-    // @LINE:20
+    // @LINE:18
     def getFileContents: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getFileContents",
       """
@@ -98,7 +88,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:16
+    // @LINE:14
     def getUser: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getUser",
       """
@@ -108,7 +98,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:18
+    // @LINE:16
     def getUserRepositoryContents: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getUserRepositoryContents",
       """
@@ -118,7 +108,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:17
+    // @LINE:15
     def getUserRepositories: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getUserRepositories",
       """
@@ -128,7 +118,7 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:19
+    // @LINE:17
     def getUserRepositoryContentsPath: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getUserRepositoryContentsPath",
       """

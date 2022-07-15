@@ -62,17 +62,11 @@ class ApplicationController @Inject()(val controllerComponents: ControllerCompon
     }
   }
 
-  def addUser(username: String): Action[AnyContent] = Action.async { implicit request =>
-    githubService.getAndAddUser(username).map {
-      case Right(user) => Ok(Json.toJson(user))
-      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
-    }
-  }
-
-//  def getUserRepo(username: String): Action[AnyContent] = Action.async { implicit request =>
-//    githubService.getUserRepo(username = username).value.map {
-//      case Right(repoList) => Ok(Json.toJson(repoList))
+//  def addUser(username: String): Action[AnyContent] = Action.async { implicit request =>
+//    githubService.getAndAddUser(username).map {
+//      case Right(user) => Ok(Json.toJson(user))
 //      case Left(error) => Status(error.httpResponseStatus)(Json.toJson(error.reason))
 //    }
 //  }
+
 }

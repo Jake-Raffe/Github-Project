@@ -2,7 +2,7 @@ package services
 
 import cats.data.EitherT
 import com.google.common.io.BaseEncoding.base64
-import controllers.connectors.GithubConnector
+import connectors.GithubConnector
 import models.{APIError, Content, FileContent, Repository, User}
 import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, Json}
 import play.api.mvc.Request
@@ -16,18 +16,11 @@ import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Left
 
-class GithubService @Inject()(connector: GithubConnector, dataRepository: DataRepository){
+class GithubService @Inject()(connector: GithubConnector){
 import GithubService._
 
   def getUser(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, User]] =
     connector.getUser[User](s"https://api.github.com/users/${username}")
-
-  def getAndAddUser(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, User]] = {
-    getUser(username).flatMap {
-      case Right(gotUser) => dataRepository.create(gotUser)
-      case Left(getUserError) => Future(Left(APIError.BadAPIResponse(400, "Could not find book")))
-    }
-  }
 
   def getUserRepo(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Repository]]] =
     connector.getRepoList[Repository](s"https://api.github.com/users/${username}/repos")

@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuite hostname="Jacobs-MacBook-Pro-5.local" name="services.GithubServiceUnitSpec" tests="2" errors="0" failures="1" skipped="0" time="0.006" timestamp="2022-07-15T11:10:08">
+                     <properties>
+      <property name="awt.toolkit" value="sun.lwawt.macosx.LWCToolkit"/><property name="java.specification.version" value="11"/><property name="sun.cpu.isalist" value=""/><property name="sun.jnu.encoding" value="UTF-8"/><property name="sun.arch.data.model" value="64"/><property name="java.vendor.url" value="http://java.oracle.com/"/><property name="sun.boot.library.path" value="/Users/jacob.raffe/Library/Caches/Coursier/arc/https/github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%252B28/OpenJDK11-jdk_x64_mac_hotspot_11_28.tar.gz/jdk-11+28/Contents/Home/lib"/><property name="sun.java.command" value="/opt/homebrew/Cellar/sbt/1.6.2/libexec/bin/sbt-launch.jar test"/><property name="jdk.debug" value="release"/><property name="java.specification.vendor" value="Oracle Corporation"/><property name="java.version.date" value="2018-09-25"/><property name="java.home" value="/Users/jacob.raffe/Library/Caches/Coursier/arc/https/github.com/AdoptOpenJDK/openjdk11-binaries/releases/download/jdk-11%252B28/OpenJDK11-jdk_x64_mac_hotspot_11_28.tar.gz/jdk-11+28/Contents/Home"/><property name="file.separator" value="/"/><property name="java.vm.compressedOopsMode" value="Zero based"/><property name="line.separator" value="
+"/><property name="java.specification.name" value="Java Platform API Specification"/><property name="java.vm.specification.vendor" value="Oracle Corporation"/><property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/><property name="java.runtime.version" value="11+28"/><property name="user.name" value="jacob.raffe"/><property name="log4j.ignoreTCL" value="true"/><property name="file.encoding" value="UTF-8"/><property name="java.vendor.version" value="AdoptOpenJDK"/><property name="java.io.tmpdir" value="/var/folders/dj/c1byr_n93170lt43nr6ptr580000gn/T/"/><property name="java.version" value="11"/><property name="java.vm.specification.name" value="Java Virtual Machine Specification"/><property name="java.awt.printerjob" value="sun.lwawt.macosx.CPrinterJob"/><property name="sun.os.patch.level" value="unknown"/><property name="java.library.path" value="/Users/jacob.raffe/Library/Java/Extensions:/Library/Java/Extensions:/Network/Library/Java/Extensions:/System/Library/Java/Extensions:/usr/lib/java:."/><property name="java.vendor" value="Oracle Corporation"/><property name="scala.ext.dirs" value="/Users/jacob.raffe/.sbt/1.0/java9-rt-ext-oracle_corporation_11"/><property name="sun.io.unicode.encoding" value="UnicodeBig"/><property name="socksNonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/><property name="gopherProxySet" value="false"/><property name="java.class.path" value="/opt/homebrew/Cellar/sbt/1.6.2/libexec/bin/sbt-launch.jar"/><property name="java.vm.vendor" value="Oracle Corporation"/><property name="jline.shutdownhook" value="false"/><property name="user.timezone" value="Europe/London"/><property name="os.name" value="Mac OS X"/><property name="java.vm.specification.version" value="11"/><property name="sun.java.launcher" value="SUN_STANDARD"/><property name="user.country" value="GB"/><property name="http.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/><property name="sun.cpu.endian" value="little"/><property name="user.home" value="/Users/jacob.raffe"/><property name="user.language" value="en"/><property name="sbt.script" value="/opt/homebrew/Cellar/sbt/1.6.2/libexec/bin/sbt"/><property name="swoval.tmpdir" value="/Users/jacob.raffe/.sbt/1.0"/><property name="java.awt.graphicsenv" value="sun.awt.CGraphicsEnvironment"/><property name="jline.esc.timeout" value="0"/><property name="ftp.nonProxyHosts" value="local|*.local|169.254/16|*.169.254/16"/><property name="path.separator" value=":"/><property name="os.version" value="10.16"/><property name="jna.nosys" value="true"/><property name="java.runtime.name" value="OpenJDK Runtime Environment"/><property name="java.vm.name" value="OpenJDK 64-Bit Server VM"/><property name="java.vendor.url.bug" value="http://bugreport.java.com/bugreport/"/><property name="user.dir" value="/Users/jacob.raffe/Documents/Training/mock_github_play-project"/><property name="os.arch" value="x86_64"/><property name="java.vm.info" value="mixed mode"/><property name="java.vm.version" value="11+28"/><property name="java.class.version" value="55.0"/>
+    </properties>
+                     <testcase classname="services.GithubServiceUnitSpec" name="GithubService .decodeFromBase64 should convert a base64 string to a decoded plain text string" time="0.005">
+                                                 
+                                               </testcase><testcase classname="services.GithubServiceUnitSpec" name="Github .getUser should receive a user from the connector that corresponds to their github login" time="0.001">
+                                                 <failure message="java.lang.ClassCastException: class org.scalamock.function.MockFunction3 cannot be cast to class org.scalamock.function.MockFunction1 (org.scalamock.function.MockFunction3 and org.scalamock.function.MockFunction1 are in unnamed module of loader 'app')" type="sbt.ForkMain$ForkError">sbt.ForkMain$ForkError: java.lang.ClassCastException: class org.scalamock.function.MockFunction3 cannot be cast to class org.scalamock.function.MockFunction1 (org.scalamock.function.MockFunction3 and org.scalamock.function.MockFunction1 are in unnamed module of loader 'app')
+	at services.GithubServiceUnitSpec.$anonfun$new$4(GithubServiceUnitSpec.scala:31)
+	at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)
+	at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)
+	at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)
+	at org.scalatest.Transformer.apply(Transformer.scala:22)
+	at org.scalatest.Transformer.apply(Transformer.scala:20)
+	at org.scalatest.wordspec.AnyWordSpecLike$$anon$3.apply(AnyWordSpecLike.scala:1227)
+	at org.scalatest.TestSuite.withFixture(TestSuite.scala:196)
+	at org.scalatest.TestSuite.withFixture$(TestSuite.scala:195)
+	at services.GithubServiceUnitSpec.org$scalamock$scalatest$AbstractMockFactory$$super$withFixture(GithubServiceUnitSpec.scala:13)
+	at org.scalamock.scalatest.AbstractMockFactory.$anonfun$withFixture$1(AbstractMockFactory.scala:35)
+	at org.scalamock.MockFactoryBase.withExpectations(MockFactoryBase.scala:41)
+	at org.scalamock.MockFactoryBase.withExpectations$(MockFactoryBase.scala:33)
+	at services.GithubServiceUnitSpec.withExpectations(GithubServiceUnitSpec.scala:13)
+	at org.scalamock.scalatest.AbstractMockFactory.withFixture(AbstractMockFactory.scala:34)
+	at org.scalamock.scalatest.AbstractMockFactory.withFixture$(AbstractMockFactory.scala:31)
+	at services.GithubServiceUnitSpec.withFixture(GithubServiceUnitSpec.scala:13)
+	at org.scalatest.wordspec.AnyWordSpecLike.invokeWithFixture$1(AnyWordSpecLike.scala:1225)
+	at org.scalatest.wordspec.AnyWordSpecLike.$anonfun$runTest$1(AnyWordSpecLike.scala:1237)
+	at org.scalatest.SuperEngine.runTestImpl(Engine.scala:306)
+	at org.scalatest.wordspec.AnyWordSpecLike.runTest(AnyWordSpecLike.scala:1237)
+	at org.scalatest.wordspec.AnyWordSpecLike.runTest$(AnyWordSpecLike.scala:1219)
+	at services.GithubServiceUnitSpec.org$scalatest$BeforeAndAfterEach$$super$runTest(GithubServiceUnitSpec.scala:13)
+	at org.scalatest.BeforeAndAfterEach.runTest(BeforeAndAfterEach.scala:234)
+	at org.scalatest.BeforeAndAfterEach.runTest$(BeforeAndAfterEach.scala:227)
+	at services.GithubServiceUnitSpec.runTest(GithubServiceUnitSpec.scala:13)
+	at org.scalatest.wordspec.AnyWordSpecLike.$anonfun$runTests$1(AnyWordSpecLike.scala:1296)
+	at org.scalatest.SuperEngine.$anonfun$runTestsInBranch$1(Engine.scala:413)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at org.scalatest.SuperEngine.traverseSubNodes$1(Engine.scala:401)
+	at org.scalatest.SuperEngine.runTestsInBranch(Engine.scala:390)
+	at org.scalatest.SuperEngine.$anonfun$runTestsInBranch$1(Engine.scala:427)
+	at scala.collection.immutable.List.foreach(List.scala:333)
+	at org.scalatest.SuperEngine.traverseSubNodes$1(Engine.scala:401)
+	at org.scalatest.SuperEngine.runTestsInBranch(Engine.scala:396)
+	at org.scalatest.SuperEngine.runTestsImpl(Engine.scala:475)
+	at org.scalatest.wordspec.AnyWordSpecLike.runTests(AnyWordSpecLike.scala:1296)
+	at org.scalatest.wordspec.AnyWordSpecLike.runTests$(AnyWordSpecLike.scala:1295)
+	at org.scalatest.wordspec.AnyWordSpec.runTests(AnyWordSpec.scala:1879)
+	at org.scalatest.Suite.run(Suite.scala:1114)
+	at org.scalatest.Suite.run$(Suite.scala:1096)
+	at org.scalatest.wordspec.AnyWordSpec.org$scalatest$wordspec$AnyWordSpecLike$$super$run(AnyWordSpec.scala:1879)
+	at org.scalatest.wordspec.AnyWordSpecLike.$anonfun$run$1(AnyWordSpecLike.scala:1341)
+	at org.scalatest.SuperEngine.runImpl(Engine.scala:535)
+	at org.scalatest.wordspec.AnyWordSpecLike.run(AnyWordSpecLike.scala:1341)
+	at org.scalatest.wordspec.AnyWordSpecLike.run$(AnyWordSpecLike.scala:1339)
+	at services.GithubServiceUnitSpec.org$scalatestplus$play$BaseOneServerPerSuite$$super$run(GithubServiceUnitSpec.scala:13)
+	at org.scalatestplus.play.BaseOneServerPerSuite.run(BaseOneServerPerSuite.scala:163)
+	at org.scalatestplus.play.BaseOneServerPerSuite.run$(BaseOneServerPerSuite.scala:159)
+	at services.GithubServiceUnitSpec.org$scalatest$BeforeAndAfterAll$$super$run(GithubServiceUnitSpec.scala:13)
+	at org.scalatest.BeforeAndAfterAll.liftedTree1$1(BeforeAndAfterAll.scala:213)
+	at org.scalatest.BeforeAndAfterAll.run(BeforeAndAfterAll.scala:210)
+	at org.scalatest.BeforeAndAfterAll.run$(BeforeAndAfterAll.scala:208)
+	at services.GithubServiceUnitSpec.run(GithubServiceUnitSpec.scala:13)
+	at org.scalatest.tools.Framework.org$scalatest$tools$Framework$$runSuite(Framework.scala:321)
+	at org.scalatest.tools.Framework$ScalaTestTask.execute(Framework.scala:516)
+	at sbt.ForkMain$Run.lambda$runTest$1(ForkMain.java:304)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+</failure>
+                                               </testcase>
+                     <system-out><![CDATA[]]></system-out>
+                     <system-err><![CDATA[]]></system-err>
+                   </testsuite>

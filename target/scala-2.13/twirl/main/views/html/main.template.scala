@@ -60,7 +60,7 @@ Seq[Any](format.raw/*8.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-07T11:11:06.260284
+                  DATE: 2022-07-15T10:49:52.417944
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/main.scala.html
                   HASH: 67de0d47eb288c74215d1d8e4debbe389a477baa
                   MATRIX: 982->255|1106->286|1133->287|1205->384|1237->389|1272->397|1298->402|1383->460|1398->466|1460->507|1544->564|1559->570|1620->609|1667->709|1695->711|1722->718|1751->720|1792->734|1807->740|1868->780

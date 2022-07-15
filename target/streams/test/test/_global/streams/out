@@ -1,0 +1,99 @@
+[0m[[0m[0mdebug[0m] [0m[0mjavaOptions: Vector()[0m
+[0m[[0m[0mdebug[0m] [0m[0mForking tests - parallelism = false[0m
+[0m[[0m[0mdebug[0m] [0m[0mCreate a single-thread test executor[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunner for org.scalatest.tools.Framework produced 6 initial tasks for 6 tests.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.ApplicationControllerUnitSpec, sbt.ForkMain$SubclassFingerscan@75aaa6a9, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationControllerUnitSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .create()[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return Created with the user that has been added to the database[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return a BadAPIResponse if the request body is of the wrong format[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .read(username: String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should find a user in the database by their login[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return a NotFound if a user of the login is not found[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .update(username: String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should find a user in the database by their login and replace them with an updated user[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return BadAPIResponse message if wrong ID[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return BadRequest if incorrect Json body[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .delete(username: String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should find a user in the database by their login and delete it[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return a BadAPIResponse if the login does not exist[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 9 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.HomeControllerUnitSpec, sbt.ForkMain$SubclassFingerscan@2aacaa26, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mHomeControllerUnitSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mHomeController .getUser[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should get a user by their username and render their details on a webpage *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  java.lang.ClassCastException: class org.scalamock.function.MockFunction2 cannot be cast to class org.scalamock.function.MockFunction1 (org.scalamock.function.MockFunction2 and org.scalamock.function.MockFunction1 are in unnamed module of loader 'app')[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at controllers.HomeControllerUnitSpec.$anonfun$new$2(HomeControllerUnitSpec.scala:35)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.Transformer.apply(Transformer.scala:22)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.Transformer.apply(Transformer.scala:20)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.wordspec.AnyWordSpecLike$$anon$3.apply(AnyWordSpecLike.scala:1227)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.TestSuite.withFixture(TestSuite.scala:196)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.TestSuite.withFixture$(TestSuite.scala:195)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at controllers.HomeControllerUnitSpec.org$scalamock$scalatest$AbstractMockFactory$$super$withFixture(HomeControllerUnitSpec.scala:19)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  ...[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 1 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.HomeControllerSpec, sbt.ForkMain$SubclassFingerscan@7fa0621d, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mHomeControllerSpec:[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(connectors.GithubConnectorSpec, sbt.ForkMain$SubclassFingerscan@72d6c59e, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGithubConnectorSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGithubConnector .parseFileContents[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should read the base64 contents of a file from the Github API and return as a string[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 1 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(controllers.ApplicationControllerSpec, sbt.ForkMain$SubclassFingerscan@34254381, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationControllerSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .index()[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return status OK[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .create()[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should create a book in the database[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return BadRequest if request body is of wrong format[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .read(username: String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should find a user in the database by their login[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return a NotFound if a user of the username is not found[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .update(username: String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should find a user in the database by their login and replace them with an updated user[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return BadAPIResponse message if wrong login[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return BadRequest if incorrect Json body[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mApplicationController .delete(username: String)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should find a user in the database by their login and delete it[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should return a BadAPIResponse if the username does not exist[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 10 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0m  Running TaskDef(services.GithubServiceUnitSpec, sbt.ForkMain$SubclassFingerscan@596afdcd, false, [SuiteSelector])[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGithubServiceUnitSpec:[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGithubService .decodeFromBase64[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32m- should convert a base64 string to a decoded plain text string[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[32mGithub .getUser[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m- should receive a user from the connector that corresponds to their github login *** FAILED ***[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  java.lang.ClassCastException: class org.scalamock.function.MockFunction3 cannot be cast to class org.scalamock.function.MockFunction1 (org.scalamock.function.MockFunction3 and org.scalamock.function.MockFunction1 are in unnamed module of loader 'app')[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at services.GithubServiceUnitSpec.$anonfun$new$4(GithubServiceUnitSpec.scala:31)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.OutcomeOf.outcomeOf(OutcomeOf.scala:85)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.OutcomeOf.outcomeOf$(OutcomeOf.scala:83)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.OutcomeOf$.outcomeOf(OutcomeOf.scala:104)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.Transformer.apply(Transformer.scala:22)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.Transformer.apply(Transformer.scala:20)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.wordspec.AnyWordSpecLike$$anon$3.apply(AnyWordSpecLike.scala:1227)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.TestSuite.withFixture(TestSuite.scala:196)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at org.scalatest.TestSuite.withFixture$(TestSuite.scala:195)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  at services.GithubServiceUnitSpec.org$scalamock$scalatest$AbstractMockFactory$$super$withFixture(GithubServiceUnitSpec.scala:13)[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m  ...[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0m    Produced 0 nested tasks and 2 events.[0m
+[0m[[0m[0mdebug[0m] [0m[0mRunner for com.novocode.junit.JUnitFramework produced 0 initial tasks for 0 tests.[0m
+[0m[[0m[0minfo[0m] [0m[0mScalaTest[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mRun completed in 9 seconds, 554 milliseconds.[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTotal number of tests run: 23[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mSuites: completed 6, aborted 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[36mTests: succeeded 21, failed 2, canceled 0, ignored 0, pending 0[0m[0m
+[0m[[0m[0minfo[0m] [0m[0m[31m*** 2 TESTS FAILED ***[0m[0m
+[0m[[0m[0mdebug[0m] [0m[0mSummary for JUnit not available.[0m
+[0m[[0m[31merror[0m] [0m[0mFailed: Total 23, Failed 2, Errors 0, Passed 21[0m
+[0m[[0m[0mdebug[0m] [0m[0mPassed tests:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	controllers.ApplicationControllerUnitSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	controllers.HomeControllerSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	connectors.GithubConnectorSpec[0m
+[0m[[0m[0mdebug[0m] [0m[0m	controllers.ApplicationControllerSpec[0m
+[0m[[0m[31merror[0m] [0m[0mFailed tests:[0m
+[0m[[0m[31merror[0m] [0m[0m	controllers.HomeControllerUnitSpec[0m
+[0m[[0m[31merror[0m] [0m[0m	services.GithubServiceUnitSpec[0m
+[0m[[0m[31merror[0m] [0m[0m(Test / [31mtest[0m) sbt.TestsFailedException: Tests unsuccessful[0m

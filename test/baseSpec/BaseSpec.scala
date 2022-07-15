@@ -1,7 +1,7 @@
 package baseSpec
 
 import akka.stream.Materializer
-import controllers.connectors.GithubConnector
+import connectors.GithubConnector
 import org.scalatest.concurrent.{Eventually, ScalaFutures}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -11,6 +11,8 @@ import play.api.Application
 import play.api.i18n.{Messages, MessagesApi}
 import play.api.inject.Injector
 import play.api.inject.guice.GuiceApplicationBuilder
+import play.api.libs.json.OFormat
+import play.api.libs.ws.WSClient
 import play.api.mvc.{AnyContentAsEmpty, MessagesControllerComponents}
 import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
@@ -26,6 +28,9 @@ trait BaseSpecWithApplication extends BaseSpec with GuiceOneServerPerSuite with 
 
   implicit val mat: Materializer = app.materializer
   implicit val executionContext: ExecutionContext = app.injector.instanceOf[ExecutionContext]
+//  implicit val rds: OFormat[Response]
+
+  lazy val ws: WSClient = injector.instanceOf[WSClient]
 
   lazy val component: MessagesControllerComponents = injector.instanceOf[MessagesControllerComponents]
   lazy val repository: DataRepository = injector.instanceOf[DataRepository]

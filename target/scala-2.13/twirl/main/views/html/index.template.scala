@@ -121,7 +121,7 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-07T11:11:06.546122
+                  DATE: 2022-07-15T10:49:52.598864
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/index.scala.html
                   HASH: 623c9fe7a07651e44778c8ed7cc720269bc70c89
                   MATRIX: 722->1|818->4|845->6|880->33|919->35|947->37|2876->1936

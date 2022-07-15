@@ -41,7 +41,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   def getUserRepositoryContentsPath(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     githubService.getRepoContentsPath(username, repoName, path).map {
       case Right(contents) => Ok(views.html.userRepoContentsPathPage(username)(repoName)(path)(contents))
-      case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
+      case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
 
@@ -51,4 +51,5 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
       case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
+
 }

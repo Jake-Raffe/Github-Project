@@ -1,0 +1,6 @@
+#Successful Tests
+#Fri Jul 15 11:10:09 BST 2022
+connectors.GithubConnectorSpec=1657879807259
+controllers.HomeControllerSpec=1657879806611
+controllers.ApplicationControllerUnitSpec=1657879805813
+controllers.ApplicationControllerSpec=1657879808112

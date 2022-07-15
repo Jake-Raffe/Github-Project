@@ -49,7 +49,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     200
   )
 
-  // Index good
   "ApplicationController .index()" should {
     val result = integrationTestApplicationController.index()(FakeRequest())
     "return status OK" in {
@@ -57,7 +56,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     }
   }
 
-  // Create good
   "ApplicationController .create()" should {
     beforeEach()
     "create a book in the database" in {
@@ -75,7 +73,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     }
   }
 
-  // Read good
   "ApplicationController .read(username: String)" should {
 
     "find a user in the database by their login" in {
@@ -95,7 +92,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     }
   }
 
-  // Update good
   "ApplicationController .update(username: String)" should {
 
     "find a user in the database by their login and replace them with an updated user" in {
@@ -126,7 +122,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     }
   }
 
-  // Delete good
   "ApplicationController .delete(username: String)" should {
     "find a user in the database by their login and delete it" in {
       beforeEach()
@@ -145,7 +140,6 @@ class ApplicationControllerSpec extends BaseSpecWithApplication with MockFactory
     }
   }
 
-//  override def beforeEach(): Unit = {  }
   override def beforeEach(): Unit = repository.deleteAll()
 //  override def afterEach(): Unit = repository.deleteAll()
 }

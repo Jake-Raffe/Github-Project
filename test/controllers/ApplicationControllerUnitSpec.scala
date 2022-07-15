@@ -42,7 +42,6 @@ class ApplicationControllerUnitSpec extends BaseSpecWithApplication with MockFac
     200
   )
 
-  // Create good
   "ApplicationController .create()" should {
       "return Created with the user that has been added to the database" in {
         val request: FakeRequest[JsValue] = buildPost("/github/users").withBody[JsValue](Json.toJson(mockUser))
@@ -69,7 +68,6 @@ class ApplicationControllerUnitSpec extends BaseSpecWithApplication with MockFac
       }
     }
 
-  // Read good
   "ApplicationController .read(username: String)" should {
 
     "find a user in the database by their login" in {
@@ -96,7 +94,6 @@ class ApplicationControllerUnitSpec extends BaseSpecWithApplication with MockFac
     }
   }
 
-  // Update good
   "ApplicationController .update(username: String)" should {
 
     "find a user in the database by their login and replace them with an updated user" in {
@@ -131,7 +128,6 @@ class ApplicationControllerUnitSpec extends BaseSpecWithApplication with MockFac
     }
   }
 
-  // Delete good
   "ApplicationController .delete(username: String)" should {
     "find a user in the database by their login and delete it" in {
       val deleteRequest: FakeRequest[AnyContentAsEmpty.type] = buildDelete("/github/:username")
