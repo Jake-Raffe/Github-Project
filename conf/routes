@@ -16,3 +16,5 @@ GET     /github/users/:username/repos     controllers.HomeController.getUserRepo
 GET     /github/repos/:username/:repoName/contents     controllers.HomeController.getUserRepositoryContents(username: String, repoName: String)
 GET     /github/repos/:username/:repoName/contents:path     controllers.HomeController.getUserRepositoryContentsPath(username: String, repoName: String, path: String)
 GET     /github/repos/:username/:repoName/contents:path/open     controllers.HomeController.getFileContents(username: String, repoName: String, path: String)
+
+-i -u jake-raffe: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 https://api.github.com/users/jake-raffe
