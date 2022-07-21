@@ -1,5 +1,8 @@
 @import models.{User,Content}
-@(username: String)(repoName: String)(contents: List[Content])
+@import helper._
+@(username: String, repoName: String, contents: List[Content])
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,9 +24,6 @@
             <element>
                 <h4>@file.name</h4>
                 <p>@{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}</p>
-                @*
-                <p>@file.size</p>
-                *@
 
                 <a href=@{
                    if (file.`type`.contains("dir"))
@@ -37,6 +37,8 @@
             <p>-----------------------</p>
         }
     </section>
+
+    <a href=@{controllers.routes.HomeController.openNewFilePage(username, repoName, "")}>Create new file</a>
 
 </body>
 </html>

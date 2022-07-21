@@ -18,6 +18,7 @@ libraryDependencies ++= Seq(
   guice,
   "org.scalatest"          %% "scalatest"               % "3.2.12"             % Test,
   "org.scalamock"          %% "scalamock"               % "5.2.0"             % Test,
-  "org.scalatestplus.play" %% "scalatestplus-play"      % "5.1.0"          % Test
+  "org.scalatestplus.play" %% "scalatestplus-play"      % "5.1.0"          % Test,
+  "com.lihaoyi" %% "requests" % "0.7.1"
 )
 libraryDependencies += ws

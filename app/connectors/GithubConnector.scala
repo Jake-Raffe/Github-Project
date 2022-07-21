@@ -1,16 +1,20 @@
 package connectors
 
-import models.{APIError, Content, FileContent, GitUser, Repository, User}
-import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, JsValue, OFormat}
-import play.api.libs.ws.{WSClient, WSResponse}
+import akka.http.scaladsl.model.{HttpHeader, HttpMethods, HttpRequest, Uri}
+import models.{APIError, Content, CreatedFile, FileContent, Repository, User}
+import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, JsValue, Json, OFormat}
+import play.api.libs.ws.{WSAuthScheme, WSClient, WSResponse}
+import play.api.mvc.Headers
 import play.mvc.BodyParser.Raw
 
 import java.util.Base64
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
+import scala.sys.env
 import scala.util.Try
 
 class GithubConnector @Inject()(ws: WSClient) {
+
   import GithubConnector._
 
   def getUser[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, User]] = {
@@ -28,11 +32,11 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
       .recover {
         case _ =>
-      Left(APIError.BadAPIResponse(404, "User not found"))
-    }
+          Left(APIError.BadAPIResponse(404, "User not found"))
+      }
   }
 
-  def getRepoList[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, List[Repository]]] = {
+  def getRepoList[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Repository]]] = {
     val request = ws.url(url).get()
     request.map {
       result =>
@@ -44,7 +48,7 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
   }
 
-  def getRepoContent[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, List[Content]]] = {
+  def getRepoContent[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Content]]] = {
     val request = ws.url(url).get()
     request.map {
       result =>
@@ -56,7 +60,7 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
   }
 
-  def getRepoContentDeeper[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, List[Content]]] = {
+  def getRepoContentDeeper[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Content]]] = {
     val request = ws.url(url).get()
     request.map {
       result =>
@@ -68,7 +72,7 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
   }
 
-  def getFileContents[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext):  Future[Either[APIError, String]] = {
+  def getFileContents[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
     val request = ws.url(url).get()
     request.map {
       result => Right(parseFileContents(result.json))
@@ -77,6 +81,24 @@ class GithubConnector @Inject()(ws: WSClient) {
         case _ =>
           Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))
       }
+  }
+
+  def createNewFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+    val url = s"https://api.github.com/repos/${username}/${repoName}/contents$path/$fileName"
+    val authentication = env.getOrElse("AUTH_TOKEN", "empty")
+    val createdFile = new CreatedFile(s"Created new file: $fileName", encodedContent, "main")
+    val jsonFile = Json.toJsObject(createdFile)
+    val request = ws.url(url)
+      .withHttpHeaders("Accept" -> "application/json")
+      .withAuth("Jake-Raffe", authentication
+//        .getOrElse("missing token")
+        , WSAuthScheme.BASIC)
+      .post(jsonFile)
+    request.map {
+      case response: WSResponse => Right("success")
+      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to create new file"))
+      case _ => Left(APIError.BadAPIResponse(400, "Other output"))
+    }
   }
 }
 

@@ -15,39 +15,41 @@ import play.api.templates.PlayMagic._
 import play.api.mvc._
 import play.api.data._
 /*1.2*/import models.{User,Content}
+/*2.2*/import helper._
 
 object userRepoContentsPage extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template3[String,String,List[Content],play.twirl.api.HtmlFormat.Appendable] {
 
   /**/
-  def apply/*2.2*/(username: String)(repoName: String)(contents: List[Content]):play.twirl.api.HtmlFormat.Appendable = {
+  def apply/*3.2*/(username: String, repoName: String, contents: List[Content]):play.twirl.api.HtmlFormat.Appendable = {
     _display_ {
       {
 
 
-Seq[Any](format.raw/*3.1*/("""
-"""),format.raw/*4.1*/("""<!DOCTYPE html>
+Seq[Any](format.raw/*4.1*/("""
+
+
+"""),format.raw/*7.1*/("""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>"""),_display_(/*7.13*/repoName),format.raw/*7.21*/("""</title>
+    <title>"""),_display_(/*10.13*/repoName),format.raw/*10.21*/("""</title>
 
 </head>
 <body>
 
     <h3>Github</h3>
-    <a href="""),_display_(/*13.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*13.67*/(""">Back to """),_display_(/*13.77*/username),format.raw/*13.85*/("""</a>
-    <a href="""),_display_(/*14.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*14.79*/(""">Back to Repositories</a>
+    <a href="""),_display_(/*16.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*16.67*/(""">Back to """),_display_(/*16.77*/username),format.raw/*16.85*/("""</a>
+    <a href="""),_display_(/*17.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*17.79*/(""">Back to Repositories</a>
     <hr>
-    <h1>"""),_display_(/*16.10*/repoName),format.raw/*16.18*/(""" """),format.raw/*16.19*/("""contents:</h1>
+    <h1>"""),_display_(/*19.10*/repoName),format.raw/*19.18*/(""" """),format.raw/*19.19*/("""contents:</h1>
 
     <section>
         <p>-----------------------</p>
-        """),_display_(/*20.10*/contents/*20.18*/.map/*20.22*/ { file =>_display_(Seq[Any](format.raw/*20.32*/("""
-            """),format.raw/*21.13*/("""<element>
-                <h4>"""),_display_(/*22.22*/file/*22.26*/.name),format.raw/*22.31*/("""</h4>
-                <p>"""),_display_(/*23.21*/{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}),format.raw/*23.123*/("""</p>
-                """),format.raw/*26.19*/("""
+        """),_display_(/*23.10*/contents/*23.18*/.map/*23.22*/ { file =>_display_(Seq[Any](format.raw/*23.32*/("""
+            """),format.raw/*24.13*/("""<element>
+                <h4>"""),_display_(/*25.22*/file/*25.26*/.name),format.raw/*25.31*/("""</h4>
+                <p>"""),_display_(/*26.21*/{ if (file.`type`.contains("dir")) "Folder" else if(file.`type`.contains("file")) "File" else "Other"}),format.raw/*26.123*/("""</p>
 
-                """),format.raw/*28.17*/("""<a href="""),_display_(/*28.26*/{
+                <a href="""),_display_(/*28.26*/{
                    if (file.`type`.contains("dir"))
                         controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")
                    else if (file.`type`.contains("file"))
@@ -60,6 +62,8 @@ Seq[Any](format.raw/*3.1*/("""
         """)))}),format.raw/*38.10*/("""
     """),format.raw/*39.5*/("""</section>
 
+    <a href="""),_display_(/*41.14*/{controllers.routes.HomeController.openNewFilePage(username, repoName, "")}),format.raw/*41.89*/(""">Create new file</a>
+
 </body>
 </html>
 """))
@@ -67,9 +71,9 @@ Seq[Any](format.raw/*3.1*/("""
     }
   }
 
-  def render(username:String,repoName:String,contents:List[Content]): play.twirl.api.HtmlFormat.Appendable = apply(username)(repoName)(contents)
+  def render(username:String,repoName:String,contents:List[Content]): play.twirl.api.HtmlFormat.Appendable = apply(username,repoName,contents)
 
-  def f:((String) => (String) => (List[Content]) => play.twirl.api.HtmlFormat.Appendable) = (username) => (repoName) => (contents) => apply(username)(repoName)(contents)
+  def f:((String,String,List[Content]) => play.twirl.api.HtmlFormat.Appendable) = (username,repoName,contents) => apply(username,repoName,contents)
 
   def ref: this.type = this
 
@@ -78,11 +82,11 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-15T10:49:52.260648
+                  DATE: 2022-07-21T12:47:07.605170
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPage.scala.html
-                  HASH: 59828ef10d22b02de29b4114e59b7154769cb482
-                  MATRIX: 432->1|801->31|956->93|983->94|1061->146|1089->154|1175->213|1249->266|1286->276|1315->284|1360->302|1446->367|1517->411|1546->419|1575->420|1680->498|1697->506|1710->510|1758->520|1799->533|1857->564|1870->568|1896->573|1949->599|2073->701|2122->777|2168->795|2204->804|2592->1171|2642->1194|2775->1305|2820->1322|2931->1402|2963->1407
-                  LINES: 17->1|22->2|27->3|28->4|31->7|31->7|37->13|37->13|37->13|37->13|38->14|38->14|40->16|40->16|40->16|44->20|44->20|44->20|44->20|45->21|46->22|46->22|46->22|47->23|47->23|48->26|50->28|50->28|55->33|56->34|56->34|57->35|60->38|61->39
+                  HASH: 1c1c818a7b6c33f9bdd55123b60153a02a461acb
+                  MATRIX: 432->1|468->31|824->48|979->110|1008->113|1087->165|1116->173|1202->232|1276->285|1313->295|1342->303|1387->321|1473->386|1544->430|1573->438|1602->439|1707->517|1724->525|1737->529|1785->539|1826->552|1884->583|1897->587|1923->592|1976->618|2100->720|2158->751|2546->1118|2596->1141|2729->1252|2774->1269|2885->1349|2917->1354|2969->1379|3065->1454
+                  LINES: 17->1|18->2|23->3|28->4|31->7|34->10|34->10|40->16|40->16|40->16|40->16|41->17|41->17|43->19|43->19|43->19|47->23|47->23|47->23|47->23|48->24|49->25|49->25|49->25|50->26|50->26|52->28|57->33|58->34|58->34|59->35|62->38|63->39|65->41|65->41
                   -- GENERATED --
               */
           

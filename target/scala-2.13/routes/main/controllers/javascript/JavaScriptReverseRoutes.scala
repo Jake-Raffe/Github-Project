@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Fri Jul 15 10:49:51 BST 2022
+// @DATE:Thu Jul 21 14:56:05 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -78,6 +78,16 @@ package controllers.javascript {
     }
 
   
+    // @LINE:20
+    def openNewFilePage: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.HomeController.openNewFilePage",
+      """
+        function(username0,repoName1,path2) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1)) + "/contents/new" + _qS([(""" + implicitly[play.api.mvc.QueryStringBindable[String]].javascriptUnbind + """)("path", path2)])})
+        }
+      """
+    )
+  
     // @LINE:18
     def getFileContents: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.HomeController.getFileContents",
@@ -134,6 +144,16 @@ package controllers.javascript {
       """
         function() {
           return _wA({method:"GET", url:"""" + _prefix + """"})
+        }
+      """
+    )
+  
+    // @LINE:22
+    def createNewFile: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.HomeController.createNewFile",
+      """
+        function(username0,repoName1,path2) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "github/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1)) + "/contents" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("path", path2)) + "/new"})
         }
       """
     )

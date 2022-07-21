@@ -3,6 +3,8 @@ package services
 import cats.data.EitherT
 import com.google.common.io.BaseEncoding.base64
 import connectors.GithubConnector
+import models.APIError.BadAPIResponse
+import models.Content.formats
 import models.{APIError, Content, FileContent, Repository, User}
 import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, Json}
 import play.api.mvc.Request
@@ -49,14 +51,45 @@ import GithubService._
       case Left(err) => Left(err)
     }
   }
+
+  def createNewFile(username: String, repoName: String, path: String, fileName: String, fileContent: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
+    val encodedContent = encodeBase64(fileContent)
+    connector.createNewFile(username, repoName, path, fileName, encodedContent) map {
+      case Right(string: String) => Right(string)
+      case Left(error: APIError) => Left(error)
+    }
+  }
+
+//  def updateFile(username: String, repoName: String, path: String, fileName: String, fileContent: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
+//    connector.getFileContents[FileContent](s"https://api.github.com/repos/${username}/${repoName}/contents$path").map{
+//      case Right(encoded) => {
+//        val decodedContent = decodeBase64(encoded)
+//        Right(decodedContent)
+//      }
+//      case Left(err) => Left(err)
+//
+//    val encodedContent = encodeBase64(fileContent)
+//    connector.createNewFile(username, repoName, path, fileName, encodedContent) map {
+//      case Right(string: String) => Right(string)
+//      case Left(error: APIError) => Left(error)
+//    }
+//  }
+
+
+
 }
+
 
 object GithubService {
   def decodeBase64(inputBase64: String): String = {
     val byteArray = inputBase64.getBytes(StandardCharsets.UTF_8)
     val decodedFromBase64 = Base64.getMimeDecoder.decode(byteArray)
     val convertedToString = new String(decodedFromBase64, StandardCharsets.UTF_8)
-    println(convertedToString)
     convertedToString
+  }
+  def encodeBase64(inputString: String): String = {
+    val byteArray = inputString.getBytes(StandardCharsets.UTF_8)
+    val encoded = Base64.getMimeEncoder.encodeToString(byteArray)
+    encoded
   }
 }

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Fri Jul 15 10:49:51 BST 2022
+// @DATE:Thu Jul 21 14:56:05 BST 2022
 
 import play.api.mvc.Call
 
@@ -56,6 +56,12 @@ package controllers {
     }
 
   
+    // @LINE:20
+    def openNewFilePage(username:String, repoName:String, path:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents/new" + play.core.routing.queryString(List(Some(implicitly[play.api.mvc.QueryStringBindable[String]].unbind("path", path)))))
+    }
+  
     // @LINE:18
     def getFileContents(username:String, repoName:String, path:String): Call = {
       
@@ -90,6 +96,12 @@ package controllers {
     def index(): Call = {
       
       Call("GET", _prefix)
+    }
+  
+    // @LINE:22
+    def createNewFile(username:String, repoName:String, path:String): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("path", path)) + "/new")
     }
   
   }

@@ -17,4 +17,6 @@ GET     /github/repos/:username/:repoName/contents     controllers.HomeControlle
 GET     /github/repos/:username/:repoName/contents:path     controllers.HomeController.getUserRepositoryContentsPath(username: String, repoName: String, path: String)
 GET     /github/repos/:username/:repoName/contents:path/open     controllers.HomeController.getFileContents(username: String, repoName: String, path: String)
 
--i -u jake-raffe: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 https://api.github.com/users/jake-raffe
+GET     /github/repos/:username/:repoName/contents/new     controllers.HomeController.openNewFilePage(username: String, repoName: String, path: String)
+
+POST    /github/repos/:username/:repoName/contents:path/new     controllers.HomeController.createNewFile(username: String, repoName: String, path: String)

@@ -16,3 +16,7 @@ GET     /github/users/:username/repos     controllers.HomeController.getUserRepo
 GET     /github/repos/:username/:repoName/contents     controllers.HomeController.getUserRepositoryContents(username: String, repoName: String)
 GET     /github/repos/:username/:repoName/contents:path     controllers.HomeController.getUserRepositoryContentsPath(username: String, repoName: String, path: String)
 GET     /github/repos/:username/:repoName/contents:path/open     controllers.HomeController.getFileContents(username: String, repoName: String, path: String)
+
+GET     /github/repos/:username/:repoName/contents/new     controllers.HomeController.openNewFilePage(username: String, repoName: String, path: String)
+
+POST    /github/repos/:username/:repoName/contents:path/new     controllers.HomeController.createNewFile(username: String, repoName: String, path: String)

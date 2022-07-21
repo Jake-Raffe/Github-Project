@@ -1,0 +1,43 @@
+@import models.{User,Content, CreatedFile, FileForm}
+
+@import helper._
+@import play.api.data.Form
+@import play.api.data.Forms._
+
+@(username: String, repoName: String, path: String)(purpose: String)(fileForm: Form[FileForm])(implicit messages: Messages)
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>@repoName</title>
+
+</head>
+<body>
+
+    <h3>Github</h3>
+    <form>
+        <label for="search">Search username...</label>
+        <input type="search" name="search" id="search">
+    </form>
+    <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
+    <hr>
+    <h1>@{if (purpose == "create") "Create new file in directory: @repoName@path"
+            else if (purpose == "edit") "Update file: @repoName@path"
+            else "How did you get here?"
+        }
+    </h1>
+
+    <section>
+        @form(action = controllers.routes.HomeController.createNewFile(username, repoName, "")) {
+            @inputText(fileForm("fileName"))
+            @inputText(fileForm("fileContent"))
+            <input type="submit" value="Submit">
+        }
+    </section>
+
+</body>
+</html>

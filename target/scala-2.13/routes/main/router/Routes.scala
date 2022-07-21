@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Fri Jul 15 10:49:51 BST 2022
+// @DATE:Thu Jul 21 14:56:05 BST 2022
 
 package router
 
@@ -55,6 +55,8 @@ class Routes(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>""", """controllers.HomeController.getUserRepositoryContentsPath(username:String, repoName:String, path:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/open""", """controllers.HomeController.getFileContents(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/new""", """controllers.HomeController.openNewFilePage(username:String, repoName:String, path:String)"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/new""", """controllers.HomeController.createNewFile(username:String, repoName:String, path:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -278,6 +280,42 @@ class Routes(
     )
   )
 
+  // @LINE:20
+  private[this] lazy val controllers_HomeController_openNewFilePage12_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/new")))
+  )
+  private[this] lazy val controllers_HomeController_openNewFilePage12_invoker = createInvoker(
+    HomeController_2.openNewFilePage(fakeValue[String], fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "openNewFilePage",
+      Seq(classOf[String], classOf[String], classOf[String]),
+      "GET",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/new""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:22
+  private[this] lazy val controllers_HomeController_createNewFile13_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true), StaticPart("/new")))
+  )
+  private[this] lazy val controllers_HomeController_createNewFile13_invoker = createInvoker(
+    HomeController_2.createNewFile(fakeValue[String], fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "createNewFile",
+      Seq(classOf[String], classOf[String], classOf[String]),
+      "POST",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/new""",
+      """""",
+      Seq()
+    )
+  )
+
 
   def routes: PartialFunction[RequestHeader, Handler] = {
   
@@ -351,6 +389,18 @@ class Routes(
     case controllers_HomeController_getFileContents11_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
         controllers_HomeController_getFileContents11_invoker.call(HomeController_2.getFileContents(username, repoName, path))
+      }
+  
+    // @LINE:20
+    case controllers_HomeController_openNewFilePage12_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromQuery[String]("path", None)) { (username, repoName, path) =>
+        controllers_HomeController_openNewFilePage12_invoker.call(HomeController_2.openNewFilePage(username, repoName, path))
+      }
+  
+    // @LINE:22
+    case controllers_HomeController_createNewFile13_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
+        controllers_HomeController_createNewFile13_invoker.call(HomeController_2.createNewFile(username, repoName, path))
       }
   }
 }
