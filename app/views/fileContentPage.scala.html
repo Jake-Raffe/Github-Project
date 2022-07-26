@@ -1,7 +1,7 @@
 @import models.{User,Repository, FileContent}
 @import java.util.Base64
 @import java.nio.charset.StandardCharsets
-@(username: String)(repoName: String)(path: String)(fileContent: String)
+@(username: String, repoName: String, path: String)(fileContent: String)
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,9 +13,9 @@
     <h3>Github</h3>
     <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
-    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName)}>Back to @repoName</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}>Back to @repoName</a>
     <hr>
-    <h1>@repoName@path contents:</h1>
+    <h1>@repoName/@path contents:</h1>
 
     <section>
         <p>-----------------------</p>
@@ -23,6 +23,7 @@
         <p>-----------------------</p>
     </section>
 
+    <a href=@{controllers.routes.HomeController.openUpdateFilePage(username, repoName, path)}>Update file</a>
 
 </body>
 </html>

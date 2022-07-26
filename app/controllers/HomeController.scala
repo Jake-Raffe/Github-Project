@@ -6,6 +6,7 @@ import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, R
 import services.GithubService
 import forms.FormController
 
+import java.net.URLEncoder
 import javax.inject._
 import scala.concurrent.{ExecutionContext, Future}
 import scala.sys.env
@@ -36,54 +37,71 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
     }
   }
 
-  def getUserRepositoryContents(username: String, repoName: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    githubService.getRepoContents(username, repoName).map {
-      case Right(contents) => Ok(views.html.userRepoContentsPage(username,repoName,contents))
+  def getUserRepositoryContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    githubService.getRepoContents(username, repoName, path).map {
+      case Right(contents) => Ok(views.html.userRepoContentsPage(username,repoName,path)(contents))
       case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
 
-  def getUserRepositoryContentsPath(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    githubService.getRepoContentsPath(username, repoName, path).map {
-      case Right(contents) => Ok(views.html.userRepoContentsPathPage(username)(repoName)(path)(contents))
-      case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
-    }
-  }
+//  def getUserRepositoryContentsPath(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+//    githubService.getRepoContentsPath(username, repoName, path).map {
+//      case Right(contents) => Ok(views.html.userRepoContentsPathPage(username)(repoName)(path)(contents))
+//      case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
+//    }
+//  }
 
   def getFileContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     githubService.getFileContents(username, repoName, path).map {
-      case Right(fileContent) => Ok(views.html.fileContentPage(username)(repoName)(path)(fileContent))
+      case Right(fileContent) => Ok(views.html.fileContentPage(username, repoName, path)(fileContent))
       case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
 
   def openNewFilePage(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    println("----------------------" + env.getOrElse("AUTH_TOKEN", "empty")
-//      .map {
-//      case Some(token: String) => token.toString
-//      case None => "empty"
-//    }
-    )
-    Future.successful(Ok(views.html.createNewFilePage(username, repoName, path)("create")(FileForm.fileForm)))
+    Future.successful(Ok(views.html.createNewFilePage(username, repoName, path, "")("create")(FileForm.fileForm)))
   }
 
-  def createNewFile(username: String, repoName: String, path: String): Action[JsValue] = Action.async(parse.json) { implicit request: Request[JsValue] =>
+  def openUpdateFilePage(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    githubService.getExistingFileForUpdating(username, repoName, path).map {
+      case Right(existingFile) => Ok(views.html.createNewFilePage(username, repoName, path, existingFile.sha)("update")(FileForm.fileForm.fill(FileForm(existingFile.fileName, existingFile.content))))
+      case Left(error) => Ok(views.html.notFound(s"$username/$repoName file for updating")(s"${error.httpResponseStatus}: ${error.reason}"))
+    }
+  }
 
-
+  def createNewFile(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    println("--------------createNewFile------------")
     FileForm.fileForm.bindFromRequest.fold(
       formWithErrors => {
-        Future(BadRequest(views.html.notFound(s"$username/$repoName contents")(s"${formWithErrors.errors.toString()}")))
+        println(s"--------------Error: ${formWithErrors.errors.toString()} ------------")
+        Future(Ok(views.html.createNewFilePage(username, repoName, path, "")("create")(formWithErrors)))
       },
       outputFile => {
+        println(s"--------------Folded: $outputFile, ${outputFile.fileName}, ${outputFile.fileContent} ------------")
         githubService.createNewFile(username, repoName, path, outputFile.fileName, outputFile.fileContent).map {
-          case Right(value) => Redirect(controllers.routes.HomeController.getUserRepositoryContents(username, repoName))
+          case Right(value) => Redirect(controllers.routes.HomeController.getUserRepositoryContents(username, repoName, path))
           case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
         }
       }
     )
   }
 
-//  def updateFile(username: String, repoName: String, path: String, fileName: String, fileContent: String): Action[AnyContent] = Action.async(parse.json) {
-//    implicit request: Request[JsValue] =>
-//      val originalForm = newFileForm.createdFileForm.
+
+  def updateFile(username: String, repoName: String, path: String, sha: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    println("--------------updating file------------")
+    FileForm.fileForm.bindFromRequest.fold(
+      formWithErrors => {
+        println(s"--------------Error: ${formWithErrors.errors.toString()} ------------")
+        Future(Ok(views.html.createNewFilePage(username, repoName, path, sha)("update")(formWithErrors)))
+      },
+      outputFile => {
+        println(s"--------------Folded: $outputFile, ${outputFile.fileName}, ${outputFile.fileContent} ------------")
+        githubService.updateFile(username, repoName, path, outputFile.fileName, outputFile.fileContent, sha).map {
+          case Right(value) => Redirect(controllers.routes.HomeController.getFileContents(username, repoName, path))
+          case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
+        }
+      }
+    )
+  }
 }
+

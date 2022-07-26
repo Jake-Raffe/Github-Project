@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 21 14:56:05 BST 2022
+// @DATE:Tue Jul 26 10:43:05 BST 2022
 
 package controllers;
 

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Thu Jul 21 14:56:05 BST 2022
+// @DATE:Tue Jul 26 10:43:05 BST 2022
 
 package router
 
@@ -52,11 +52,12 @@ class Routes(
     ("""DELETE""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/""" + "$" + """username<[^/]+>""", """controllers.ApplicationController.delete(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>""", """controllers.HomeController.getUser(username:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/users/""" + "$" + """username<[^/]+>/repos""", """controllers.HomeController.getUserRepositories(username:String)"""),
-    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String)"""),
-    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>""", """controllers.HomeController.getUserRepositoryContentsPath(username:String, repoName:String, path:String)"""),
-    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/open""", """controllers.HomeController.getFileContents(username:String, repoName:String, path:String)"""),
-    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/new""", """controllers.HomeController.openNewFilePage(username:String, repoName:String, path:String)"""),
-    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/new""", """controllers.HomeController.createNewFile(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>""", """controllers.HomeController.getUserRepositoryContents(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/open""", """controllers.HomeController.getFileContents(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/new""", """controllers.HomeController.openNewFilePage(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/update""", """controllers.HomeController.openUpdateFilePage(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/create/""" + "$" + """path<[^/]+>""", """controllers.HomeController.createNewFile(username:String, repoName:String, path:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/update/""" + "$" + """path<[^/]+>/""" + "$" + """sha<[^/]+>/file""", """controllers.HomeController.updateFile(username:String, repoName:String, path:String, sha:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -228,45 +229,27 @@ class Routes(
 
   // @LINE:16
   private[this] lazy val controllers_HomeController_getUserRepositoryContents9_route = Route("GET",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents")))
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/"), DynamicPart("path", """[^/]+""",true)))
   )
   private[this] lazy val controllers_HomeController_getUserRepositoryContents9_invoker = createInvoker(
-    HomeController_2.getUserRepositoryContents(fakeValue[String], fakeValue[String]),
+    HomeController_2.getUserRepositoryContents(fakeValue[String], fakeValue[String], fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
       "controllers.HomeController",
       "getUserRepositoryContents",
-      Seq(classOf[String], classOf[String]),
+      Seq(classOf[String], classOf[String], classOf[String]),
       "GET",
-      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>""",
       """""",
       Seq()
     )
   )
 
   // @LINE:17
-  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath10_route = Route("GET",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true)))
+  private[this] lazy val controllers_HomeController_getFileContents10_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/"), DynamicPart("path", """[^/]+""",true), StaticPart("/open")))
   )
-  private[this] lazy val controllers_HomeController_getUserRepositoryContentsPath10_invoker = createInvoker(
-    HomeController_2.getUserRepositoryContentsPath(fakeValue[String], fakeValue[String], fakeValue[String]),
-    play.api.routing.HandlerDef(this.getClass.getClassLoader,
-      "router",
-      "controllers.HomeController",
-      "getUserRepositoryContentsPath",
-      Seq(classOf[String], classOf[String], classOf[String]),
-      "GET",
-      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>""",
-      """""",
-      Seq()
-    )
-  )
-
-  // @LINE:18
-  private[this] lazy val controllers_HomeController_getFileContents11_route = Route("GET",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true), StaticPart("/open")))
-  )
-  private[this] lazy val controllers_HomeController_getFileContents11_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_getFileContents10_invoker = createInvoker(
     HomeController_2.getFileContents(fakeValue[String], fakeValue[String], fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -274,17 +257,17 @@ class Routes(
       "getFileContents",
       Seq(classOf[String], classOf[String], classOf[String]),
       "GET",
-      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/open""",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/open""",
       """""",
       Seq()
     )
   )
 
-  // @LINE:20
-  private[this] lazy val controllers_HomeController_openNewFilePage12_route = Route("GET",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/new")))
+  // @LINE:19
+  private[this] lazy val controllers_HomeController_openNewFilePage11_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/"), DynamicPart("path", """[^/]+""",true), StaticPart("/new")))
   )
-  private[this] lazy val controllers_HomeController_openNewFilePage12_invoker = createInvoker(
+  private[this] lazy val controllers_HomeController_openNewFilePage11_invoker = createInvoker(
     HomeController_2.openNewFilePage(fakeValue[String], fakeValue[String], fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -292,15 +275,33 @@ class Routes(
       "openNewFilePage",
       Seq(classOf[String], classOf[String], classOf[String]),
       "GET",
-      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/new""",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/new""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:20
+  private[this] lazy val controllers_HomeController_openUpdateFilePage12_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/"), DynamicPart("path", """[^/]+""",true), StaticPart("/update")))
+  )
+  private[this] lazy val controllers_HomeController_openUpdateFilePage12_invoker = createInvoker(
+    HomeController_2.openUpdateFilePage(fakeValue[String], fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "openUpdateFilePage",
+      Seq(classOf[String], classOf[String], classOf[String]),
+      "GET",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/update""",
       """""",
       Seq()
     )
   )
 
   // @LINE:22
-  private[this] lazy val controllers_HomeController_createNewFile13_route = Route("POST",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents"), DynamicPart("path", """[^/]+""",true), StaticPart("/new")))
+  private[this] lazy val controllers_HomeController_createNewFile13_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/create/"), DynamicPart("path", """[^/]+""",true)))
   )
   private[this] lazy val controllers_HomeController_createNewFile13_invoker = createInvoker(
     HomeController_2.createNewFile(fakeValue[String], fakeValue[String], fakeValue[String]),
@@ -309,8 +310,26 @@ class Routes(
       "controllers.HomeController",
       "createNewFile",
       Seq(classOf[String], classOf[String], classOf[String]),
-      "POST",
-      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents""" + "$" + """path<[^/]+>/new""",
+      "GET",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/create/""" + "$" + """path<[^/]+>""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:23
+  private[this] lazy val controllers_HomeController_updateFile14_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/update/"), DynamicPart("path", """[^/]+""",true), StaticPart("/"), DynamicPart("sha", """[^/]+""",true), StaticPart("/file")))
+  )
+  private[this] lazy val controllers_HomeController_updateFile14_invoker = createInvoker(
+    HomeController_2.updateFile(fakeValue[String], fakeValue[String], fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "updateFile",
+      Seq(classOf[String], classOf[String], classOf[String], classOf[String]),
+      "GET",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/update/""" + "$" + """path<[^/]+>/""" + "$" + """sha<[^/]+>/file""",
       """""",
       Seq()
     )
@@ -375,32 +394,38 @@ class Routes(
   
     // @LINE:16
     case controllers_HomeController_getUserRepositoryContents9_route(params@_) =>
-      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None)) { (username, repoName) =>
-        controllers_HomeController_getUserRepositoryContents9_invoker.call(HomeController_2.getUserRepositoryContents(username, repoName))
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
+        controllers_HomeController_getUserRepositoryContents9_invoker.call(HomeController_2.getUserRepositoryContents(username, repoName, path))
       }
   
     // @LINE:17
-    case controllers_HomeController_getUserRepositoryContentsPath10_route(params@_) =>
+    case controllers_HomeController_getFileContents10_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
-        controllers_HomeController_getUserRepositoryContentsPath10_invoker.call(HomeController_2.getUserRepositoryContentsPath(username, repoName, path))
+        controllers_HomeController_getFileContents10_invoker.call(HomeController_2.getFileContents(username, repoName, path))
       }
   
-    // @LINE:18
-    case controllers_HomeController_getFileContents11_route(params@_) =>
+    // @LINE:19
+    case controllers_HomeController_openNewFilePage11_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
-        controllers_HomeController_getFileContents11_invoker.call(HomeController_2.getFileContents(username, repoName, path))
+        controllers_HomeController_openNewFilePage11_invoker.call(HomeController_2.openNewFilePage(username, repoName, path))
       }
   
     // @LINE:20
-    case controllers_HomeController_openNewFilePage12_route(params@_) =>
-      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromQuery[String]("path", None)) { (username, repoName, path) =>
-        controllers_HomeController_openNewFilePage12_invoker.call(HomeController_2.openNewFilePage(username, repoName, path))
+    case controllers_HomeController_openUpdateFilePage12_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
+        controllers_HomeController_openUpdateFilePage12_invoker.call(HomeController_2.openUpdateFilePage(username, repoName, path))
       }
   
     // @LINE:22
     case controllers_HomeController_createNewFile13_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None)) { (username, repoName, path) =>
         controllers_HomeController_createNewFile13_invoker.call(HomeController_2.createNewFile(username, repoName, path))
+      }
+  
+    // @LINE:23
+    case controllers_HomeController_updateFile14_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None), params.fromPath[String]("sha", None)) { (username, repoName, path, sha) =>
+        controllers_HomeController_updateFile14_invoker.call(HomeController_2.updateFile(username, repoName, path, sha))
       }
   }
 }

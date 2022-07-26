@@ -1,4 +1,7 @@
-[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/connectors/GithubConnector.scala:99:40: unreachable code[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/connectors/GithubConnector.scala:97:40: unreachable code[0m
 [0m[[0m[33mwarn[0m] [0m[0m      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to create new file"))[0m
 [0m[[0m[33mwarn[0m] [0m[0m                                       ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mone warning found[0m
+[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/connectors/GithubConnector.scala:114:40: unreachable code[0m
+[0m[[0m[33mwarn[0m] [0m[0m      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to update file"))[0m
+[0m[[0m[33mwarn[0m] [0m[0m                                       ^[0m
+[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m

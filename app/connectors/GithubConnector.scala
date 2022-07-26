@@ -1,7 +1,7 @@
 package connectors
 
 import akka.http.scaladsl.model.{HttpHeader, HttpMethods, HttpRequest, Uri}
-import models.{APIError, Content, CreatedFile, FileContent, Repository, User}
+import models.{APIError, Content, CreatedFile, ExistingFile, FileContent, FileForm, Repository, UpdatedFile, User}
 import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, JsValue, Json, OFormat}
 import play.api.libs.ws.{WSAuthScheme, WSClient, WSResponse}
 import play.api.mvc.Headers
@@ -17,8 +17,8 @@ class GithubConnector @Inject()(ws: WSClient) {
 
   import GithubConnector._
 
-  def getUser[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, User]] = {
-    val request = ws.url(url).get()
+  def getUser[Response](username: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, User]] = {
+    val request = ws.url(s"https://api.github.com/users/${username}").get()
     request.map {
       result =>
         val gitUser = result.json
@@ -36,8 +36,8 @@ class GithubConnector @Inject()(ws: WSClient) {
       }
   }
 
-  def getRepoList[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Repository]]] = {
-    val request = ws.url(url).get()
+  def getRepoList[Response](username: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Repository]]] = {
+    val request = ws.url(s"https://api.github.com/users/${username}/repos").get()
     request.map {
       result =>
         val repoList = result.json
@@ -48,32 +48,21 @@ class GithubConnector @Inject()(ws: WSClient) {
     }
   }
 
-  def getRepoContent[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Content]]] = {
-    val request = ws.url(url).get()
+  def getRepoContent[Response](username: String, repoName: String, path: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Content]]] = {
+    val optionalPath = if (path.equals("/")) "/" else s"/$path"
+    val request = ws.url(s"https://api.github.com/repos/${username}/${repoName}/contents$optionalPath").get()
     request.map {
       result =>
         val repoContents = result.json
         repoContents.validate[List[Content]] match {
-          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`)))
+          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`, content.path)))
           case JsError(errors) => Left(APIError.BadAPIResponse(400, "Unable to validate content in repository"))
         }
     }
   }
 
-  def getRepoContentDeeper[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Content]]] = {
-    val request = ws.url(url).get()
-    request.map {
-      result =>
-        val repoContents = result.json
-        repoContents.validate[List[Content]] match {
-          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`)))
-          case JsError(errors) => Left(APIError.BadAPIResponse(400, "Unable to validate content in repository, this is the deeper level one"))
-        }
-    }
-  }
-
-  def getFileContents[Response](url: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
-    val request = ws.url(url).get()
+  def getFileContents[Response](username: String, repoName: String, path: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+    val request = ws.url(s"https://api.github.com/repos/${username}/${repoName}/contents/$path").get()
     request.map {
       result => Right(parseFileContents(result.json))
     }
@@ -82,21 +71,47 @@ class GithubConnector @Inject()(ws: WSClient) {
           Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))
       }
   }
+  def getFileNameContentsSha[Response](username: String, repoName: String, path: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, ExistingFile]] = {
+    val request = ws.url(s"https://api.github.com/repos/${username}/${repoName}/contents/$path").get()
+    request.map {
+      result => Right(parseFileNameContentsSha(result.json))
+      }
+      .recover {
+        case _ =>
+          Left(APIError.BadAPIResponse(400, "Unable to return file sha at connector"))
+      }
+  }
 
   def createNewFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
-    val url = s"https://api.github.com/repos/${username}/${repoName}/contents$path/$fileName"
+    val url = s"https://api.github.com/repos/${username}/${repoName}/contents/$path/$fileName"
+    println(url)
     val authentication = env.getOrElse("AUTH_TOKEN", "empty")
-    val createdFile = new CreatedFile(s"Created new file: $fileName", encodedContent, "main")
-    val jsonFile = Json.toJsObject(createdFile)
+    val createdFile = CreatedFile(s"Created new file: $fileName", encodedContent, "main")
+    val jsonFile = Json.toJson(createdFile)
     val request = ws.url(url)
-      .withHttpHeaders("Accept" -> "application/json")
-      .withAuth("Jake-Raffe", authentication
-//        .getOrElse("missing token")
-        , WSAuthScheme.BASIC)
-      .post(jsonFile)
-    request.map {
-      case response: WSResponse => Right("success")
+      .withHttpHeaders("Authorization" -> s"token $authentication")
+      .withHttpHeaders("Accept" -> "application/vnd.github+json")
+    println(s"----- url: ${request.method}")
+    request.put(jsonFile).map {
+      case response: WSResponse => Right({println("--------- this is the response: " +response); "success"})
       case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to create new file"))
+      case _ => Left(APIError.BadAPIResponse(400, "Other output"))
+    }
+  }
+
+  def updateFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String, sha: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+    val url = s"https://api.github.com/repos/${username}/${repoName}/contents/$path"
+    println(url)
+    val authentication = env.getOrElse("AUTH_TOKEN", "empty")
+    val updatedFile = UpdatedFile(s"Updated file: $fileName", encodedContent, sha, "main")
+    val jsonFile = Json.toJsObject(updatedFile)
+    val request = ws.url(url)
+      .withHttpHeaders("Authorization" -> s"token $authentication")
+      .withHttpHeaders("Accept" -> "application/vnd.github+json")
+      .put(jsonFile)
+    request.map {
+      case response: WSResponse => Right({println("--------- this is the response: " +response); "success"})
+      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to update file"))
       case _ => Left(APIError.BadAPIResponse(400, "Other output"))
     }
   }
@@ -107,5 +122,11 @@ object GithubConnector {
   def parseFileContents(response: JsValue): String = {
     val output = (response \ "content").as[String]
     output
+  }
+  def parseFileNameContentsSha(response: JsValue): ExistingFile = {
+    val fileName = (response \ "name").as[String]
+    val contents = (response \ "content").as[String]
+    val sha = (response \ "sha").as[String]
+    ExistingFile(fileName, contents, sha)
   }
 }

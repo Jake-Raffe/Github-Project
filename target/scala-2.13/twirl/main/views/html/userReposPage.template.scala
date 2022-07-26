@@ -41,7 +41,7 @@ Seq[Any](format.raw/*3.1*/("""
         """),_display_(/*17.10*/repoList/*17.18*/.map/*17.22*/ { repo =>_display_(Seq[Any](format.raw/*17.32*/("""
             """),format.raw/*18.13*/("""<element>
                 <h3>"""),_display_(/*19.22*/repo/*19.26*/.name),format.raw/*19.31*/("""</h3>
-                <a href="""),_display_(/*20.26*/controllers/*20.37*/.routes.HomeController.getUserRepositoryContents(username, repo.name)),format.raw/*20.106*/(""">Open contents</a>
+                <a href="""),_display_(/*20.26*/controllers/*20.37*/.routes.HomeController.getUserRepositoryContents(username, repo.name, "/")),format.raw/*20.111*/(""">Open contents</a>
             </element>
             <p>-----------------------</p>
         """)))}),format.raw/*23.10*/("""
@@ -66,10 +66,10 @@ Seq[Any](format.raw/*3.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-15T10:49:52.456862
+                  DATE: 2022-07-26T10:49:54.203123
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userReposPage.scala.html
-                  HASH: 651f158e322d16b67ec78b977150e5d2dd0e98df
-                  MATRIX: 432->1|793->34|933->81|960->82|1038->134|1066->142|1094->143|1191->213|1265->266|1302->276|1331->284|1381->307|1410->315|1521->399|1538->407|1551->411|1599->421|1640->434|1698->465|1711->469|1737->474|1795->505|1815->516|1906->585|2031->679|2063->684
+                  HASH: 2776e1473b645975f0d6da0e7839eff1d0270ab0
+                  MATRIX: 432->1|793->34|933->81|960->82|1038->134|1066->142|1094->143|1191->213|1265->266|1302->276|1331->284|1381->307|1410->315|1521->399|1538->407|1551->411|1599->421|1640->434|1698->465|1711->469|1737->474|1795->505|1815->516|1911->590|2036->684|2068->689
                   LINES: 17->1|22->2|27->3|28->4|31->7|31->7|31->7|36->12|36->12|36->12|36->12|38->14|38->14|41->17|41->17|41->17|41->17|42->18|43->19|43->19|43->19|44->20|44->20|44->20|47->23|48->24
                   -- GENERATED --
               */

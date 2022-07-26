@@ -18,23 +18,24 @@ import play.api.data._
 /*3.2*/import helper._
 /*4.2*/import play.api.data.Form
 /*5.2*/import play.api.data.Forms._
+/*6.2*/import java.net.URLEncoder
 
-object createNewFilePage extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template6[String,String,String,String,Form[FileForm],Messages,play.twirl.api.HtmlFormat.Appendable] {
+object createNewFilePage extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.HtmlFormat.Appendable,_root_.play.twirl.api.Format[play.twirl.api.HtmlFormat.Appendable]](play.twirl.api.HtmlFormat) with _root_.play.twirl.api.Template7[String,String,String,String,String,Form[FileForm],Messages,play.twirl.api.HtmlFormat.Appendable] {
 
   /**/
-  def apply/*7.2*/(username: String, repoName: String, path: String)(purpose: String)(fileForm: Form[FileForm])(implicit messages: Messages):play.twirl.api.HtmlFormat.Appendable = {
+  def apply/*8.2*/(username: String, repoName: String, path: String, sha: String)(purpose: String)(fileForm: Form[FileForm])(implicit messages: Messages):play.twirl.api.HtmlFormat.Appendable = {
     _display_ {
       {
 
 
-Seq[Any](format.raw/*8.1*/("""
+Seq[Any](format.raw/*9.1*/("""
 
 
 
-"""),format.raw/*12.1*/("""<!DOCTYPE html>
+"""),format.raw/*13.1*/("""<!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>"""),_display_(/*15.13*/repoName),format.raw/*15.21*/("""</title>
+    <title>"""),_display_(/*16.13*/repoName),format.raw/*16.21*/("""</title>
 
 </head>
 <body>
@@ -44,22 +45,28 @@ Seq[Any](format.raw/*8.1*/("""
         <label for="search">Search username...</label>
         <input type="search" name="search" id="search">
     </form>
-    <a href="""),_display_(/*25.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*25.67*/(""">Back to """),_display_(/*25.77*/username),format.raw/*25.85*/("""</a>
-    <a href="""),_display_(/*26.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*26.79*/(""">Back to Repositories</a>
+    <a href="""),_display_(/*26.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*26.67*/(""">Back to """),_display_(/*26.77*/username),format.raw/*26.85*/("""</a>
+    <a href="""),_display_(/*27.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*27.79*/(""">Back to Repositories</a>
+    <a href="""),_display_(/*28.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}),format.raw/*28.100*/(""">Back to """),_display_(/*28.110*/repoName),format.raw/*28.118*/("""</a>
     <hr>
-    <h1>"""),_display_(/*28.10*/{if (purpose == "create") "Create new file in directory: @repoName@path"
-            else if (purpose == "edit") "Update file: @repoName@path"
+    <h1>"""),_display_(/*30.10*/{if (purpose == "create") s"Create new file in directory: $repoName/$path"
+            else if (purpose == "update") s"Update file: $repoName"
             else "How did you get here?"
-        }),format.raw/*31.10*/("""
-    """),format.raw/*32.5*/("""</h1>
+        }),format.raw/*33.10*/("""
+    """),format.raw/*34.5*/("""</h1>
 
     <section>
-        """),_display_(/*35.10*/form(action = controllers.routes.HomeController.createNewFile(username, repoName, ""))/*35.96*/ {_display_(Seq[Any](format.raw/*35.98*/("""
-            """),_display_(/*36.14*/inputText(fileForm("fileName"))),format.raw/*36.45*/("""
-            """),_display_(/*37.14*/inputText(fileForm("fileContent"))),format.raw/*37.48*/("""
-            """),format.raw/*38.13*/("""<input type="submit" value="Submit">
-        """)))}),format.raw/*39.10*/("""
-    """),format.raw/*40.5*/("""</section>
+        """),_display_(/*37.10*/form(action = {
+                            if (purpose == "create") controllers.routes.HomeController.createNewFile(username, repoName, path)
+                            else if (purpose == "update") controllers.routes.HomeController.updateFile(username, repoName, path, sha)
+                            else controllers.routes.HomeController.getUser(username)
+                        }
+        )/*42.10*/ {_display_(Seq[Any](format.raw/*42.12*/("""
+            """),_display_(/*43.14*/inputText(fileForm("fileName"))),format.raw/*43.45*/("""
+            """),_display_(/*44.14*/textarea(fileForm("fileContent"))),format.raw/*44.47*/("""
+            """),format.raw/*45.13*/("""<input type="submit" value="Submit">
+        """)))}),format.raw/*46.10*/("""
+    """),format.raw/*47.5*/("""</section>
 
 </body>
 </html>
@@ -68,9 +75,9 @@ Seq[Any](format.raw/*8.1*/("""
     }
   }
 
-  def render(username:String,repoName:String,path:String,purpose:String,fileForm:Form[FileForm],messages:Messages): play.twirl.api.HtmlFormat.Appendable = apply(username,repoName,path)(purpose)(fileForm)(messages)
+  def render(username:String,repoName:String,path:String,sha:String,purpose:String,fileForm:Form[FileForm],messages:Messages): play.twirl.api.HtmlFormat.Appendable = apply(username,repoName,path,sha)(purpose)(fileForm)(messages)
 
-  def f:((String,String,String) => (String) => (Form[FileForm]) => (Messages) => play.twirl.api.HtmlFormat.Appendable) = (username,repoName,path) => (purpose) => (fileForm) => (messages) => apply(username,repoName,path)(purpose)(fileForm)(messages)
+  def f:((String,String,String,String) => (String) => (Form[FileForm]) => (Messages) => play.twirl.api.HtmlFormat.Appendable) = (username,repoName,path,sha) => (purpose) => (fileForm) => (messages) => apply(username,repoName,path,sha)(purpose)(fileForm)(messages)
 
   def ref: this.type = this
 
@@ -79,11 +86,11 @@ Seq[Any](format.raw/*8.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-21T12:23:53.689093
+                  DATE: 2022-07-26T10:50:10.813650
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/createNewFilePage.scala.html
-                  HASH: a1403e1ab471546ba995badf3ce96692159c7257
-                  MATRIX: 432->1|491->55|514->72|547->99|937->130|1153->253|1184->257|1263->309|1292->317|1512->510|1586->563|1623->573|1652->581|1697->599|1783->664|1854->708|2068->901|2100->906|2157->936|2252->1022|2292->1024|2333->1038|2385->1069|2426->1083|2481->1117|2522->1130|2599->1176|2631->1181
-                  LINES: 17->1|18->3|19->4|20->5|25->7|30->8|34->12|37->15|37->15|47->25|47->25|47->25|47->25|48->26|48->26|50->28|53->31|54->32|57->35|57->35|57->35|58->36|58->36|59->37|59->37|60->38|61->39|62->40
+                  HASH: 03795a8e49e13f83f0ba0636faa7ea130657e41d
+                  MATRIX: 432->1|491->55|514->72|547->99|583->129|978->158|1207->294|1238->298|1317->350|1346->358|1566->551|1640->604|1677->614|1706->622|1751->640|1837->705|1903->744|2011->830|2049->840|2079->848|2129->871|2343->1064|2375->1069|2432->1099|2838->1496|2878->1498|2919->1512|2971->1543|3012->1557|3066->1590|3107->1603|3184->1649|3216->1654
+                  LINES: 17->1|18->3|19->4|20->5|21->6|26->8|31->9|35->13|38->16|38->16|48->26|48->26|48->26|48->26|49->27|49->27|50->28|50->28|50->28|50->28|52->30|55->33|56->34|59->37|64->42|64->42|65->43|65->43|66->44|66->44|67->45|68->46|69->47
                   -- GENERATED --
               */
           

@@ -5,10 +5,12 @@ import com.google.common.io.BaseEncoding.base64
 import connectors.GithubConnector
 import models.APIError.BadAPIResponse
 import models.Content.formats
-import models.{APIError, Content, FileContent, Repository, User}
+import models.{APIError, Content, ExistingFile, FileContent, FileForm, Repository, User}
 import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, Json}
 import play.api.mvc.Request
 import repositories.DataRepository
+
+import scala.sys.env
 //import sun.misc.BASE64Decoder
 import java.nio.ByteBuffer
 
@@ -22,31 +24,29 @@ class GithubService @Inject()(connector: GithubConnector){
 import GithubService._
 
   def getUser(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, User]] =
-    connector.getUser[User](s"https://api.github.com/users/${username}")
+    connector.getUser[User](username)
 
   def getUserRepo(username: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Repository]]] =
-    connector.getRepoList[Repository](s"https://api.github.com/users/${username}/repos")
+    connector.getRepoList[Repository](username)
 
-  def getRepoContents(username: String, repoName: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
-    connector.getRepoContent[Content](s"https://api.github.com/repos/${username}/${repoName}/contents")
-
-  def getRepoContentsPath(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
-    connector.getRepoContentDeeper[Content](s"https://api.github.com/repos/${username}/${repoName}/contents$path")
+  def getRepoContents(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, List[Content]]] =
+    connector.getRepoContent[Content](username, repoName, path)
 
   def getFileContents(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, String]] = {
-    connector.getFileContents[FileContent](s"https://api.github.com/repos/${username}/${repoName}/contents$path").map{
+    connector.getFileContents[FileContent](username, repoName, path).map{
       case Right(encoded) => {
         val decodedContent = decodeBase64(encoded)
-//        println("------> " + byteArray)
-//        val correctedArray = byteArray
-//          .map {
-//          case '-' => '+'
-//          case '_' => '/'
-//          case c => c
-//          }
-//          .map(item => item.toByte)
-//        println("------> " + correctedArray.toString)
         Right(decodedContent)
+      }
+      case Left(err) => Left(err)
+    }
+  }
+
+  def getExistingFileForUpdating(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, ExistingFile]] = {
+    connector.getFileNameContentsSha[ExistingFile](username, repoName, path).map {
+      case Right(existingFile) => {
+        val decodedContent = decodeBase64(existingFile.content)
+        Right(ExistingFile(existingFile.fileName, decodedContent, existingFile.sha))
       }
       case Left(err) => Left(err)
     }
@@ -54,28 +54,20 @@ import GithubService._
 
   def createNewFile(username: String, repoName: String, path: String, fileName: String, fileContent: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
     val encodedContent = encodeBase64(fileContent)
+    val newPath = path.replace("%2F", "/")
     connector.createNewFile(username, repoName, path, fileName, encodedContent) map {
       case Right(string: String) => Right(string)
       case Left(error: APIError) => Left(error)
     }
   }
 
-//  def updateFile(username: String, repoName: String, path: String, fileName: String, fileContent: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
-//    connector.getFileContents[FileContent](s"https://api.github.com/repos/${username}/${repoName}/contents$path").map{
-//      case Right(encoded) => {
-//        val decodedContent = decodeBase64(encoded)
-//        Right(decodedContent)
-//      }
-//      case Left(err) => Left(err)
-//
-//    val encodedContent = encodeBase64(fileContent)
-//    connector.createNewFile(username, repoName, path, fileName, encodedContent) map {
-//      case Right(string: String) => Right(string)
-//      case Left(error: APIError) => Left(error)
-//    }
-//  }
-
-
+  def updateFile(username: String, repoName: String, path: String, fileName: String, fileContent: String, sha: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
+    val encodedContent = encodeBase64(fileContent)
+    connector.updateFile(username, repoName, path, fileName, encodedContent, sha) map {
+      case Right(string: String) => Right(string)
+      case Left(error: APIError) => Left(error)
+    }
+  }
 
 }
 

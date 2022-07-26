@@ -1,18 +1,12 @@
-@import models.{User,Content, FormFile}
-@(username: String, repoName: String, contents: List[Content])(fileForm: Form[FileForm], implicit request: Messages)
-
-@submitForm() = {
-println("--------------------" + request)
-    controllers.routes.HomeController.createNewFile(username, repoName, "")
-}
-
+@import models.{User,Content}
 @import helper._
+@(username: String, repoName: String, path: String)(contents: List[Content])
 
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>@repoName</title>
+    <title>@repoName@path</title>
 
 </head>
 <body>
@@ -20,8 +14,9 @@ println("--------------------" + request)
     <h3>Github</h3>
     <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "")}>Back to @repoName</a>
     <hr>
-    <h1>@repoName contents:</h1>
+    <h1>@repoName/@path contents:</h1>
 
     <section>
         <p>-----------------------</p>
@@ -32,35 +27,20 @@ println("--------------------" + request)
 
                 <a href=@{
                    if (file.`type`.contains("dir"))
-                        controllers.routes.HomeController.getUserRepositoryContentsPath(username, repoName, s"/${file.name}")
+                        controllers.routes.HomeController.getUserRepositoryContents(username, repoName, file.path)
                    else if (file.`type`.contains("file"))
-                        controllers.routes.HomeController.getFileContents(username, repoName, s"/${file.name}")
+                        controllers.routes.HomeController.getFileContents(username, repoName, file.path)
                 }>
-                    @{ if (file.`type`.contains("dir")) "Open folder" else if(file.`type`.contains("file")) "Open file" else "Open"}
+                    @{ if (file.`type`.contains("dir")) "Open folder"
+                        else if(file.`type`.contains("file")) "Open file"
+                        else "Open"}
                 </a>
             </element>
             <p>-----------------------</p>
         }
     </section>
-    @*
-    <a href=@{controllers.routes.HomeController.openNewFilePage(username, repoName, "")}>Create new file</a>
-    *@
 
-    <section>
-        <form action=@{controllers.routes.HomeController.createNewFile(username, repoName, "")} method="GET">
-            <label for="fileName">File name:</label><br>
-            <input type="text" required id="fileName" name="fileName"><br>
-            <label for="fileContent">File content:</label><br>
-            <input type="text" id="fileContent" name="fileContent"><br><br>
-            <input type="submit" value="Create file">
-            <input type="reset" value="Clear contents">
-        </form>
-    </section>
-    @helper.form(action = controllers.routes.HomeController.createNewFile(username, repoName, "")) {
-        @helper.inputText(fileForm("fileName"))
-        @helper.inputText(fileForm("fileContent"))
-        <input type="submit" value="Submit">
-    }
+    <a href=@{controllers.routes.HomeController.openNewFilePage(username, repoName, path)}>Create new file</a>
 
 </body>
 </html>

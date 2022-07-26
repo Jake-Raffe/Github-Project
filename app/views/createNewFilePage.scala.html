@@ -3,8 +3,9 @@
 @import helper._
 @import play.api.data.Form
 @import play.api.data.Forms._
+@import java.net.URLEncoder
 
-@(username: String, repoName: String, path: String)(purpose: String)(fileForm: Form[FileForm])(implicit messages: Messages)
+@(username: String, repoName: String, path: String, sha: String)(purpose: String)(fileForm: Form[FileForm])(implicit messages: Messages)
 
 
 
@@ -24,17 +25,23 @@
     </form>
     <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}>Back to @repoName</a>
     <hr>
-    <h1>@{if (purpose == "create") "Create new file in directory: @repoName@path"
-            else if (purpose == "edit") "Update file: @repoName@path"
+    <h1>@{if (purpose == "create") s"Create new file in directory: $repoName/$path"
+            else if (purpose == "update") s"Update file: $repoName"
             else "How did you get here?"
         }
     </h1>
 
     <section>
-        @form(action = controllers.routes.HomeController.createNewFile(username, repoName, "")) {
+        @form(action = {
+                            if (purpose == "create") controllers.routes.HomeController.createNewFile(username, repoName, path)
+                            else if (purpose == "update") controllers.routes.HomeController.updateFile(username, repoName, path, sha)
+                            else controllers.routes.HomeController.getUser(username)
+                        }
+        ) {
             @inputText(fileForm("fileName"))
-            @inputText(fileForm("fileContent"))
+            @textarea(fileForm("fileContent"))
             <input type="submit" value="Submit">
         }
     </section>

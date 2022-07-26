@@ -1,9 +1,13 @@
-@import models.{User,Content, CreatedFile, FormFile}
-@(username: String, repoName: String, path: String)
+@import models.{User,Content, CreatedFile, FileForm}
 
-@submitForm() = {
-    controllers.routes.HomeController.createNewFile(username, repoName, "")
-}
+@import helper._
+@import play.api.data.Form
+@import play.api.data.Forms._
+@import java.net.URLEncoder
+
+@(username: String, repoName: String, path: String)(purpose: String)(fileForm: Form[FileForm])(implicit messages: Messages)
+
+
 
 
 <!DOCTYPE html>
@@ -21,18 +25,20 @@
     </form>
     <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "")}>Back to @repoName</a>
     <hr>
-    <h1>Create new file in: @repoName</h1>
+    <h1>@{if (purpose == "create") s"Create new file in directory: $repoName/$path"
+            else if (purpose == "edit") "Update file: @repoName"
+            else "How did you get here?"
+        }
+    </h1>
 
     <section>
-        <form action=@{submitForm()}>
-            <label for="fileName">File name:</label><br>
-            <input type="text" required id="fileName" name="fileName"><br>
-            <label for="fileContent">File content:</label><br>
-            <input type="text" id="fileContent" name="fileContent"><br><br>
-            <input type="submit" value="Create file">
-            <input type="reset" value="Clear contents">
-        </form>
+        @form(action = controllers.routes.HomeController.createNewFile(username, repoName, path)) {
+            @inputText(fileForm("fileName"))
+            @textarea(fileForm("fileContent"))
+            <input type="submit" value="Submit">
+        }
     </section>
 
 </body>
