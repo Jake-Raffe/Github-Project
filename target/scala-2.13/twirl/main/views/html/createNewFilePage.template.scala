@@ -47,9 +47,9 @@ Seq[Any](format.raw/*9.1*/("""
     </form>
     <a href="""),_display_(/*26.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*26.67*/(""">Back to """),_display_(/*26.77*/username),format.raw/*26.85*/("""</a>
     <a href="""),_display_(/*27.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*27.79*/(""">Back to Repositories</a>
-    <a href="""),_display_(/*28.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}),format.raw/*28.100*/(""">Back to """),_display_(/*28.110*/repoName),format.raw/*28.118*/("""</a>
+    <a href="""),_display_(/*28.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}),format.raw/*28.112*/(""">Back to """),_display_(/*28.122*/repoName),format.raw/*28.130*/("""</a>
     <hr>
-    <h1>"""),_display_(/*30.10*/{if (purpose == "create") s"Create new file in directory: $repoName/$path"
+    <h1>"""),_display_(/*30.10*/{if (purpose == "create") s"Create new file in directory: $repoName$path"
             else if (purpose == "update") s"Update file: $repoName"
             else "How did you get here?"
         }),format.raw/*33.10*/("""
@@ -86,10 +86,10 @@ Seq[Any](format.raw/*9.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-26T10:50:10.813650
+                  DATE: 2022-07-26T13:54:28.380969
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/createNewFilePage.scala.html
-                  HASH: 03795a8e49e13f83f0ba0636faa7ea130657e41d
-                  MATRIX: 432->1|491->55|514->72|547->99|583->129|978->158|1207->294|1238->298|1317->350|1346->358|1566->551|1640->604|1677->614|1706->622|1751->640|1837->705|1903->744|2011->830|2049->840|2079->848|2129->871|2343->1064|2375->1069|2432->1099|2838->1496|2878->1498|2919->1512|2971->1543|3012->1557|3066->1590|3107->1603|3184->1649|3216->1654
+                  HASH: c919704938a97966c0cff65a2f98bb50c2ce2983
+                  MATRIX: 432->1|491->55|514->72|547->99|583->129|978->158|1207->294|1238->298|1317->350|1346->358|1566->551|1640->604|1677->614|1706->622|1751->640|1837->705|1903->744|2023->842|2061->852|2091->860|2141->883|2354->1075|2386->1080|2443->1110|2849->1507|2889->1509|2930->1523|2982->1554|3023->1568|3077->1601|3118->1614|3195->1660|3227->1665
                   LINES: 17->1|18->3|19->4|20->5|21->6|26->8|31->9|35->13|38->16|38->16|48->26|48->26|48->26|48->26|49->27|49->27|50->28|50->28|50->28|50->28|52->30|55->33|56->34|59->37|64->42|64->42|65->43|65->43|66->44|66->44|67->45|68->46|69->47
                   -- GENERATED --
               */

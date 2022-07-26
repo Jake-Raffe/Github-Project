@@ -2,7 +2,8 @@ package models
 
 import play.api.libs.json.{Json, OFormat}
 
-case class UpdatedFile(message: String, content: String, sha: String, branch: String)
+case class Committer(name: String, email: String)
+case class UpdatedFile(message: String, content: String, sha: String, committer: Committer)
 // path = path
 // message = commit message
 // content == updated file content (Base64 encoded)
@@ -10,4 +11,7 @@ case class UpdatedFile(message: String, content: String, sha: String, branch: St
 // branch = git branch name for commit
 object UpdatedFile {
   implicit val formats: OFormat[UpdatedFile] = Json.format[UpdatedFile]
+}
+object Committer {
+  implicit val formats: OFormat[Committer] = Json.format[Committer]
 }

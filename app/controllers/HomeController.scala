@@ -38,18 +38,12 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def getUserRepositoryContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    githubService.getRepoContents(username, repoName, path).map {
-      case Right(contents) => Ok(views.html.userRepoContentsPage(username,repoName,path)(contents))
-      case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
+    val filteredPath = if (path.equals("repo-contents")) "" else path
+    githubService.getRepoContents(username, repoName, filteredPath).map {
+      case Right(contents) => Ok(views.html.userRepoContentsPage(username,repoName,filteredPath)(contents))
+      case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
-
-//  def getUserRepositoryContentsPath(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-//    githubService.getRepoContentsPath(username, repoName, path).map {
-//      case Right(contents) => Ok(views.html.userRepoContentsPathPage(username)(repoName)(path)(contents))
-//      case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
-//    }
-//  }
 
   def getFileContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     githubService.getFileContents(username, repoName, path).map {
@@ -59,7 +53,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def openNewFilePage(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    Future.successful(Ok(views.html.createNewFilePage(username, repoName, path, "")("create")(FileForm.fileForm)))
+    val filteredPath = if (path.equals("top")) "" else path
+    Future.successful(Ok(views.html.createNewFilePage(username, repoName, filteredPath, "")("create")(FileForm.fileForm)))
   }
 
   def openUpdateFilePage(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
@@ -70,7 +65,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def createNewFile(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    println("--------------createNewFile------------")
+    println("--------------createNewFile------------" + request)
     FileForm.fileForm.bindFromRequest.fold(
       formWithErrors => {
         println(s"--------------Error: ${formWithErrors.errors.toString()} ------------")
@@ -85,7 +80,6 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
       }
     )
   }
-
 
   def updateFile(username: String, repoName: String, path: String, sha: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     println("--------------updating file------------")

@@ -15,7 +15,7 @@
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
     <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}>Back to @repoName</a>
     <hr>
-    <h1>@repoName@path contents:</h1>
+    <h1>@repoName/@path contents:</h1>
 
     <section>
         <p>-----------------------</p>
@@ -23,6 +23,7 @@
         <p>-----------------------</p>
     </section>
 
+    <a href=@{controllers.routes.HomeController.openUpdateFilePage(username, repoName, path)}>Update file</a>
 
 </body>
 </html>

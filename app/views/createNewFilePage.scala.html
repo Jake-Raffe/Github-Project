@@ -25,9 +25,9 @@
     </form>
     <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
-    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}>Back to @repoName</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}>Back to @repoName</a>
     <hr>
-    <h1>@{if (purpose == "create") s"Create new file in directory: $repoName/$path"
+    <h1>@{if (purpose == "create") s"Create new file in directory: $repoName$path"
             else if (purpose == "update") s"Update file: $repoName"
             else "How did you get here?"
         }

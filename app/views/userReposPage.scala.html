@@ -17,7 +17,7 @@
         @repoList.map { repo =>
             <element>
                 <h3>@repo.name</h3>
-                <a href=@controllers.routes.HomeController.getUserRepositoryContents(username, repo.name, "/")>Open contents</a>
+                <a href=@controllers.routes.HomeController.getUserRepositoryContents(username, repo.name, "repo-contents")>Open contents</a>
             </element>
             <p>-----------------------</p>
         }

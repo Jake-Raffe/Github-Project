@@ -34,7 +34,7 @@ Seq[Any](format.raw/*4.1*/("""
 <body>
 
     <p>Unable to find """),_display_(/*13.24*/subject),format.raw/*13.31*/(""", i.e. something went wrong...</p>
-    <p>Fix it then refresh the page, or go back. Cheers</p>
+    <p>Fix it then refresh the page, or go back.</p>
     <hr>
     <br>
     <p>"""),_display_(/*17.9*/error),format.raw/*17.14*/("""</p>
@@ -56,10 +56,10 @@ Seq[Any](format.raw/*4.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-15T10:49:52.533514
+                  DATE: 2022-07-26T13:23:02.002614
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/notFound.scala.html
-                  HASH: ad836160a1f078943bc31eb65fcdc9ff7fef8b03
-                  MATRIX: 432->2|765->22|891->55|918->56|1054->165|1082->172|1229->293|1255->298
+                  HASH: 042dab89fc177d7fdb92b9f840bebc3ad18b8b87
+                  MATRIX: 432->2|765->22|891->55|918->56|1054->165|1082->172|1222->286|1248->291
                   LINES: 17->2|22->3|27->4|28->5|36->13|36->13|40->17|40->17
                   -- GENERATED --
               */

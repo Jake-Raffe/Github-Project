@@ -37,7 +37,7 @@ Seq[Any](format.raw/*5.1*/("""
     <h3>Github</h3>
     <a href="""),_display_(/*14.14*/{controllers.routes.HomeController.getUser(username)}),format.raw/*14.67*/(""">Back to """),_display_(/*14.77*/username),format.raw/*14.85*/("""</a>
     <a href="""),_display_(/*15.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*15.79*/(""">Back to Repositories</a>
-    <a href="""),_display_(/*16.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}),format.raw/*16.100*/(""">Back to """),_display_(/*16.110*/repoName),format.raw/*16.118*/("""</a>
+    <a href="""),_display_(/*16.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}),format.raw/*16.112*/(""">Back to """),_display_(/*16.122*/repoName),format.raw/*16.130*/("""</a>
     <hr>
     <h1>"""),_display_(/*18.10*/repoName),format.raw/*18.18*/("""/"""),_display_(/*18.20*/path),format.raw/*18.24*/(""" """),format.raw/*18.25*/("""contents:</h1>
 
@@ -67,10 +67,10 @@ Seq[Any](format.raw/*5.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-26T10:50:56.722111
+                  DATE: 2022-07-26T13:54:28.369643
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/fileContentPage.scala.html
-                  HASH: a92b772c6385654d6c70235fed1593ae32eb4146
-                  MATRIX: 432->1|484->47|515->72|891->114|1056->186|1083->187|1161->239|1189->248|1213->252|1298->310|1372->363|1409->373|1438->381|1483->399|1569->464|1635->503|1743->589|1781->599|1811->607|1861->630|1890->638|1919->640|1944->644|1973->645|2083->728|2121->745|2223->820|2324->900
+                  HASH: 657063b194166cb4783942a42006fe59f32938db
+                  MATRIX: 432->1|484->47|515->72|891->114|1056->186|1083->187|1161->239|1189->248|1213->252|1298->310|1372->363|1409->373|1438->381|1483->399|1569->464|1635->503|1755->601|1793->611|1823->619|1873->642|1902->650|1931->652|1956->656|1985->657|2095->740|2133->757|2235->832|2336->912
                   LINES: 17->1|18->2|19->3|24->4|29->5|30->6|33->9|33->9|33->9|38->14|38->14|38->14|38->14|39->15|39->15|40->16|40->16|40->16|40->16|42->18|42->18|42->18|42->18|42->18|46->22|46->22|50->26|50->26
                   -- GENERATED --
               */

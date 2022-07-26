@@ -54,8 +54,10 @@ class GithubConnectorSpec extends BaseSpecWithApplication with MockFactory with 
     }
   }
 
-//  "GithubConnector . createNewFile" should {
-//    ""
-//  }
+  "GithubConnector .createNewFile" should {
+    "connect to the api to update the repository - adding the new file to the path location" in {
+
+    }
+  }
 
 }
