@@ -1,12 +1,12 @@
 package connectors
 
 import akka.http.scaladsl.model.{HttpHeader, HttpMethods, HttpRequest, Uri}
-import models.{APIError, Committer, Content, CreatedFile, ExistingFile, FileContent, FileForm, Repository, UpdatedFile, User}
+import models.{APIError, Content, CreatedFile, ExistingFile, FileContent, FileForm, Repository, UpdatedFile, User}
 import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, JsValue, Json, OFormat}
 import play.api.libs.ws.{WSAuthScheme, WSClient, WSResponse}
 import play.api.mvc.Headers
 import play.mvc.BodyParser.Raw
-
+import sys.process._
 import java.util.Base64
 import javax.inject.Inject
 import scala.concurrent.{ExecutionContext, Future}
@@ -82,40 +82,63 @@ class GithubConnector @Inject()(ws: WSClient) {
       }
   }
 
-  def createNewFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
-    val url = s"https://api.github.com/repos/${username}/${repoName}/contents/$path$fileName"
-    println(url + path)
-    val authentication = env.getOrElse("AUTHTOKEN", "empty")
-    val createdFile = CreatedFile(s"Created new file: $fileName", encodedContent, "main")
-    val jsonFile = Json.toJson(createdFile)
-    val request = ws.url(url)
-      .withHttpHeaders("Authorization" -> s"token $authentication")
-      .withHttpHeaders("Accept" -> "application/vnd.github+json")
-    println(s"----- url: ${request.method}")
-    request.put(jsonFile).map {
-      case response: WSResponse => Right({println("--------- this is the response: " +response); "success"})
-      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to create new file"))
-      case _ => Left(APIError.BadAPIResponse(400, "Other output"))
+//  def createNewFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String)(implicit
+//                                                                                                                          rds: OFormat[Response],
+//                                                                                                                          ec: ExecutionContext): Future[Either[APIError, String]] = {
+//    val url = s"https://api.github.com/repos/${username}/${repoName}/contents/$path/$fileName"
+//    println(url + path)
+//    val authentication = env.getOrElse("AUTHTOKEN", "empty")
+//    val createdFile = CreatedFile(s"Created new file: $fileName", encodedContent, "main")
+//    val jsonFile = Json.toJson(createdFile)
+//    val request = ws.url(url)
+//      .withHttpHeaders("Authorization" -> s"token $authentication")
+//      .withHttpHeaders("Accept" -> "application/vnd.github+json")
+//    println(s"----- url: ${request}")
+//    request.put(jsonFile).map {
+//      case response: WSResponse if (response.status.equals(200)) => Right({println("--------- this is the response: " +response); "success"})
+//      case response: WSResponse if (response.status.equals(404)) =>  Left({println("--------- this is the response: " +response); APIError.BadAPIResponse(response.status, s"Unable to update file: ${response.json}")})
+//      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to create new file"))
+//      case _ => Left(APIError.BadAPIResponse(400, "Other output"))
+//    }
+//  }
+
+//  def updateFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String, sha: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+//    val url = s"https://api.github.com/repos/${username}/${repoName}/contents/$path?ref=main"
+//    println(url)
+//    val authentication = env.getOrElse("AUTHTOKEN", "empty")
+////    val updatedFile = UpdatedFile(s"Updated file: $fileName", encodedContent, sha, "main")
+//    val updatedFile = UpdatedFile(s"Updated file: $fileName", encodedContent, sha, Committer("Jake-Raffe", "jakeraffe24@gmail.com"))
+//    val jsonFile = Json.toJsObject(updatedFile)
+//    println("----------" + jsonFile)
+//    val request = ws.url(url)
+//      .withHttpHeaders("Authorization" -> s"token $authentication")
+//      .withHttpHeaders("Accept" -> "application/vnd.github+json")
+//      .put(jsonFile)
+//    request.map {
+//      case response: WSResponse if (response.status.equals(200)) =>  Right({println("--------- this is the response: " +response); "success"})
+//      case response: WSResponse if (response.status.equals(404)) =>  Left({println("--------- this is the response: " +response); APIError.BadAPIResponse(response.status, s"Unable to update file: ${response.json}")})
+//      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to update file"))
+//      case _ => Left(APIError.BadAPIResponse(400, "Other output"))
+//    }
+//  }
+
+  def createNewFileCurl[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+    val editedPath = if (path.equals("")) "" else s"$path/"
+    val request = GithubConnector.createCurlRequest(username, repoName, editedPath, fileName, encodedContent)
+    request.!!
+    getFileContents(username, repoName, s"$editedPath$fileName").map {
+      case Right(value) => Right("success")
+      case Left(value) => Left(value)
     }
   }
 
-  def updateFile[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String, sha: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
-    val url = s"https://api.github.com/repos/${username}/${repoName}/contents/$path?ref=main"
-    println(url)
-    val authentication = env.getOrElse("AUTHTOKEN", "empty")
-//    val updatedFile = UpdatedFile(s"Updated file: $fileName", encodedContent, sha, "main")
-    val updatedFile = UpdatedFile(s"Updated file: $fileName", encodedContent, sha, Committer("Jake-Raffe", "jakeraffe24@gmail.com"))
-    val jsonFile = Json.toJsObject(updatedFile)
-    println("----------" + jsonFile)
-    val request = ws.url(url)
-      .withHttpHeaders("Authorization" -> s"token $authentication")
-      .withHttpHeaders("Accept" -> "application/vnd.github+json")
-      .put(jsonFile)
-    request.map {
-      case response: WSResponse if (response.status.equals(200)) =>  Right({println("--------- this is the response: " +response); "success"})
-      case response: WSResponse if (response.status.equals(404)) =>  Left({println("--------- this is the response: " +response); APIError.BadAPIResponse(response.status, s"Unable to update file: ${response.json}")})
-      case exception: Exception => Left(APIError.BadAPIResponse(400, "Unable to update file"))
-      case _ => Left(APIError.BadAPIResponse(400, "Other output"))
+  def updateFileCurl[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String, sha: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+    val request = GithubConnector.updateCurlRequest(username, repoName, path, fileName, encodedContent, sha)
+    request.!!
+    getFileContents(username, repoName, s"$path/$fileName").map {
+      case Right(contents) if contents.equals(encodedContent) => Right("success")
+      case Right(contents) => Left(APIError.BadAPIResponse(400, "Didn't update contents of file"))
+      case Left(value) => Left(value)
     }
   }
 }
@@ -131,5 +154,24 @@ object GithubConnector {
     val contents = (response \ "content").as[String]
     val sha = (response \ "sha").as[String]
     ExistingFile(fileName, contents, sha)
+  }
+
+  def createCurlRequest(username: String, repoName: String, path: String, fileName: String, encodedContent: String): List[String] = {
+    val authentication = env.getOrElse("AUTH_TOKEN", "empty")
+    val jsonBody = Json.toJson(CreatedFile(s"Created new file: $fileName", s"$encodedContent", "main"))
+    val curlRequest = List("curl", "-XPUT", s"https://api.github.com/repos/$username/$repoName/contents/$path$fileName",
+      "-H", "Accept: application/vnd.github+json", "-H", s"Authorization: token $authentication",
+      "-d", s"$jsonBody")
+    curlRequest
+  }
+
+  def updateCurlRequest(username: String, repoName: String, path: String, fileName: String, encodedContent: String, sha: String): List[String] = {
+    val authentication = env.getOrElse("AUTH_TOKEN", "empty")
+    val jsonBody = Json.toJson(UpdatedFile(s"Created new file: $fileName", s"$encodedContent", sha, "main"))
+    val curlRequest = List("curl", "-XPUT", s"https://api.github.com/repos/$username/$repoName/contents/$path/$fileName",
+      "-H", "Accept: application/vnd.github+json", "-H", s"Authorization: token $authentication",
+      "-d", s"$jsonBody")
+    println(curlRequest)
+    curlRequest
   }
 }

@@ -54,18 +54,20 @@ import GithubService._
 
   def createNewFile(username: String, repoName: String, path: String, fileName: String, fileContent: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
     val encodedContent = encodeBase64(fileContent)
-    val newPath = path.replace("/", "")
-    println(s"----- path: $path, ------ $newPath")
-    connector.createNewFile(username, repoName, newPath, fileName, encodedContent) map {
+//    val newPath = path.replace("/", "")
+//    println(s"----- path: $path, ------ $newPath")
+    connector.createNewFileCurl(username, repoName, path, fileName, encodedContent) map {
       case Right(string: String) => Right(string)
       case Left(error: APIError) => Left(error)
+//      case string => Right(string)
+//      case _ => Left(APIError.BadAPIResponse(404, "Unable to update file: ${response.json}"))
     }
   }
 
   def updateFile(username: String, repoName: String, path: String, fileName: String, fileContent: String, sha: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
     println(path)
     val encodedContent = encodeBase64(fileContent)
-    connector.updateFile(username, repoName, path, fileName, encodedContent, sha) map {
+    connector.updateFileCurl(username, repoName, path, fileName, encodedContent, sha) map {
       case Right(string: String) => Right(string)
       case Left(error: APIError) => Left(error)
     }

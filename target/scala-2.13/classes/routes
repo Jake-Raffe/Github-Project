@@ -14,10 +14,10 @@ DELETE  /github/:username           controllers.ApplicationController.delete(use
 GET     /github/users/:username     controllers.HomeController.getUser(username: String)
 GET     /github/users/:username/repos     controllers.HomeController.getUserRepositories(username: String)
 GET     /github/repos/:username/:repoName/contents/:path/open     controllers.HomeController.getUserRepositoryContents(username: String, repoName: String, path: String)
-GET     /github/repos/:username/:repoName/contents:path/openFile     controllers.HomeController.getFileContents(username: String, repoName: String, path: String)
+GET     /github/repos/:username/:repoName/contents/:path/openFile     controllers.HomeController.getFileContents(username: String, repoName: String, path: String)
 
 GET     /github/repos/:username/:repoName/contents/:path/new     controllers.HomeController.openNewFilePage(username: String, repoName: String, path: String)
-GET     /github/repos/:username/:repoName/contents:path/update     controllers.HomeController.openUpdateFilePage(username: String, repoName: String, path: String)
+GET     /github/repos/:username/:repoName/contents/:path/update     controllers.HomeController.openUpdateFilePage(username: String, repoName: String, path: String)
 
-GET     /github/repos/:username/:repoName/contents:path/create   controllers.HomeController.createNewFile(username: String, repoName: String, path: String)
-GET     /github/repos/:username/:repoName/contents:path/:sha/update   controllers.HomeController.updateFile(username: String, repoName: String, path: String, sha: String)
+GET     /github/repos/:username/:repoName/contents/:path/create   controllers.HomeController.createNewFile(username: String, repoName: String, path: String)
+GET     /github/repos/:username/:repoName/contents/:path/:sha/update   controllers.HomeController.updateFile(username: String, repoName: String, path: String, sha: String)

@@ -40,7 +40,7 @@ Seq[Any](format.raw/*4.1*/("""
     <a href="""),_display_(/*16.14*/{controllers.routes.HomeController.getUserRepositories(username)}),format.raw/*16.79*/(""">Back to Repositories</a>
     <a href="""),_display_(/*17.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}),format.raw/*17.112*/(""">Back to """),_display_(/*17.122*/repoName),format.raw/*17.130*/("""</a>
     <hr>
-    <h1>"""),_display_(/*19.10*/repoName),format.raw/*19.18*/("""/"""),_display_(/*19.20*/path),format.raw/*19.24*/(""" """),format.raw/*19.25*/("""contents:</h1>
+    <h1>"""),_display_(/*19.10*/repoName),_display_(/*19.19*/path),format.raw/*19.23*/(""" """),format.raw/*19.24*/("""contents:</h1>
 
     <section>
         <p>-----------------------</p>
@@ -51,7 +51,7 @@ Seq[Any](format.raw/*4.1*/("""
 
                 <a href="""),_display_(/*28.26*/{
                    if (file.`type`.contains("dir"))
-                        controllers.routes.HomeController.getUserRepositoryContents(username, repoName, file.path)
+                        controllers.routes.HomeController.getUserRepositoryContents(username, repoName, s"/${file.path}")
                    else if (file.`type`.contains("file"))
                         controllers.routes.HomeController.getFileContents(username, repoName, file.path)
                 }),format.raw/*33.18*/(""">
@@ -84,11 +84,11 @@ Seq[Any](format.raw/*4.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-26T14:06:29.560743
+                  DATE: 2022-07-27T14:07:48.319474
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/userRepoContentsPage.scala.html
-                  HASH: 28513c3bc3e0db536083c71cb3d117204bc8f2b7
-                  MATRIX: 432->1|468->31|831->48|1000->124|1028->126|1106->178|1134->187|1158->191|1244->250|1318->303|1355->313|1384->321|1429->339|1515->404|1581->443|1701->541|1739->551|1769->559|1819->582|1848->590|1877->592|1902->596|1931->597|2036->675|2053->683|2066->687|2114->697|2155->710|2213->741|2226->745|2252->750|2305->776|2429->878|2487->909|2857->1258|2907->1281|3087->1440|3132->1457|3243->1537|3275->1542|3327->1567|3466->1684
-                  LINES: 17->1|18->2|23->3|28->4|30->6|33->9|33->9|33->9|39->15|39->15|39->15|39->15|40->16|40->16|41->17|41->17|41->17|41->17|43->19|43->19|43->19|43->19|43->19|47->23|47->23|47->23|47->23|48->24|49->25|49->25|49->25|50->26|50->26|52->28|57->33|58->34|60->36|61->37|64->40|65->41|67->43|67->43
+                  HASH: 5b27037361c3fd8f40a344c5e91f0de4c68df64a
+                  MATRIX: 432->1|468->31|831->48|1000->124|1028->126|1106->178|1134->187|1158->191|1244->250|1318->303|1355->313|1384->321|1429->339|1515->404|1581->443|1701->541|1739->551|1769->559|1819->582|1848->591|1873->595|1902->596|2007->674|2024->682|2037->686|2085->696|2126->709|2184->740|2197->744|2223->749|2276->775|2400->877|2458->908|2835->1264|2885->1287|3065->1446|3110->1463|3221->1543|3253->1548|3305->1573|3444->1690
+                  LINES: 17->1|18->2|23->3|28->4|30->6|33->9|33->9|33->9|39->15|39->15|39->15|39->15|40->16|40->16|41->17|41->17|41->17|41->17|43->19|43->19|43->19|43->19|47->23|47->23|47->23|47->23|48->24|49->25|49->25|49->25|50->26|50->26|52->28|57->33|58->34|60->36|61->37|64->40|65->41|67->43|67->43
                   -- GENERATED --
               */
           

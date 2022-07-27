@@ -50,14 +50,14 @@ Seq[Any](format.raw/*9.1*/("""
     <a href="""),_display_(/*28.14*/{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}),format.raw/*28.112*/(""">Back to """),_display_(/*28.122*/repoName),format.raw/*28.130*/("""</a>
     <hr>
     <h1>"""),_display_(/*30.10*/{if (purpose == "create") s"Create new file in directory: $repoName$path"
-            else if (purpose == "update") s"Update file: $repoName"
+            else if (purpose == "update") s"Update file: $repoName$path"
             else "How did you get here?"
         }),format.raw/*33.10*/("""
     """),format.raw/*34.5*/("""</h1>
 
     <section>
         """),_display_(/*37.10*/form(action = {
-                            if (purpose == "create") controllers.routes.HomeController.createNewFile(username, repoName, path)
+                            if (purpose == "create") controllers.routes.HomeController.createNewFile(username, repoName, if(path.equals("")) "top" else path)
                             else if (purpose == "update") controllers.routes.HomeController.updateFile(username, repoName, path, sha)
                             else controllers.routes.HomeController.getUser(username)
                         }
@@ -86,10 +86,10 @@ Seq[Any](format.raw/*9.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: 2022-07-26T13:54:28.380969
+                  DATE: 2022-07-27T15:05:24.457968
                   SOURCE: /Users/jacob.raffe/Documents/Training/mock_github_play-project/app/views/createNewFilePage.scala.html
-                  HASH: c919704938a97966c0cff65a2f98bb50c2ce2983
-                  MATRIX: 432->1|491->55|514->72|547->99|583->129|978->158|1207->294|1238->298|1317->350|1346->358|1566->551|1640->604|1677->614|1706->622|1751->640|1837->705|1903->744|2023->842|2061->852|2091->860|2141->883|2354->1075|2386->1080|2443->1110|2849->1507|2889->1509|2930->1523|2982->1554|3023->1568|3077->1601|3118->1614|3195->1660|3227->1665
+                  HASH: 2029705562596b661cb2de0da98e4c2eddd15fc1
+                  MATRIX: 432->1|491->55|514->72|547->99|583->129|978->158|1207->294|1238->298|1317->350|1346->358|1566->551|1640->604|1677->614|1706->622|1751->640|1837->705|1903->744|2023->842|2061->852|2091->860|2141->883|2359->1080|2391->1085|2448->1115|2885->1543|2925->1545|2966->1559|3018->1590|3059->1604|3113->1637|3154->1650|3231->1696|3263->1701
                   LINES: 17->1|18->3|19->4|20->5|21->6|26->8|31->9|35->13|38->16|38->16|48->26|48->26|48->26|48->26|49->27|49->27|50->28|50->28|50->28|50->28|52->30|55->33|56->34|59->37|64->42|64->42|65->43|65->43|66->44|66->44|67->45|68->46|69->47
                   -- GENERATED --
               */

@@ -1,21 +1,24 @@
 package connectors
 
 import baseSpec.BaseSpecWithApplication
-import models.User
+import models.{CreatedFile, FileForm, User}
 import org.scalamock.matchers.Matchers
 import org.scalamock.scalatest.MockFactory
 import org.scalatest.concurrent.ScalaFutures
+import org.scalatest.time.Span
 import play.api.http.Status
 import play.api.libs.json.{JsString, JsValue, Json, OFormat}
 import play.api.mvc.Result
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{contentAsJson, defaultAwaitTimeout, status}
 
-import scala.concurrent.Future
+import scala.concurrent.{Await, Future}
+import scala.concurrent.duration.DurationInt
 
 class GithubConnectorSpec extends BaseSpecWithApplication with MockFactory with ScalaFutures with Matchers {
 
-  val parseFileContentsTestString = Json.parse(raw"""{
+  val parseFileContentsTestString = Json.parse(
+    raw"""{
     "name": "Doctor.java",
     "path": "src/main/java/com/bnta/doctor/Doctor.java",
     "sha": "3b9a015870bbc3ec051b6e6ecbbe2aefdfe9bd0f",
@@ -36,16 +39,19 @@ class GithubConnectorSpec extends BaseSpecWithApplication with MockFactory with 
   val githubConnector = new GithubConnector(ws)
 
   val getUserUrl = "https://api.github.com/users/jake-raffe"
-  val jakeUser = new User("Jake-Raffe", "2022-01-07T19:56:27Z", None, 4,5)
+  val jakeUser = new User("Jake-Raffe", "2022-01-07T19:56:27Z", None, 4, 5)
   val url = s"https://api.github.com/repos/Jake-Raffe/scala_cafe-project/contents/src/fileNameHere.scala"
+  val createFileForm = FileForm("NewFile.md", "This is a test string")
+  val createdFileObject = CreatedFile("Commit message", "contents", "main")
+  val fileContents = "This is a test string"
+  val encodedFileContents = "VGhpcyBpcyBhIHRlc3Qgc3RyaW5n"
 
-
-//  "GithubConnector .getUser" should {
-//    "get a github user by their login name and return their details in a User object" in {
-//      val result = githubConnector.getUser(getUserUrl)
-//      result shouldBe Right(jakeUser)
-//    }
-//  }
+  //  "GithubConnector .getUser" should {
+  //    "get a github user by their login name and return their details in a User object" in {
+  //      val result = githubConnector.getUser(getUserUrl)
+  //      result shouldBe Right(jakeUser)
+  //    }
+  //  }
 
   "GithubConnector .parseFileContents" should {
     "read the base64 contents of a file from the Github API and return as a string" in {
@@ -54,10 +60,25 @@ class GithubConnectorSpec extends BaseSpecWithApplication with MockFactory with 
     }
   }
 
-  "GithubConnector .createNewFile" should {
-    "connect to the api to update the repository - adding the new file to the path location" in {
+//  "GithubConnector .createNewFile" should {
+//    "connect to the api to update the repository - adding the new file to the path location" in {
+//      def test = Await.result(githubConnector.createNewFile(
+//        "Jake-Raffe", "Back-end_Project", "src", createFileForm.fileName, encodedFileContents)(executionContext), 10.seconds)
+//
+//      test shouldBe Right("success")
+//      //      {
+//      //        result => result shouldBe "success"
+//      //      }
+//    }
+//  }
 
-    }
-  }
-
+//  "GithubConnector .createNewFileCurl" should {
+//    "connect to the api to update the repository - adding the new file to the path location" in {
+//      def test = (githubConnector.createNewFileCurl(
+//        "Jake-Raffe", "Back-end_Project", "src", "TestFileName!.md", encodedFileContents)(executionContext), 10.seconds)
+////        "Jake-Raffe", "Back-end_Project", "src", createFileForm.fileName, encodedFileContents)(executionContext), 10.seconds)
+//
+//      test shouldBe Right("success")
+//    }
+//  }
 }

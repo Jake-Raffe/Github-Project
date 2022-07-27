@@ -1,5 +1,6 @@
 package controllers
 
+import controllers.HomeController.filterPath
 import models.{APIError, CreatedFile, FileForm}
 import play.api.libs.json.JsValue
 import play.api.mvc.{Action, AnyContent, BaseController, ControllerComponents, Request}
@@ -38,7 +39,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def getUserRepositoryContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    val filteredPath = if (path.equals("repo-contents")) "" else path
+    val filteredPath = filterPath(path)
+    println(s"path:: $path, filtered path: $filteredPath")
     githubService.getRepoContents(username, repoName, filteredPath).map {
       case Right(contents) => Ok(views.html.userRepoContentsPage(username,repoName,filteredPath)(contents))
       case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
@@ -53,7 +55,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def openNewFilePage(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    val filteredPath = if (path.equals("top")) "" else path
+    val filteredPath = filterPath(path)
     Future.successful(Ok(views.html.createNewFilePage(username, repoName, filteredPath, "")("create")(FileForm.fileForm)))
   }
 
@@ -65,16 +67,17 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def createNewFile(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    println("--------------createNewFile------------" + request)
+    println(s"--------------controller.createNewFile.. path: $path ------------")
+    val filteredPath = filterPath(path)
+    println("path: "+ path)
+    println("Fpath: "+ filteredPath)
     FileForm.fileForm.bindFromRequest.fold(
       formWithErrors => {
-        println(s"--------------Error: ${formWithErrors.errors.toString()} ------------")
-        Future(Ok(views.html.createNewFilePage(username, repoName, path, "")("create")(formWithErrors)))
+        Future(Ok(views.html.createNewFilePage(username, repoName, filteredPath, "")("create")(formWithErrors)))
       },
       outputFile => {
-        println(s"--------------Folded: $outputFile, ${outputFile.fileName}, ${outputFile.fileContent} ------------")
-        githubService.createNewFile(username, repoName, path, outputFile.fileName, outputFile.fileContent).map {
-          case Right(value) => Redirect(controllers.routes.HomeController.getUserRepositoryContents(username, repoName, path))
+        githubService.createNewFile(username, repoName, filteredPath, outputFile.fileName, outputFile.fileContent).map {
+          case Right(value) => Redirect(controllers.routes.HomeController.getUserRepositoryContents(username, repoName, filterPath(filteredPath)))
           case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
         }
       }
@@ -82,14 +85,11 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def updateFile(username: String, repoName: String, path: String, sha: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    println("--------------updating file------------")
     FileForm.fileForm.bindFromRequest.fold(
       formWithErrors => {
-        println(s"--------------Error: ${formWithErrors.errors.toString()} ------------")
         Future(Ok(views.html.createNewFilePage(username, repoName, path, sha)("update")(formWithErrors)))
       },
       outputFile => {
-        println(s"--------------Folded: $outputFile, ${outputFile.fileName}, ${outputFile.fileContent} ------------")
         githubService.updateFile(username, repoName, path, outputFile.fileName, outputFile.fileContent, sha).map {
           case Right(value) => Redirect(controllers.routes.HomeController.getFileContents(username, repoName, path))
           case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
@@ -98,4 +98,14 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
     )
   }
 }
-
+object HomeController {
+  def filterPath(path: String): String = {
+    path match {
+      case "top" => ""
+      case "" => "repo-contents"
+      case "repo-contents" => ""
+      case string: String if (string.take(1).equals("/")) => string.substring(1)
+      case _ => path
+    }
+  }
+}

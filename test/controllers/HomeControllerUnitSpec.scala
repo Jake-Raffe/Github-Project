@@ -172,24 +172,24 @@ class HomeControllerUnitSpec extends BaseSpecWithApplication with MockFactory {
 
   "HomeController .createNewFile" should {
     "submit a file to the api, updating the repository, then redirect to the directory displaying that file" in {
-      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Github-Project/contents/create?fileName=FileName.md&fileContent=fdfgfgd")
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Github-Project/contents/create?fileName=FileName.md&fileContent=This+is+the+file+content")
       (mockGithubService.createNewFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
         .expects("jake-raffe", "Github-Project", "", "FileName.md", "This is the file content", executionContext)
         .returning(Future(Right("success")))
         .once()
       val result: Future[Result] = testHomeController.createNewFile("jake-raffe", "Github-Project", "")(request)
 
-      status(result) shouldBe Status.PERMANENT_REDIRECT
+      status(result) shouldBe Status.SEE_OTHER
 //      contentType(result) mustBe Some("text/html")
 //      contentAsString(result) must include ("shelf")
     }
     "return a BadAPIResponse if path cannot be found" in {
-      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildPost("/github/repos/jake-raffe/Back-end_Project/contents/bluebell")
-      (mockGithubService.getFileContents(_: String, _: String, _: String)(_: ExecutionContext))
-        .expects("jake-raffe", "Back-end_Project", "bluebell", executionContext)
-        .returning(Future(Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))))
+      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Github-Project/contents/bluebell/create?fileName=FileName.md&fileContent=This+is+the+file+content")
+      (mockGithubService.createNewFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Github-Project", "bluebell", "FileName.md", "This is the file content", executionContext)
+        .returning(Future(Left(APIError.BadAPIResponse(404, "Unable to return file contents at connector"))))
         .once()
-      val createdBadResult: Future[Result] = testHomeController.getFileContents("jake-raffe", "Back-end_Project", "bluebell")(badRequest)
+      val createdBadResult: Future[Result] = testHomeController.createNewFile("jake-raffe", "Github-Project", "bluebell")(badRequest)
       println(createdBadResult)
       status(createdBadResult) shouldBe Status.OK
       contentType(createdBadResult) mustBe Some("text/html")

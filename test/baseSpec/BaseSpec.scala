@@ -18,6 +18,7 @@ import play.api.test.CSRFTokenHelper.CSRFFRequestHeader
 import play.api.test.FakeRequest
 import play.api.test.Helpers.{DELETE, GET, POST, PUT}
 import repositories.DataRepository
+import requests.Response
 import services.{ApplicationService, GithubService}
 
 import scala.concurrent.ExecutionContext
@@ -28,7 +29,7 @@ trait BaseSpecWithApplication extends BaseSpec with GuiceOneServerPerSuite with 
 
   implicit val mat: Materializer = app.materializer
   implicit val executionContext: ExecutionContext = app.injector.instanceOf[ExecutionContext]
-//  implicit val rds: OFormat[Response]
+//  implicit val rds: OFormat[Response] = injector.instanceOf[OFormat[Response]]
 
   lazy val ws: WSClient = injector.instanceOf[WSClient]
 

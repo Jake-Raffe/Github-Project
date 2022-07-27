@@ -14,9 +14,9 @@
     <h3>Github</h3>
     <a href=@{controllers.routes.HomeController.getUser(username)}>Back to @username</a>
     <a href=@{controllers.routes.HomeController.getUserRepositories(username)}>Back to Repositories</a>
-    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "/")}>Back to @repoName</a>
+    <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}>Back to @repoName</a>
     <hr>
-    <h1>@repoName/@path contents:</h1>
+    <h1>@repoName@path contents:</h1>
 
     <section>
         <p>-----------------------</p>
@@ -27,7 +27,7 @@
 
                 <a href=@{
                    if (file.`type`.contains("dir"))
-                        controllers.routes.HomeController.getUserRepositoryContents(username, repoName, file.path)
+                        controllers.routes.HomeController.getUserRepositoryContents(username, repoName, s"/${file.path}")
                    else if (file.`type`.contains("file"))
                         controllers.routes.HomeController.getFileContents(username, repoName, file.path)
                 }>
@@ -40,7 +40,7 @@
         }
     </section>
 
-    <a href=@{controllers.routes.HomeController.openNewFilePage(username, repoName, path)}>Create new file</a>
+    <a href=@{controllers.routes.HomeController.openNewFilePage(username, repoName, {if (path.equals("")) "top" else path }  )   }>Create new file</a>
 
 </body>
 </html>
