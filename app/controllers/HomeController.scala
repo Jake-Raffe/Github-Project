@@ -98,6 +98,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
     )
   }
 }
+
 object HomeController {
   def filterPath(path: String): String = {
     path match {

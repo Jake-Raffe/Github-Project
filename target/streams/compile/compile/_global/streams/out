@@ -1,11 +1,4 @@
-[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/controllers/HomeController.scala:74:23: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method bindFromRequest,[0m
-[0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
-[0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    FileForm.fileForm.bindFromRequest.fold([0m
-[0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/controllers/HomeController.scala:88:23: Auto-application to `()` is deprecated. Supply the empty argument list `()` explicitly to invoke method bindFromRequest,[0m
-[0m[[0m[33mwarn[0m] [0m[0mor remove the empty argument list from its definition (Java-defined methods are exempt).[0m
-[0m[[0m[33mwarn[0m] [0m[0mIn Scala 3, an unapplied method like this will be eta-expanded into a function.[0m
-[0m[[0m[33mwarn[0m] [0m[0m    FileForm.fileForm.bindFromRequest.fold([0m
-[0m[[0m[33mwarn[0m] [0m[0m                      ^[0m
-[0m[[0m[33mwarn[0m] [0m[0mtwo warnings found[0m
+[0m[[0m[31merror[0m] [0m[0m/Users/jacob.raffe/Documents/Training/mock_github_play-project/app/connectors/GithubConnector.scala:66:13: not found: value url[0m
+[0m[[0m[31merror[0m] [0m[0m    println(url)[0m
+[0m[[0m[31merror[0m] [0m[0m            ^[0m
+[0m[[0m[31merror[0m] [0m[0mone error found[0m

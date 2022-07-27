@@ -28,7 +28,7 @@
     <a href=@{controllers.routes.HomeController.getUserRepositoryContents(username, repoName, "repo-contents")}>Back to @repoName</a>
     <hr>
     <h1>@{if (purpose == "create") s"Create new file in directory: $repoName$path"
-            else if (purpose == "update") s"Update file: $repoName$path"
+            else if (purpose == "update") s"Update file: $repoName/$path"
             else "How did you get here?"
         }
     </h1>
