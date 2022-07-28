@@ -21,3 +21,4 @@ GET     /github/repos/:username/:repoName/contents/:path/update     controllers.
 
 GET     /github/repos/:username/:repoName/contents/:path/create   controllers.HomeController.createNewFile(username: String, repoName: String, path: String)
 GET     /github/repos/:username/:repoName/contents/:path/:sha/update   controllers.HomeController.updateFile(username: String, repoName: String, path: String, sha: String)
+GET     /github/repos/:username/:repoName/contents/:path/:fileName/:sha/delete   controllers.HomeController.deleteFile(username: String, repoName: String, path: String, fileName: String, sha: String)

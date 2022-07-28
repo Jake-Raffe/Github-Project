@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Wed Jul 27 14:12:49 BST 2022
+// @DATE:Thu Jul 28 15:13:19 BST 2022
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -144,6 +144,16 @@ package controllers.javascript {
       """
         function(username0) {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/users/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/repos"})
+        }
+      """
+    )
+  
+    // @LINE:24
+    def deleteFile: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.HomeController.deleteFile",
+      """
+        function(username0,repoName1,path2,fileName3,sha4) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "github/repos/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("username", username0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("repoName", repoName1)) + "/contents/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("path", path2)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("fileName", fileName3)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("sha", sha4)) + "/delete"})
         }
       """
     )

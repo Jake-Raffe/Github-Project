@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Wed Jul 27 14:12:49 BST 2022
+// @DATE:Thu Jul 28 15:13:19 BST 2022
 
 package router
 
@@ -58,6 +58,7 @@ class Routes(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/update""", """controllers.HomeController.openUpdateFilePage(username:String, repoName:String, path:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/create""", """controllers.HomeController.createNewFile(username:String, repoName:String, path:String)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/""" + "$" + """sha<[^/]+>/update""", """controllers.HomeController.updateFile(username:String, repoName:String, path:String, sha:String)"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/""" + "$" + """fileName<[^/]+>/""" + "$" + """sha<[^/]+>/delete""", """controllers.HomeController.deleteFile(username:String, repoName:String, path:String, fileName:String, sha:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -335,6 +336,24 @@ class Routes(
     )
   )
 
+  // @LINE:24
+  private[this] lazy val controllers_HomeController_deleteFile15_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("github/repos/"), DynamicPart("username", """[^/]+""",true), StaticPart("/"), DynamicPart("repoName", """[^/]+""",true), StaticPart("/contents/"), DynamicPart("path", """[^/]+""",true), StaticPart("/"), DynamicPart("fileName", """[^/]+""",true), StaticPart("/"), DynamicPart("sha", """[^/]+""",true), StaticPart("/delete")))
+  )
+  private[this] lazy val controllers_HomeController_deleteFile15_invoker = createInvoker(
+    HomeController_2.deleteFile(fakeValue[String], fakeValue[String], fakeValue[String], fakeValue[String], fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.HomeController",
+      "deleteFile",
+      Seq(classOf[String], classOf[String], classOf[String], classOf[String], classOf[String]),
+      "GET",
+      this.prefix + """github/repos/""" + "$" + """username<[^/]+>/""" + "$" + """repoName<[^/]+>/contents/""" + "$" + """path<[^/]+>/""" + "$" + """fileName<[^/]+>/""" + "$" + """sha<[^/]+>/delete""",
+      """""",
+      Seq()
+    )
+  )
+
 
   def routes: PartialFunction[RequestHeader, Handler] = {
   
@@ -426,6 +445,12 @@ class Routes(
     case controllers_HomeController_updateFile14_route(params@_) =>
       call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None), params.fromPath[String]("sha", None)) { (username, repoName, path, sha) =>
         controllers_HomeController_updateFile14_invoker.call(HomeController_2.updateFile(username, repoName, path, sha))
+      }
+  
+    // @LINE:24
+    case controllers_HomeController_deleteFile15_route(params@_) =>
+      call(params.fromPath[String]("username", None), params.fromPath[String]("repoName", None), params.fromPath[String]("path", None), params.fromPath[String]("fileName", None), params.fromPath[String]("sha", None)) { (username, repoName, path, fileName, sha) =>
+        controllers_HomeController_deleteFile15_invoker.call(HomeController_2.deleteFile(username, repoName, path, fileName, sha))
       }
   }
 }

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/Users/jacob.raffe/Documents/Training/mock_github_play-project/conf/routes
-// @DATE:Wed Jul 27 14:12:49 BST 2022
+// @DATE:Thu Jul 28 15:13:19 BST 2022
 
 import play.api.mvc.Call
 
@@ -96,6 +96,12 @@ package controllers {
     def getUserRepositories(username:String): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "github/users/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/repos")
+    }
+  
+    // @LINE:24
+    def deleteFile(username:String, repoName:String, path:String, fileName:String, sha:String): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "github/repos/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("username", username)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("repoName", repoName)) + "/contents/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("path", path)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("fileName", fileName)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("sha", sha)) + "/delete")
     }
   
     // @LINE:2

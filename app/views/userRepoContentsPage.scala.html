@@ -35,6 +35,14 @@
                         else if(file.`type`.contains("file")) "Open file"
                         else "Open"}
                 </a>
+                <br>
+                <a href=@{ if (file.`type`.contains("file"))
+                                controllers.routes.HomeController.deleteFile(username, repoName, if(path.equals("")) "top" else path, file.name, file.sha)
+                }>
+                @{ if (file.`type`.contains("file")) "Delete file"
+                    else ""
+                }
+                </a>
             </element>
             <p>-----------------------</p>
         }

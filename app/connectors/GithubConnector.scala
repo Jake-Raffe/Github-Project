@@ -1,7 +1,7 @@
 package connectors
 
 import akka.http.scaladsl.model.{HttpHeader, HttpMethods, HttpRequest, Uri}
-import models.{APIError, Content, CreatedFile, ExistingFile, FileContent, FileForm, Repository, UpdatedFile, User}
+import models.{APIError, Content, CreatedFile, DeleteFile, ExistingFile, FileContent, FileForm, Repository, UpdatedFile, User}
 import org.joda.time.Seconds.seconds
 import play.api.libs.json.{JsError, JsLookupResult, JsSuccess, JsValue, Json, OFormat}
 import play.api.libs.ws.{WSAuthScheme, WSClient, WSResponse}
@@ -15,7 +15,7 @@ import java.util.Base64
 import javax.inject.Inject
 import scala.concurrent.{Await, ExecutionContext, Future}
 import scala.sys.env
-import scala.util.Try
+import scala.util.{Left, Try}
 
 class GithubConnector @Inject()(ws: WSClient) {
 
@@ -53,13 +53,12 @@ class GithubConnector @Inject()(ws: WSClient) {
   }
 
   def getRepoContent[Response](username: String, repoName: String, path: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, List[Content]]] = {
-//    val optionalPath = if (path.equals("/")) "/" else s"/$path"
     val request = ws.url(s"https://api.github.com/repos/${username}/${repoName}/contents$path").get()
     request.map {
       result =>
         val repoContents = result.json
         repoContents.validate[List[Content]] match {
-          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`, content.path)))
+          case JsSuccess(contents, _) => Right(contents.map(content => Content(content.name, content.`type`, content.path, content.sha)))
           case JsError(errors) => Left(APIError.BadAPIResponse(400, "Unable to validate content in repository"))
         }
     }
@@ -146,6 +145,18 @@ class GithubConnector @Inject()(ws: WSClient) {
       case Left(value) => Left(value)
     }
   }
+
+  def deleteFileCurl[Response](username: String, repoName: String, path: String, fileName: String, sha: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
+    val request = GithubConnector.deleteCurlRequest(username, repoName, path, fileName, sha)
+//    println(request.!! + "--------------\n" + s"$path$fileName")
+    println(request.!!)
+    Thread.sleep(100)
+    getFileContents(username, repoName, s"$path$fileName").map {
+      case Right(contents) => Left(APIError.BadAPIResponse(400, "File contents still found i.e. wasn't deleted"))
+      case Left(value) => Right({println(value);"success"})
+    }
+  }
+
 }
 
 
@@ -177,6 +188,15 @@ object GithubConnector {
       "-H", "Accept: application/vnd.github+json", "-H", s"Authorization: token $authentication",
       "-d", s"$jsonBody")
     println(curlRequest)
+    curlRequest
+  }
+
+  def deleteCurlRequest(username: String, repoName: String, path: String, fileName: String, sha: String): List[String] = {
+    val authentication = env.getOrElse("AUTH_TOKEN", "empty")
+    val jsonBody = Json.toJson(DeleteFile(s"Deleted file: $fileName", sha, "main"))
+    val curlRequest = List("curl", "-XDELETE", s"https://api.github.com/repos/$username/$repoName/contents/$path$fileName",
+      "-H", "Accept: application/vnd.github+json", "-H", s"Authorization: token $authentication",
+      "-d", s"$jsonBody")
     curlRequest
   }
 }

@@ -13,7 +13,6 @@ import scala.concurrent.{ExecutionContext, Future}
 import scala.sys.env
 
 
-
 @Singleton
 class HomeController @Inject()(val controllerComponents: ControllerComponents, githubService: GithubService,
                                implicit val ec: ExecutionContext) extends BaseController with play.api.i18n.I18nSupport {
@@ -40,9 +39,8 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
 
   def getUserRepositoryContents(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val filteredPath = filterPath(path)
-    println(s"path:: $path, filtered path: $filteredPath")
     githubService.getRepoContents(username, repoName, filteredPath).map {
-      case Right(contents) => Ok(views.html.userRepoContentsPage(username,repoName,filteredPath)(contents))
+      case Right(contents) => Ok(views.html.userRepoContentsPage(username, repoName, filteredPath)(contents))
       case Left(error) => Ok(views.html.notFound(s"$username/$repoName/$path contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
@@ -67,10 +65,7 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
   }
 
   def createNewFile(username: String, repoName: String, path: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
-    println(s"--------------controller.createNewFile.. path: $path ------------")
     val filteredPath = filterPath(path)
-    println("path: "+ path)
-    println("Fpath: "+ filteredPath)
     FileForm.fileForm.bindFromRequest.fold(
       formWithErrors => {
         Future(Ok(views.html.createNewFilePage(username, repoName, filteredPath, "")("create")(formWithErrors)))
@@ -97,16 +92,25 @@ class HomeController @Inject()(val controllerComponents: ControllerComponents, g
       }
     )
   }
-}
 
-object HomeController {
-  def filterPath(path: String): String = {
-    path match {
-      case "top" => ""
-      case "" => "repo-contents"
-      case "repo-contents" => ""
-      case string: String if (string.take(1).equals("/")) => string.substring(1)
-      case _ => path
+  def deleteFile(username: String, repoName: String, path: String, fileName: String, sha: String): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
+    val filteredPath = filterPath(path)
+    githubService.deleteFile(username, repoName, filteredPath, fileName, sha).map {
+      case Right(value) => Redirect(controllers.routes.HomeController.getUserRepositoryContents(username, repoName, filterPath(filteredPath)))
+      case Left(error) => Ok(views.html.notFound(s"$username/$repoName contents")(s"${error.httpResponseStatus}: ${error.reason}"))
     }
   }
+
 }
+
+  object HomeController {
+    def filterPath(path: String): String = {
+      path match {
+        case "top" => ""
+        case "" => "repo-contents"
+        case "repo-contents" => ""
+        case string: String if (string.take(1).equals("/")) => string.substring(1)
+        case _ => path
+      }
+    }
+  }
