@@ -31,9 +31,9 @@ class HomeControllerUnitSpec extends BaseSpecWithApplication with MockFactory {
   val jakeRepos = List(
     new Repository("Back-end_Project"), new Repository("Flight-Booking-CLI-Project"))
   val repoContents = List(
-    new Content(".idea", "dir", ""), new Content("README.md", "file", ""))
+    new Content(".idea", "dir", "", ""), new Content("README.md", "file", "", ""))
   val directoryContents = List(
-    new Content("main", "dir", "src"), new Content("test", "dir", "src"))
+    new Content("main", "dir", "src", ""), new Content("test", "dir", "src", ""))
   val fileContentString = """# Default ignored files\n/shelf/\n/workspace.xml"""
 
   "HomeController .getUser" should {
@@ -92,29 +92,41 @@ class HomeControllerUnitSpec extends BaseSpecWithApplication with MockFactory {
   }
 
   "HomeController .getUserRepositoryContents" should {
-    "get the contents of a user's repository by their username & repo name, and render a list of the contents on a webpage" in {
-      val request: FakeRequest[AnyContentAsEmpty.type] = buildPost("/github/repos/jake-raffe/Back-end_Project/contents")
+    "get the contents of a repository if at the repo's top level, and render a list of the contents on a webpage" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildPost("/github/repos/jake-raffe/Back-end_Project/contents/repo-contents/open")
       (mockGithubService.getRepoContents(_: String, _: String, _: String)(_: ExecutionContext))
         .expects("jake-raffe", "Back-end_Project", "", executionContext)
         .returning(Future(Right(repoContents)))
         .once()
-      val createdResult: Future[Result] = testHomeController.getUserRepositoryContents("jake-raffe", "Back-end_Project", "")(request)
+      val createdResult: Future[Result] = testHomeController.getUserRepositoryContents("jake-raffe", "Back-end_Project", "repo-contents")(request)
+
+      status(createdResult) shouldBe Status.OK
+      contentType(createdResult) mustBe Some("text/html")
+      contentAsString(createdResult) must include (".idea")
+    }
+    "get the contents of a directory and render them on a webpage" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildPost("/github/repos/jake-raffe/Back-end_Project/contents/src/open")
+      (mockGithubService.getRepoContents(_: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src", executionContext)
+        .returning(Future(Right(repoContents)))
+        .once()
+      val createdResult: Future[Result] = testHomeController.getUserRepositoryContents("jake-raffe", "Back-end_Project", "src")(request)
 
       status(createdResult) shouldBe Status.OK
       contentType(createdResult) mustBe Some("text/html")
       contentAsString(createdResult) must include (".idea")
     }
     "return a BadAPIResponse if username does not correspond to a user" in {
-      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildPost("/github/repos/jake-raffe/wrongRepo/contents")
+      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildPost("/github/repos/jake-raffe/wrongRepo/contents/repo-contents/open")
       (mockGithubService.getRepoContents(_: String, _: String, _: String)(_: ExecutionContext))
         .expects("jake-raffe", "wrongRepo", "", executionContext)
         .returning(Future(Left(APIError.BadAPIResponse(400, "Unable to validate content in repository"))))
         .once()
-      val createdBadResult: Future[Result] = testHomeController.getUserRepositoryContents("jake-raffe", "wrongRepo", "")(badRequest)
+      val createdBadResult: Future[Result] = testHomeController.getUserRepositoryContents("jake-raffe", "wrongRepo", "repo-contents")(badRequest)
       println(createdBadResult)
       status(createdBadResult) shouldBe Status.OK
       contentType(createdBadResult) mustBe Some("text/html")
-      contentAsString(createdBadResult) must include ("Unable to find jake-raffe/wrongRepo/ contents")
+      contentAsString(createdBadResult) must include ("Unable to find jake-raffe/wrongRepo/repo-contents contents")
     }
 
     "get the contents of a repository's directory by the URL path, and render the contents on a webpage" in {
@@ -170,26 +182,35 @@ class HomeControllerUnitSpec extends BaseSpecWithApplication with MockFactory {
     }
   }
 
+
   "HomeController .createNewFile" should {
-    "submit a file to the api, updating the repository, then redirect to the directory displaying that file" in {
-      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Github-Project/contents/create?fileName=FileName.md&fileContent=This+is+the+file+content")
+    "submit a file to the api, updating the repository at the top level, then redirect to the top level displaying that file" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/top/create?fileName=FileName.md&fileContent=This+is+the+file+content")
       (mockGithubService.createNewFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
-        .expects("jake-raffe", "Github-Project", "", "FileName.md", "This is the file content", executionContext)
+        .expects("jake-raffe", "Back-end_Project", "", "FileName.md", "This is the file content", executionContext)
         .returning(Future(Right("success")))
         .once()
-      val result: Future[Result] = testHomeController.createNewFile("jake-raffe", "Github-Project", "")(request)
+      val result: Future[Result] = testHomeController.createNewFile("jake-raffe", "Back-end_Project", "top")(request)
 
       status(result) shouldBe Status.SEE_OTHER
-//      contentType(result) mustBe Some("text/html")
-//      contentAsString(result) must include ("shelf")
+    }
+    "submit a file to the api, updating the repository to show the file in a directory, then redirect to the directory displaying that file" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/src/create?fileName=FileName.md&fileContent=This+is+the+file+content")
+      (mockGithubService.createNewFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src", "FileName.md", "This is the file content", executionContext)
+        .returning(Future(Right("success")))
+        .once()
+      val result: Future[Result] = testHomeController.createNewFile("jake-raffe", "Back-end_Project", "src")(request)
+
+      status(result) shouldBe Status.SEE_OTHER
     }
     "return a BadAPIResponse if path cannot be found" in {
-      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Github-Project/contents/bluebell/create?fileName=FileName.md&fileContent=This+is+the+file+content")
+      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/bluebell/create?fileName=FileName.md&fileContent=This+is+the+file+content")
       (mockGithubService.createNewFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
-        .expects("jake-raffe", "Github-Project", "bluebell", "FileName.md", "This is the file content", executionContext)
+        .expects("jake-raffe", "Back-end_Project", "bluebell", "FileName.md", "This is the file content", executionContext)
         .returning(Future(Left(APIError.BadAPIResponse(404, "Unable to return file contents at connector"))))
         .once()
-      val createdBadResult: Future[Result] = testHomeController.createNewFile("jake-raffe", "Github-Project", "bluebell")(badRequest)
+      val createdBadResult: Future[Result] = testHomeController.createNewFile("jake-raffe", "Back-end_Project", "bluebell")(badRequest)
       println(createdBadResult)
       status(createdBadResult) shouldBe Status.OK
       contentType(createdBadResult) mustBe Some("text/html")
@@ -197,4 +218,90 @@ class HomeControllerUnitSpec extends BaseSpecWithApplication with MockFactory {
     }
   }
 
+  "HomeController .updateFile" should {
+    "submit a file to the api, updating the repository at the top level, then redirect to the top level displaying that file" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/FileName.md/shashasha/update?fileName=FileName.md&fileContent=This+is+the+file+content")
+      (mockGithubService.updateFile(_: String, _: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "FileName.md", "FileName.md", "This is the file content", "shashasha", executionContext)
+        .returning(Future(Right("success")))
+        .once()
+      val result: Future[Result] = testHomeController.updateFile("jake-raffe", "Back-end_Project", "FileName.md", "shashasha")(request)
+
+      status(result) shouldBe Status.SEE_OTHER
+    }
+    "submit a file to the api, updating the repository to show the file in a directory, then redirect to the directory displaying that file" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/src/FileName.md/shashasha/update?fileName=FileName.md&fileContent=This+is+the+file+content")
+      (mockGithubService.updateFile(_: String, _: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src/FileName.md", "FileName.md", "This is the file content", "shashasha", executionContext)
+        .returning(Future(Right("success")))
+        .once()
+      val result: Future[Result] = testHomeController.updateFile("jake-raffe", "Back-end_Project", "src/FileName.md", "shashasha")(request)
+
+      status(result) shouldBe Status.SEE_OTHER
+    }
+    "return a BadAPIResponse if path cannot be found" in {
+      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/bluebell/FileName.md/shashasha/update?fileName=FileName.md&fileContent=This+is+the+file+content")
+      (mockGithubService.updateFile(_: String, _: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "bluebell/FileName.md", "FileName.md", "This is the file content", "shashasha", executionContext)
+        .returning(Future(Left(APIError.BadAPIResponse(404, "Unable to return file contents at connector"))))
+        .once()
+      val createdBadResult: Future[Result] = testHomeController.updateFile("jake-raffe", "Back-end_Project", "bluebell/FileName.md", "shashasha")(badRequest)
+      println(createdBadResult)
+      status(createdBadResult) shouldBe Status.OK
+      contentType(createdBadResult) mustBe Some("text/html")
+      contentAsString(createdBadResult) must include ("Unable to return file contents at connector")
+    }
+  }
+
+  "HomeController .deleteFile" should {
+    "delete a file that is in the top level of a repository" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/top/FileName.md/shashasha/delete")
+      (mockGithubService.deleteFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "", "FileName.md", "shashasha", executionContext)
+        .returning(Future(Right("success")))
+        .once()
+      val result: Future[Result] = testHomeController.deleteFile("jake-raffe", "Back-end_Project", "top", "FileName.md", "shashasha")(request)
+
+      status(result) shouldBe Status.SEE_OTHER
+    }
+    "delete a file that is in a directory within a repository" in {
+      val request: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/src/FileName.md/shashasha/delete")
+      (mockGithubService.deleteFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src", "FileName.md", "shashasha", executionContext)
+        .returning(Future(Right("success")))
+        .once()
+      val result: Future[Result] = testHomeController.deleteFile("jake-raffe", "Back-end_Project", "src", "FileName.md", "shashasha")(request)
+
+      status(result) shouldBe Status.SEE_OTHER
+    }
+    "return a BadAPIResponse if path cannot be found" in {
+      val badRequest: FakeRequest[AnyContentAsEmpty.type] = buildGet("/github/repos/jake-raffe/Back-end_Project/contents/bluebell/FileName.md/shashasha/delete")
+      (mockGithubService.deleteFile(_: String, _: String, _: String, _: String, _: String)(_: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "bluebell", "FileName.md", "shashasha", executionContext)
+        .returning(Future(Left(APIError.BadAPIResponse(404, "Unable to return file contents at connector"))))
+        .once()
+      val deleteBadResult: Future[Result] = testHomeController.deleteFile("jake-raffe", "Back-end_Project", "bluebell", "FileName.md", "shashasha")(badRequest)
+      println(deleteBadResult)
+      status(deleteBadResult) shouldBe Status.OK
+      contentType(deleteBadResult) mustBe Some("text/html")
+      contentAsString(deleteBadResult) must include ("Unable to return file contents at connector")
+    }
+  }
+
+
+  "HomeController .filterPath" should {
+    "return '' if path == 'top' or 'repo-contents' " in {
+      HomeController.filterPath("top") shouldEqual("")
+      HomeController.filterPath("repo-contents") shouldEqual("")
+    }
+    "return 'repo-contents' if path == '' " in {
+      HomeController.filterPath("") shouldEqual("repo-contents")
+    }
+    "remove the '/' from the beginning of path if present" in {
+      HomeController.filterPath("/example") shouldEqual("example")
+    }
+    "return path unchanged if none of the above conditions are present" in {
+      HomeController.filterPath("example/path") shouldEqual("example/path")
+    }
+  }
 }

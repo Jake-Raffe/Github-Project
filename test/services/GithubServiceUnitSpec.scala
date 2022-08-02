@@ -23,7 +23,7 @@ class GithubServiceUnitSpec extends BaseSpecWithApplication with MockFactory {
   val fileStartsWith = "package com.bnta.doctor;"
   val base64FileStartsWith = "cGFja2FnZSBjb20uYm50YS5kb2N0b3I7"
   val repoList = List(Repository("repo1"),Repository("repo1"))
-  val repoContentsList = List(Content("Main.java", "file", ""),Content("appointment", "dir", ""))
+  val repoContentsList = List(Content("Main.java", "file", "", ""),Content("appointment", "dir", "", ""))
   val fileContents = "This is a test string"
   val encodedFileContents = "VGhpcyBpcyBhIHRlc3Qgc3RyaW5n"
 
