@@ -2,7 +2,7 @@ package services
 
 import baseSpec.BaseSpecWithApplication
 import connectors.GithubConnector
-import models.{Content, ExistingFile, Repository, UpdatedFile, User}
+import models.{APIError, Content, ExistingFile, Repository, UpdatedFile, User}
 import models.User.formats
 import org.scalamock.scalatest.MockFactory
 import play.api.libs.json.{Json, OFormat}
@@ -32,10 +32,17 @@ class GithubServiceUnitSpec extends BaseSpecWithApplication with MockFactory {
       GithubService.decodeBase64(encodedString).startsWith(fileStartsWith) shouldEqual true
     }
   }
-
   "GithubService .encodeBase64" should {
     "convert a string to an encoded base64 string" in {
       GithubService.encodeBase64(fileStartsWith) shouldEqual base64FileStartsWith
+    }
+  }
+  "GithubService .editPath" should {
+    "return '' if path == '' " in {
+      GithubService.editPath("") shouldEqual ""
+    }
+    "add an '/' to the end of path" in {
+      GithubService.editPath("example/path") shouldEqual "example/path/"
     }
   }
 
@@ -50,7 +57,6 @@ class GithubServiceUnitSpec extends BaseSpecWithApplication with MockFactory {
       }
     }
   }
-
   "GithubService .getUserRepo" should {
     "receive a list of repositories from the connector that corresponds to the user's github login" in {
       (mockGithubConnector.getRepoList[List[Repository]](_: String)(_: OFormat[List[Repository]], _: ExecutionContext))
@@ -62,7 +68,6 @@ class GithubServiceUnitSpec extends BaseSpecWithApplication with MockFactory {
       }
     }
   }
-
   "GithubService .getRepoContents" should {
     "get the contents of a repository by the repository's name" in {
       (mockGithubConnector.getRepoContent[List[Content]](_: String, _: String, _: String)(_: OFormat[List[Content]], _: ExecutionContext))
@@ -74,7 +79,6 @@ class GithubServiceUnitSpec extends BaseSpecWithApplication with MockFactory {
       }
     }
   }
-
   "GithubService .getFileContents" should {
     "get the contents of a file and return it as a string" in {
       (mockGithubConnector.getFileContents[String](_: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
@@ -95,6 +99,66 @@ class GithubServiceUnitSpec extends BaseSpecWithApplication with MockFactory {
         .once()
       whenReady(testGithubService.getExistingFileForUpdating("jake-raffe", "Back-end_Project", ".gitignore")) { result =>
         result shouldBe Right(ExistingFile(".gitignore", fileContents, "bcbcbcjdjdjd"))
+      }
+    }
+  }
+  "GithubService .createNewFile" should {
+    "send a file to the connector to be added to the api, returning a 'success' string if successful" in {
+      (mockGithubConnector.createNewFileCurl(_: String, _: String, _: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src/", "FileName.md", encodedFileContents, *, *)
+        .returning(Future(Right("success")))
+        .once()
+      whenReady(testGithubService.createNewFile("jake-raffe", "Back-end_Project", "src", "FileName.md", fileContents)) { result =>
+        result shouldBe Right("success")
+      }
+    }
+    "return a BadAPIError if path cannot be found" in {
+      (mockGithubConnector.createNewFileCurl(_: String, _: String, _: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "blueberries/", "FileName.md", encodedFileContents, *, *)
+        .returning(Future(Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))))
+        .once()
+      whenReady(testGithubService.createNewFile("jake-raffe", "Back-end_Project", "blueberries", "FileName.md", fileContents)) { result =>
+        result shouldBe Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))
+      }
+    }
+  }
+  "GithubService .updateFile" should {
+    "send a file to the connector to be updated by the api, returning a 'success' string if successful" in {
+      (mockGithubConnector.updateFileCurl(_: String, _: String, _: String, _: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src/FileName.md", "FileName.md", encodedFileContents, "shashasha", *, *)
+        .returning(Future(Right("success")))
+        .once()
+      whenReady(testGithubService.updateFile("jake-raffe", "Back-end_Project", "src/FileName.md", "FileName.md", fileContents, "shashasha")) { result =>
+        result shouldBe Right("success")
+      }
+    }
+    "return a BadAPIError if path cannot be found" in {
+      (mockGithubConnector.updateFileCurl(_: String, _: String, _: String, _: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "blueberries/FileName.md", "FileName.md", encodedFileContents, "shashasha", *, *)
+        .returning(Future(Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))))
+        .once()
+      whenReady(testGithubService.updateFile("jake-raffe", "Back-end_Project", "blueberries/FileName.md", "FileName.md", fileContents, "shashasha")) { result =>
+        result shouldBe Left(APIError.BadAPIResponse(400, "Unable to return file contents at connector"))
+      }
+    }
+  }
+  "GithubService .deleteFile" should {
+    "send a file to the connector to be updated by the api, returning a 'success' string if successful" in {
+      (mockGithubConnector.deleteFileCurl(_: String, _: String, _: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "src/", "FileName.md", "shashasha", *, *)
+        .returning(Future(Right("success")))
+        .once()
+      whenReady(testGithubService.deleteFile("jake-raffe", "Back-end_Project", "src", "FileName.md","shashasha")) { result =>
+        result shouldBe Right("success")
+      }
+    }
+    "return a BadAPIError if path cannot be found" in {
+      (mockGithubConnector.deleteFileCurl(_: String, _: String, _: String, _: String, _: String)(_: OFormat[String], _: ExecutionContext))
+        .expects("jake-raffe", "Back-end_Project", "blueberries/", "FileName.md", "shashasha", *, *)
+        .returning(Future(Left(APIError.BadAPIResponse(400, "File contents still found i.e. wasn't deleted"))))
+        .once()
+      whenReady(testGithubService.deleteFile("jake-raffe", "Back-end_Project", "blueberries", "FileName.md", "shashasha")) { result =>
+        result shouldBe Left(APIError.BadAPIResponse(400, "File contents still found i.e. wasn't deleted"))
       }
     }
   }

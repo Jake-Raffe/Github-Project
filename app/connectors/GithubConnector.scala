@@ -126,10 +126,9 @@ class GithubConnector @Inject()(ws: WSClient) {
 //  }
 
   def createNewFileCurl[Response](username: String, repoName: String, path: String, fileName: String, encodedContent: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
-    val editedPath = if (path.equals("")) "" else s"$path/"
-    val request = GithubConnector.createCurlRequest(username, repoName, editedPath, fileName, encodedContent)
+    val request = GithubConnector.createCurlRequest(username, repoName, path, fileName, encodedContent)
     request.!!
-    getFileContents(username, repoName, s"$editedPath$fileName").map {
+    getFileContents(username, repoName, s"$path$fileName").map {
       case Right(value) => Right("success")
       case Left(value) => Left(value)
     }
@@ -148,12 +147,11 @@ class GithubConnector @Inject()(ws: WSClient) {
 
   def deleteFileCurl[Response](username: String, repoName: String, path: String, fileName: String, sha: String)(implicit rds: OFormat[Response], ec: ExecutionContext): Future[Either[APIError, String]] = {
     val request = GithubConnector.deleteCurlRequest(username, repoName, path, fileName, sha)
-//    println(request.!! + "--------------\n" + s"$path$fileName")
-    println(request.!!)
+    request.!!
     Thread.sleep(100)
     getFileContents(username, repoName, s"$path$fileName").map {
       case Right(contents) => Left(APIError.BadAPIResponse(400, "File contents still found i.e. wasn't deleted"))
-      case Left(value) => Right({println(value);"success"})
+      case Left(value) => Right("success")
     }
   }
 

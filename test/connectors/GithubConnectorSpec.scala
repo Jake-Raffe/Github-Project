@@ -46,12 +46,12 @@ class GithubConnectorSpec extends BaseSpecWithApplication with MockFactory with 
   val fileContents = "This is a test string"
   val encodedFileContents = "VGhpcyBpcyBhIHRlc3Qgc3RyaW5n"
 
-  //  "GithubConnector .getUser" should {
-  //    "get a github user by their login name and return their details in a User object" in {
-  //      val result = githubConnector.getUser(getUserUrl)
-  //      result shouldBe Right(jakeUser)
-  //    }
-  //  }
+    "GithubConnector .getUser" should {
+      "get a github user by their login name and return their details in a User object" in {
+        val result = githubConnector.getUser[User](getUserUrl)
+        result shouldBe Right(jakeUser)
+      }
+    }
 
   "GithubConnector .parseFileContents" should {
     "read the base64 contents of a file from the Github API and return as a string" in {

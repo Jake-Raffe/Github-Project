@@ -42,6 +42,7 @@ import GithubService._
     }
   }
 
+
   def getExistingFileForUpdating(username: String, repoName: String, path: String)(implicit ec: ExecutionContext): Future[Either[APIError, ExistingFile]] = {
     connector.getFileNameContentsSha[ExistingFile](username, repoName, path).map {
       case Right(existingFile) => {
@@ -54,7 +55,7 @@ import GithubService._
 
   def createNewFile(username: String, repoName: String, path: String, fileName: String, fileContent: String)(implicit ex: ExecutionContext): Future[Either[APIError, String]] = {
     val encodedContent = encodeBase64(fileContent)
-    connector.createNewFileCurl(username, repoName, path, fileName, encodedContent) map {
+    connector.createNewFileCurl(username, repoName, editPath(path), fileName, encodedContent) map {
       case Right(string: String) => Right(string)
       case Left(error: APIError) => Left(error)
     }
